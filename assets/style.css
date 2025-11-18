@@ -47,3 +47,136 @@ footer nav a.active {
   color: #ffff99;
   text-decoration: underline;
 }
+
+/* === PET SHOP LOGIN STYLES === */
+.login-container {
+  max-width: 420px;
+  margin: 3rem auto;
+  background: white;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+  text-align: center;
+  border: 3px solid #ff99cc;
+}
+
+.login-container h1 {
+  color: #ff69b4;
+  font-size: 2.8rem;
+  margin-bottom: 0.5rem;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+.login-container p.tagline {
+  color: #666;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+.paw-icon {
+  font-size: 4rem;
+  color: #ff69b4;
+  margin-bottom: 1rem;
+}
+
+input[type="text"], input[type="password"] {
+  width: 100%;
+  padding: 14px 18px;
+  margin: 12px 0;
+  border: 2px solid #ffd4e6;
+  border-radius: 50px;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s;
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+  border-color: #ff69b4;
+  box-shadow: 0 0 0 4px rgba(255,105,180,0.2);
+}
+
+.btn-login {
+  background: linear-gradient(45deg, #ff69b4, #ff1493);
+  color: white;
+  border: none;
+  padding: 14px 40px;
+  font-size: 1.2rem;
+  border-radius: 50px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 10px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.btn-login:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(255,105,180,0.4);
+}
+
+.extra-links {
+  margin-top: 1.5rem;
+}
+
+.extra-links a {
+  color: #ff69b4;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.extra-links a:hover {
+  text-decoration: underline;
+}
+
+
+body {
+  background: linear-gradient(to bottom, #fff8fb, #ffeef8);
+  position: relative;
+}
+
+body::before {
+  content: "🐾 🐶 🐱 🐾";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  font-size: 6rem;
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: -1;
+  text-align: center;
+  line-height: 1;
+  padding-top: 20vh;
+}
+
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+header {
+    position: relative;
+}
+
+.login-btn {
+    background: linear-gradient(45deg, #ff69b4, #ff1493);
+    color: white;
+    padding: 10px 24px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 15px rgba(255,105,180,0.4);
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.login-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255,105,180,0.6);
+}
