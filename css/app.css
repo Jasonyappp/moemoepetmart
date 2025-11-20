@@ -569,3 +569,115 @@ nav {
     box-shadow: 0 15px 35px rgba(255,20,147,0.5);
     border-color: #ff69b4;
 }
+
+
+/* ==================== ADMIN DASHBOARD - PINK KAWAII ==================== */
+.admin-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #ffeef8 0%, #fff0f5 100%);
+    padding: 3rem 1rem;
+}
+
+.admin-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.admin-header h1 {
+    font-family: 'Kalam', cursive;
+    font-size: 4rem;
+    color: #ff1493;
+    text-shadow: 4px 4px 0px #ffb6c1;
+    margin-bottom: 0.5rem;
+}
+
+.admin-header p {
+    font-size: 1.4rem;
+    color: #ff69b4;
+}
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.admin-card {
+    background: white;
+    border-radius: 25px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(255,105,180,0.2);
+    border: 4px solid #ffeef8;
+    transition: all 0.4s;
+    text-decoration: none;
+    color: #444;
+}
+
+.admin-card:hover {
+    transform: translateY(-15px) scale(1.03);
+    box-shadow: 0 25px 50px rgba(255,20,147,0.3);
+    border-color: #ff69b4;
+}
+
+.admin-card.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.card-icon {
+    font-size: 4.5rem;
+    margin-bottom: 1rem;
+}
+
+.admin-card h3 {
+    font-family: 'Kalam', cursive;
+    font-size: 2rem;
+    color: #ff1493;
+    margin-bottom: 0.8rem;
+}
+
+.admin-card p {
+    color: #ff69b4;
+    font-size: 1.1rem;
+}
+
+.admin-card.logout {
+    background: linear-gradient(135deg, #ff9ab8, #ff69b4);
+    color: white;
+    border: none;
+}
+
+.admin-card.logout h3,
+.admin-card.logout p {
+    color: white;
+}
+
+/* Admin123 button – beautiful, glowing, and CLICKABLE to dashboard */
+.active-admin {
+    background: linear-gradient(135deg, #ff1493, #ff69b4) !important;
+    color: white !important;
+    font-weight: 700 !important;
+    font-size: 1.05rem;
+    padding: 12px 28px !important;
+    border: 3px solid #ffb6c1;
+    box-shadow: 0 0 20px rgba(255, 20, 147, 0.6);
+    animation: glow 2s infinite alternate;
+    transition: all 0.3s;
+    text-decoration: none;
+    border-radius: 50px;
+}
+
+/* Hover effect – looks alive and inviting */
+.active-admin:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 0 35px rgba(255, 20, 147, 0.9);
+    background: linear-gradient(135deg, #ff69b4, #ff1493) !important;
+}
+
+@keyframes glow {
+    from { box-shadow: 0 0 15px rgba(255, 20, 147, 0.5); }
+    to   { box-shadow: 0 0 35px rgba(255, 20, 147, 0.9); }
+}

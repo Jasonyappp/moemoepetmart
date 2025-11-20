@@ -6,18 +6,27 @@ include '_head.php';
 
 // ------------------- Process Login -------------------
 if (is_post()) {
-    $username = post('username');
+    $username = trim(post('username'));
     $password = post('password');
 
-    // Simple demo login (you can change or secure this later)
-    if ($username === 'admin' && $password === '1234') {
+    // Admin Login
+    if ($username === 'admin123' && $password === 'yap123') {
         $_SESSION['user'] = 'admin';
-        temp('info', 'Welcome back, master! ♡');
+        $_SESSION['role'] = 'admin';
+        redirect('/admin.php');
+    }
+    // Member Login (you can add real DB check later)
+    elseif ($username === 'member' && $password === '123') {
+        $_SESSION['user'] = 'member';
+        $_SESSION['role'] = 'member';
+        temp('info', 'Welcome back, cute member! ♡');
         redirect('/');
-    } else {
+    }
+    else {
         $_err['login'] = 'Wrong username or password~';
     }
-    $username = $username;
+
+    $username = $username; // keep in field
 }
 ?>
 

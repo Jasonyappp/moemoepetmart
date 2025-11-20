@@ -21,11 +21,19 @@
            <a href="/">Home</a>
             <a href="/products.php">Products</a>
         </div>
-        <div class="nav-right">
-            <a href="/login.php" class="btn-login">
-                Login
+       <div class="nav-right">
+        <?php if (isset($_SESSION['user']) && $_SESSION['user'] === 'admin'): ?>
+            <!-- ADMIN LOGGED IN → Show "Admin123" button that goes to dashboard -->
+            <a href="/admin.php" class="btn-login active-admin">
+                Admin123
             </a>
-        </div>
+        <?php else: ?>
+            <!-- Not admin → normal Login / Member button -->
+            <a href="/login.php" class="btn-login">
+                <?= isset($_SESSION['user']) ? 'Member' : 'Login' ?>
+            </a>
+        <?php endif; ?>
+    </div>
     </nav>
     <main>
         <h1><?= $_title ?? 'Untitled' ?></h1>
