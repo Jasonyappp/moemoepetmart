@@ -14,3 +14,23 @@
         f.action = url || location;
         f.submit();
     });
+
+    // ===================== MOE MOE FLASH MESSAGE  =====================
+document.addEventListener('DOMContentLoaded', () => {
+    const flashMsg = document.body.dataset.flash || '';
+    if (flashMsg) {
+        const flash = document.getElementById('moe-flash');
+        flash.innerHTML = `
+            ${flashMsg}
+            <span class="close-btn" onclick="this.parentElement.classList.remove('show')">&times;</span>
+        `;
+        flash.classList.add('show');
+
+        // Auto hide after 6 seconds
+        setTimeout(() => {
+            flash.classList.remove('show');
+            setTimeout(() => flash.innerHTML = '', 700);
+        }, 6000);
+    }
+});
+// ===================== END FLASH =====================

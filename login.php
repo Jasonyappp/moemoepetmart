@@ -9,24 +9,33 @@ if (is_post()) {
     $username = trim(post('username'));
     $password = post('password');
 
-    // Admin Login
+    // === ADMIN LOGIN (hardcoded - still works) ===
     if ($username === 'admin123' && $password === 'yap123') {
         $_SESSION['user'] = 'admin';
         $_SESSION['role'] = 'admin';
+        temp('info', 'Welcome back, Master admin123! ♡');
         redirect('/admin.php');
     }
-    // Member Login (you can add real DB check later)
-    elseif ($username === 'member' && $password === '123') {
-        $_SESSION['user'] = 'member';
-        $_SESSION['role'] = 'member';
-        temp('info', 'Welcome back, cute member! ♡');
-        redirect('/');
-    }
+
+// === MEMBER LOGIN FROM DATABASE ===
+else {
+    $stm = $_db->prepare("SELECT * FROM users WHERE username = ?");
+    $stm->execute([$username]);
+    $user = $stm->fetch();
+
+    if ($user && password_verify($password, $user->password)) {
+        // FIXED: Correctly save session
+        $_SESSION['user'] = $user->username;
+        $_SESSION['role']  = $user->role;   // ← This line was broken before!
+
+        temp('info', 'Welcome to the family, ' . encode($user->username) . '! Enjoy the cuteness~');
+        redirect('/');  // Go home and show flash + updated nav
+    } 
     else {
         $_err['login'] = 'Wrong username or password~';
     }
-
-    $username = $username; // keep in field
+}
+    $username = encode($username); // keep input on error
 }
 ?>
 
@@ -46,7 +55,7 @@ if (is_post()) {
         <form method="post" class="login-form">
             <div class="input-group">
                 <label>Username</label>
-                <input type="text" name="username" value="<?= encode($username ?? '') ?>" required placeholder="Enter your username">
+                <input type="text" name="username" value="<?= $username ?? '' ?>" required placeholder="Enter your username">
             </div>
 
             <div class="input-group">
@@ -59,7 +68,6 @@ if (is_post()) {
             </button>
         </form>
 
-        <!-- New Register Link -->
         <div class="register-link">
             <p>Don't have an account?</p>
             <a href="/register.php" class="btn-register">

@@ -124,7 +124,7 @@ function err($key) {
 // ============================================================================
 
 // Global PDO object
-$_db = new PDO('mysql:dbname=db4', 'root', '', [
+$_db = new PDO('mysql:host=localhost;dbname=moemoe_petmart;charset=utf8mb4', 'root', '', [
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
 ]);
 

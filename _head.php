@@ -9,31 +9,46 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="/js/app.js"></script>
 </head>
-<body>
-    <!-- Flash message -->
-    <div id="info"><?= temp('info') ?></div>
+<body data-flash="<?= encode(temp('info')) ?>">
+    <div id="moe-flash"></div>
 
     <header>
         <h1><a href="/">MoeMoepet Mart</a></h1>
     </header>
-<nav>
+
+    <nav>
         <div class="nav-left">
-           <a href="/">Home</a>
+            <a href="/">Home</a>
             <a href="/products.php">Products</a>
         </div>
-       <div class="nav-right">
-        <?php if (isset($_SESSION['user']) && $_SESSION['user'] === 'admin'): ?>
-            <!-- ADMIN LOGGED IN → Show "Admin123" button that goes to dashboard -->
-            <a href="/admin.php" class="btn-login active-admin">
-                Admin123
-            </a>
-        <?php else: ?>
-            <!-- Not admin → normal Login / Member button -->
-            <a href="/login.php" class="btn-login">
-                <?= isset($_SESSION['user']) ? 'Member' : 'Login' ?>
-            </a>
-        <?php endif; ?>
-    </div>
+        <div class="nav-right">
+            <?php 
+            $isLoggedIn = isset($_SESSION['user']);
+            $userRole   = $_SESSION['role'] ?? null;   
+            $username   = $_SESSION['user'] ?? null;
+            ?>
+
+            <?php if ($isLoggedIn && $userRole === 'admin'): ?>
+                <!-- ADMIN LOGGED IN -->
+                <a href="/admin.php" class="btn-login active-admin">
+                    Admin123
+                </a>
+
+            <?php elseif ($isLoggedIn && $userRole === 'member'): ?>
+                <!-- MEMBER LOGGED IN -->
+                <a href="#" class="btn-login member-active">
+                    Member: <?= encode($username) ?> ♡
+                </a>
+                <a href="/logout.php" class="btn-logout">Logout</a>
+
+            <?php else: ?>
+                <!-- NOT LOGGED IN -->
+                <a href="/login.php" class="btn-login">
+                    Login
+                </a>
+            <?php endif; ?>
+</div>
     </nav>
+
     <main>
         <h1><?= $_title ?? 'Untitled' ?></h1>
