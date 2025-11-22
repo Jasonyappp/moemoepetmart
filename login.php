@@ -24,12 +24,12 @@ else {
     $user = $stm->fetch();
 
     if ($user && password_verify($password, $user->password)) {
-        // FIXED: Correctly save session
+        
         $_SESSION['user'] = $user->username;
-        $_SESSION['role']  = $user->role;   // ← This line was broken before!
+        $_SESSION['role']  = $user->role;   
 
         temp('info', 'Welcome to the family, ' . encode($user->username) . '! Enjoy the cuteness~');
-        redirect('/');  // Go home and show flash + updated nav
+        redirect('/');  
     } 
     else {
         $_err['login'] = 'Wrong username or password~';
