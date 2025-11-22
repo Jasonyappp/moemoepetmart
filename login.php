@@ -8,7 +8,7 @@ include '_head.php';
 if (is_post()) {
     $username = trim(post('username'));
     $password = post('password');
-
+    
     // === ADMIN LOGIN (hardcoded - still works) ===
     if ($username === 'admin123' && $password === 'yap123') {
         $_SESSION['user'] = 'admin';

@@ -59,6 +59,69 @@ function temp($key, $value = null) {
 }
 
 // ============================================================================
+// Authentication Functions
+// ============================================================================
+
+// Check if user is logged in
+function is_login() {
+    return isset($_SESSION['user']) && !empty($_SESSION['user']);
+}
+
+// Get current user ID
+function user_id() {
+    return $_SESSION['user_id'] ?? null;
+}
+
+// Get current username
+function username() {
+    return $_SESSION['user'] ?? null;
+}
+
+// Get current user role
+function user_role() {
+    return $_SESSION['role'] ?? null;
+}
+
+// Get current user data
+function current_user() {
+    global $_db;
+    if (!is_login()) return null;
+    
+    $stm = $_db->prepare("SELECT * FROM users WHERE username = ?");
+    $stm->execute([username()]);
+    return $stm->fetch();
+}
+
+// Login user
+function login($username, $role) {
+    $_SESSION['user'] = $username;
+    $_SESSION['role'] = $role;
+}
+
+// Logout user
+function logout() {
+    unset($_SESSION['user'], $_SESSION['role']);
+    session_destroy();
+}
+
+// Require login - redirect to login if not logged in
+function require_login() {
+    if (!is_login()) {
+        temp('info', 'Please login first~ ♡');
+        redirect('/login.php');
+    }
+}
+
+// Require admin - redirect if not admin
+function require_admin() {
+    require_login();
+    if (user_role() !== 'admin') {
+        temp('error', 'Admin access required!');
+        redirect('/');
+    }
+}
+
+// ============================================================================
 // HTML Helpers
 // ============================================================================
 
