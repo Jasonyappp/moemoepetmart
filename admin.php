@@ -19,10 +19,10 @@ include '_head.php';
 
     <div class="admin-grid">
         <!-- Product Maintenance -->
-        <a href="product_list.php" class="admin-card">
-            <div class="card-icon">Pets</div>
-            <h3>Manage Pets / Products</h3>
-            <p>Add, edit, delete, or restock pets and supplies</p>
+        <a href="admin/product_list.php" class="admin-card">
+            <div class="card-icon">Products</div>
+            <h3>Product Maintenance</h3>
+            <p>Add, edit, delete products & upload photos</p>
         </a>
 
         <!-- Future features (you can add later) -->
