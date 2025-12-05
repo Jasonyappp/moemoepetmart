@@ -13,6 +13,9 @@ if (is_post()) {
     if ($username === 'admin123' && $password === 'yap123') {
         $_SESSION['user'] = 'admin';
         $_SESSION['role'] = 'admin';
+
+        $_SESSION['show_welcome'] = true;
+
         temp('info', 'Welcome back, Master admin123! ♡');
         redirect('/admin.php');
     }
@@ -26,7 +29,9 @@ else {
     if ($user && password_verify($password, $user->password)) {
         
         $_SESSION['user'] = $user->username;
-        $_SESSION['role']  = $user->role;   
+        $_SESSION['role']  = $user->role;
+        
+        $_SESSION['show_welcome'] = true;   
 
         temp('info', 'Welcome to the family, ' . encode($user->username) . '! Enjoy the cuteness~');
         redirect('/');  

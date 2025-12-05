@@ -206,3 +206,102 @@ function is_exists($value, $table, $field) {
     $stm->execute([$value]);
     return $stm->fetchColumn() > 0;
 }
+// Obtain uploaded file --> cast to object
+function get_file($key) {
+    $f = $_FILES[$key] ?? null;
+    
+    if ($f && $f['error'] == 0) {
+        return (object)$f;
+    }
+
+    return null;
+}
+
+// Crop, resize and save photo
+function save_photo($f, $folder, $width = 800, $height = 800) {
+   
+
+    $photo = uniqid('img_') . '.jpg';
+
+    require_once 'lib/SimpleImage.php';
+    $img = new SimpleImage();
+    $img->fromFile($f->tmp_name)
+        ->bestFit($width, $height)
+        ->toFile("$folder/$photo", 'image/jpeg', 85);
+
+    return $photo;  // 返回如：img_6759a1b2c3d4e.jpg
+}
+
+
+ function html_textarea($key, $attr = '') {
+    $value = encode($GLOBALS[$key] ?? '');
+    echo "<textarea id='$key' name='$key' $attr>$value</textarea>";
+    }
+    
+
+    function html_number($key, $min = '', $max = '', $step = '', $attr = '') {
+        $value = encode($GLOBALS[$key] ?? '');
+        echo "<input type='number' id='$key' name='$key' value='$value'
+                    min='$min' max='$max' step='$step' $attr>";
+    }
+
+     function html_status_toggle($key, $default = 1) {
+    $checked = ($GLOBALS[$key] ?? $default) == 1 ? 'checked' : '';
+    echo <<<HTML
+    <div style="display:flex; align-items:center; gap:30px; margin:12px 0; font-size:15px; user-select:none;">
+        <span style="color:#999;">Unactive</span>
+        <label class="toggle-switch">
+            <input type="checkbox" name="$key" value="1" $checked>
+            <span class="slider round"></span>
+        </label>
+        <span style="color:#333; font-weight:500;">Active</span>
+    </div>
+    HTML;
+}
+
+function html_file($key, $accept = '', $attr = '') {
+    echo "<input type='file' id='$key' name='$key' accept='$accept' $attr>";}
+
+    function is_money($value) {
+        return preg_match('/^\-?\d+(\.\d{1,2})?$/', $value);
+    }
+
+// ====================== 永久删除旧产品主图（安全、可重复调用）======================
+/**
+ * 删除产品旧主图（物理文件）
+ * @param int $product_id 产品ID
+ * @return bool 是否成功（即使没有旧图也返回 true）
+ */
+function delete_old_product_photo($product_id) {
+    global $_db;
+    
+    try {
+        $stmt = $_db->prepare("SELECT photo_name FROM product WHERE product_id = ?");
+        $stmt->execute([$product_id]);
+        $old_photo_name = $stmt->fetchColumn();
+
+        // 没有旧图 → 直接返回成功
+        if (!$old_photo_name) {
+            return true;
+        }
+
+        // 构建真实路径（和你 add/edit 完全一致！）
+        $full_path = '../admin/uploads/products/' . $old_photo_name;
+
+        // 删除文件（如果存在）
+        if (is_file($full_path)) {
+            if (unlink($full_path)) {
+                error_log("成功删除旧产品主图: $full_path");
+                return true;
+            } else {
+                error_log("删除旧产品主图失败（权限问题？）: $full_path");
+                return false;
+            }
+        }
+
+        return true; // 文件本就不存在，也算成功
+    } catch (Exception $e) {
+        error_log("delete_old_product_photo 错误: " . $e->getMessage());
+        return false;
+    }
+}    

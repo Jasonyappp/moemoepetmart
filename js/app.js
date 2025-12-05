@@ -15,6 +15,17 @@
         f.submit();
     });
 
+    $(function applyFilters() {
+    const search = document.querySelector('input[name="search"]').value;
+    const category = document.querySelector('select[name="category"]').value;
+    const stock = document.querySelector('select[name="stock_status"]').value;
+    const url = new URL(location);
+    url.searchParams.set('search', search);
+    url.searchParams.set('category', category);
+    url.searchParams.set('stock_status', stock);
+    url.searchParams.set('page', 1);
+    location = url;});
+
     // ===================== MOE MOE FLASH MESSAGE  =====================
 document.addEventListener('DOMContentLoaded', () => {
     const flashMsg = document.body.dataset.flash || '';
@@ -34,3 +45,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 // ===================== END FLASH =====================
+
+
+// 让 Apply 按钮真的能提交筛选
+function applyFilters() {
+    const search = document.querySelector('input[name="search"]').value;
+    const category = document.querySelector('select[name="category"]').value;
+    const stock = document.querySelector('select[name="stock_status"]').value;
+    const url = new URL(location);
+    url.searchParams.set('search', search);
+    url.searchParams.set('category', category);
+    url.searchParams.set('stock_status', stock);
+    url.searchParams.set('page', 1);
+    location = url;
+}
