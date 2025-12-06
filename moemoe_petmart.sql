@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 23, 2025 at 04:42 PM
+-- Generation Time: Dec 06, 2025 at 03:38 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -72,7 +72,9 @@ CREATE TABLE `product` (
 INSERT INTO `product` (`product_id`, `product_code`, `product_name`, `description`, `price`, `stock_quantity`, `category_id`, `is_active`, `created_at`, `updated_at`) VALUES
 (1, 'TOY0001', 'Feather Teaser Wand Set', '3-piece interactive cat toy', 29.90, 50, 1, 1, '2025-11-23 23:22:24', '2025-11-23 23:22:24'),
 (2, 'CAG0001', 'Luxury Hamster Villa Cage', '3-level cage with wheel', 299.00, 12, 2, 1, '2025-11-23 23:22:24', '2025-11-23 23:22:24'),
-(3, 'FOD0001', 'Royal Canin Puppy 10kg', 'Complete food for puppies', 399.00, 15, 3, 1, '2025-11-23 23:22:24', '2025-11-23 23:22:24');
+(3, 'FOD0001', 'Royal Canin Puppy 10kg', 'Complete food for puppies', 399.00, 15, 3, 1, '2025-11-23 23:22:24', '2025-11-23 23:22:24'),
+(4, 'ACC0001', '123', 'hello', 15.00, 5, 5, 1, '2025-12-06 08:30:49', '2025-12-06 08:30:49'),
+(5, 'ACC0002', '123', 'hello', 15.00, 5, 5, 1, '2025-12-06 08:31:01', '2025-12-06 08:31:01');
 
 -- --------------------------------------------------------
 
@@ -122,15 +124,14 @@ CREATE TABLE `users` (
   `profile_pic` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-
 --
 -- Dumping data for table `users`
 --
+
 INSERT INTO `users` (`id`, `username`, `email`, `phone`, `password`, `role`, `created_at`, `profile_pic`) VALUES
 (1, 'admin123', '', '', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', '2025-11-22 17:27:12', NULL),
-(5, 'abc', 'abc123@yahoo.com', '012-3456789', '$2y$10$EKljSiD3aP0XAT.wLJdBKe7puFh/gvRdAGlaGoHU7aJ3tHfWqdqGi', 'member', '2025-11-22 22:32:05', 'uploads/profile_pics/5_1763821950_otter.jpg');
-
---
+(5, 'abc', 'abc123@yahoo.com', '012-3456789', '$2y$10$EKljSiD3aP0XAT.wLJdBKe7puFh/gvRdAGlaGoHU7aJ3tHfWqdqGi', 'member', '2025-11-22 22:32:05', 'uploads/profile_pics/5_1763821950_otter.jpg'),
+(6, 'Jasonyap045', 'yapkj-wm24@student.tarc.edu.my', '011121212111', '$2y$10$Am8fJE5UMwx.qVU7hj7zGuHc0LUyaRhx36KaTf1q.c56I64ieEaAu', 'member', '2025-12-06 09:09:37', 'uploads/profile_pics/6_1764988602_Hu Tao Ghost Genshin Impact 4K Phone iPhone Wallpaper 2651a.jpg');
 
 --
 -- Indexes for dumped tables
@@ -188,7 +189,7 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `product_image`
@@ -200,7 +201,7 @@ ALTER TABLE `product_image`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables

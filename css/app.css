@@ -2101,3 +2101,228 @@ nav {
 .hidden {
     display: none !important;
 }
+
+/* ======================== ADMIN SECRET DOOR STYLES ======================== */
+.admin-secret-card {
+    border: 6px solid #ff1493 !important;
+    box-shadow: 0 0 40px rgba(255, 20, 93, 0.35);
+    max-width: 440px;
+    animation: float 6s ease-in-out infinite;
+}
+
+.label-pink {
+    color: #ff1493;
+    font-weight: 600;
+}
+
+.input-pink {
+    background: #fff5f9 !important;
+    border: 3px solid #ff69b4 !important;
+    border-radius: 20px;
+    padding: 14px 18px;
+    font-size: 1.1rem;
+}
+
+.input-pink:focus {
+    border-color: #ff1493 !important;
+    box-shadow: 0 0 20px rgba(255, 20, 93, 0.3);
+    outline: none;
+}
+
+.btn-admin-enter {
+    background: linear-gradient(135deg, #ff1493, #ff69b4) !important;
+    font-size: 1.4rem;
+    padding: 18px !important;
+    border-radius: 50px;
+    margin-top: 20px;
+    box-shadow: 0 10px 30px rgba(255, 20, 93, 0.4);
+    transition: all 0.4s;
+}
+
+.btn-admin-enter:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 20px 40px rgba(255, 20, 93, 0.5);
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+}
+
+/* ======================== FIXED HEADER + USER MENU ======================== */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem; /* Extra padding for breathing room */
+    background: #fff0f5;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-left {
+    display: flex;
+    gap: 2rem; /* Space between Home/Products */
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    position: relative; /* For dropdown positioning */
+}
+
+.user-menu {
+    position: relative;
+    margin-left: auto; /* Pushes it to the far right */
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 8px 12px;
+    border-radius: 25px; /* Softer pill shape */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid #ff99cc;
+    box-shadow: 0 4px 15px rgba(255, 105, 180, 0.2);
+    white-space: nowrap;
+}
+
+.user-info:focus {
+    outline: 2px solid #ff69b4;
+}
+
+.user-info:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 105, 180, 0.3);
+    border-color: #ff69b4;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ff69b4;
+    margin-right: 10px;
+}
+
+.user-details {
+    line-height: 1.2;
+    max-width: 120px; /* Prevents overflow on long names */
+}
+
+.user-name {
+    font-weight: 600;
+    color: #333;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-role {
+    font-size: 0.8rem;
+    color: #ff69b4;
+    font-weight: 500;
+}
+
+.dropdown-arrow {
+    margin-left: 8px;
+    font-size: 0.8rem;
+    color: #ff69b4;
+    transition: transform 0.3s;
+}
+
+.user-info:hover .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.user-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: white;
+    min-width: 160px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(255, 105, 180, 0.25);
+    border: 1px solid #ff99cc;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-5px);
+    transition: all 0.3s ease;
+    z-index: 9999;
+}
+
+.user-menu:hover .user-dropdown,
+.user-info:focus + .user-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.user-dropdown a {
+    display: block;
+    padding: 12px 16px;
+    color: #555;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.user-dropdown a:hover {
+    background: #ff99cc;
+    color: white;
+    padding-left: 20px;
+}
+
+.user-dropdown hr {
+    margin: 4px 0;
+    border: none;
+    border-top: 1px solid #ffeef8;
+}
+
+.logout-link {
+    color: #ff4757 !important;
+    border-top: 1px solid #ffeef8 !important;
+}
+
+.logout-link:hover {
+    background: #ff4757 !important;
+    color: white !important;
+}
+
+/* Footer fix - make it cute and centered */
+footer {
+    text-align: center;
+    padding: 2rem;
+    background: linear-gradient(135deg, #ff8fab, #ff99cc);
+    color: white;
+    font-size: 0.9rem;
+    margin-top: auto;
+}
+
+/* Mobile: Stack everything nicely */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+    .nav-left {
+        gap: 1rem;
+    }
+    .user-details {
+        display: none; /* Hide name/role on tiny screens, just show avatar */
+    }
+    .user-info {
+        padding: 6px;
+    }
+    footer {
+        padding: 1.5rem;
+    }
+}

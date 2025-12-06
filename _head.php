@@ -24,43 +24,44 @@
     </header>
 
     <nav>
-        <div class="nav-left">
-            <a href="/">Home</a>
-            <a href="/products.php">Products</a>
-        </div>
+    <div class="nav-left">
+        <a href="/">Home</a>
+        <a href="/products.php">Products</a>
+    </div>
 
-        
-       <div class="nav-right">
-            <?php 
-                $isLoggedIn = isset($_SESSION['user']);
-                $userRole   = $_SESSION['role'] ?? null;   
-                $username   = $_SESSION['user'] ?? null;
-            ?>
+    <div class="nav-right">
+        <?php if (is_login()): 
+            $user = current_user();
+            $displayName = encode(username());
+            $roleText    = user_role() === 'admin' ? 'Admin ♛' : 'Member ♡';
+            $avatar = !empty($user->profile_pic) ? $user->profile_pic : '/images/default-avatar.png';
+        ?>
 
-            <?php if ($isLoggedIn && $userRole === 'admin'): ?>
-                <!-- ADMIN LOGGED IN -->
-                <a href="/admin.php" class="btn-login active-admin">
-                    Admin123
-                </a>
+            <div class="user-menu">
+                <div class="user-info" tabindex="0">
+                    <img src="<?= $avatar ?>" alt="<?= $displayName ?>" class="user-avatar">
+                    <div class="user-details">
+                        <div class="user-name"><?= $displayName ?></div>
+                        <div class="user-role"><?= $roleText ?></div>
+                    </div>
+                    <span class="dropdown-arrow">▼</span>
+                </div>
 
-            <?php elseif ($isLoggedIn && $userRole === 'member'): ?>
-                <!-- MEMBER LOGGED IN -->
-                <a href="/profile.php" class="btn-login" style="background: #ff99cc;">
-                    My Profile
-                </a>
-                <a href="#" class="btn-login member-active">
-                    Member: <?= encode($username) ?> ♡
-                </a>
-                <a href="/logout.php" class="btn-logout">Logout</a>
+                <div class="user-dropdown">
+                    <?php if (user_role() === 'member'): ?>
+                        <a href="/profile.php">Profile</a>
+                    <?php elseif (user_role() === 'admin'): ?>
+                        <a href="/admin.php">Admin Dashboard</a>
+                    <?php endif; ?>
+                    <hr>
+                    <a href="/logout.php" class="logout-link">Logout</a>
+                </div>
+            </div>
 
-            <?php else: ?>
-                <!-- NOT LOGGED IN -->
-                <a href="/login.php" class="btn-login">
-                    Login
-                </a>
-            <?php endif; ?>
-        </div>
-    </nav>
-
+        <?php else: ?>
+            <a href="/login.php" class="btn-login">Login</a>
+        <?php endif; ?>
+    </div>
+</nav>
     <main>
         <h1><?= $_title ?? 'Untitled' ?></h1>
