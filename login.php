@@ -14,21 +14,20 @@ if (is_post()) {
     $stm->execute([$username]);
     $user = $stm->fetch();
 
-    // Success login
-    if ($user && password_verify($password, $user->password)) {
+    // BLOCK ADMIN FROM LOGGING IN HERE — NO EXCEPTIONS!
+    if ($user && $user->role === 'admin') {
+        $_err['login'] = 'Admins are not allowed to login here!<br>Use the <strong>Secret Admin Door</strong> instead ♡';
+        // Optional: add a helpful link
+        // $_err['login'] .= '<br><br><a href="/admin_login.php" style="color:#ff69b4;font-weight:bold;">→ Click here for Admin Login</a>';
+        $username = ''; // clear the input so they can't just resubmit
+    }
+    // Normal member login (only if NOT admin)
+    else if ($user && password_verify($password, $user->password)) {
+        $_SESSION['user']        = $user->username;
+        $_SESSION['role']        = $user->role;
+        $_SESSION['user_id']     = $user->id;
+        $_SESSION['show_welcome']= true;
 
-        $_SESSION['user']     = $user->username;
-        $_SESSION['role']     = $user->role;
-        $_SESSION['user_id']  = $user->id;
-        $_SESSION['show_welcome'] = true;
-
-        // ADMIN? → Kick them out! They must use the secret admin door!
-        if ($user->role === 'admin') {
-            temp('error', 'Admins must use the secret admin login page ♡');
-            redirect('/login.php');
-        }
-
-        // Normal member → welcome!
         temp('info', "Welcome back, cutie " . encode($user->username) . "! ♡");
         redirect('/');
     } 
@@ -36,7 +35,7 @@ if (is_post()) {
         $_err['login'] = 'Wrong username or password~ Please try again!';
     }
 
-    $username = encode($username); // keep input on error
+    $username = encode($username ?? '');
 }
 ?>
 
