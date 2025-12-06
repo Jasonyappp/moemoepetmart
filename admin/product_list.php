@@ -7,7 +7,7 @@ $_title = 'Product Management - Admin';
 
 // === 参数处理（你原来的全部保留）===
 $page = max(1, (int)($_GET['page'] ?? 1));
-$limit = (int)($_GET['limit'] ?? 10);
+$limit = (int)($_GET['limit'] ?? 5);
 $offset = ($page - 1) * $limit;
 
 $search = trim($_GET['search'] ?? '');
@@ -73,7 +73,6 @@ $cats = $_db->query("SELECT * FROM category ORDER BY category_name")->fetchAll()
         <ul>
             <li><a href="../admin.php"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
             <li><a href="product_list.php" class="active"><i class="fas fa-box"></i> <span>Products</span></a></li>
-            <li><a href="product_add.php"><i class="fas fa-plus-circle"></i> <span>Add Product</span></a></li>
             <li><a href="#"><i class="fas fa-shopping-cart"></i> <span>Orders (Soon)</span></a></li>
             <li><a href="#"><i class="fas fa-users"></i> <span>Members (Soon)</span></a></li>
             <li><a href="/logout.php"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a></li>

@@ -47,7 +47,6 @@ setTimeout(() => {
         <ul>
             <li><a href="admin.php" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
             <li><a href="admin/product_list.php"><i class="fas fa-box"></i> Products</a></li>
-            <li><a href="admin/product_add.php"><i class="fas fa-plus-circle"></i> Add Product</a></li>
             <li><a href="category_list.php"><i class="fas fa-tags"></i> Categories</a></li>
             <li><a href="#"><i class="fas fa-shopping-cart"></i> Orders</a></li>
             <li><a href="#"><i class="fas fa-users"></i> Users</a></li>
