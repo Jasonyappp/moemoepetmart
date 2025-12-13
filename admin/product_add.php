@@ -155,21 +155,37 @@ include '../_head.php';
         <label>Description</label>
         <textarea name="description" rows="5"><?= encode(post('description')) ?></textarea>
 
-        <label class="mt-20">Product Image <span class="req"></span></label>
-        <label class="upload">
-            <input type="file" name="productImage" accept="image/*">
-            <img src="/public/images/photo.jpg" alt="Upload">
-            <span class="upload-text">Click to upload (it will automatically convert to JPG).</span>
-        </label>
+            <!-- Product Image Upload with Live Preview -->
+    <label class="mt-20">Product Image <span class="req">*</span></label>
+    <button type="submit" class="btn btn-primary" style="padding:16px 40px; font-size:1.4rem; border-radius:50px;"
+                onclick="document.querySelector('[name=action]').value='add';">
+            Create Product ♡
+        </button>
 
-        <div class="form-actions mt-30">
-            <button type="submit" class="btn btn-primary"
-                    onclick="document.querySelector('[name=action]').value='add';">
-                Create Product
-            </button>
-            <a href="product_list.php" class="btn btn-secondary">Cancel</a>
+    <div id="dropzone-upload" class="dropzone-pink">
+        <input type="file" name="productImage" accept="image/*" id="file-input" style="display:none;">
+
+        <!-- Default placeholder when no image selected -->
+        <div id="placeholder" class="preview-placeholder">
+            <img src="/public/images/photo.jpg" alt="Upload placeholder" style="max-height:300px; border-radius:20px;">
+            <p style="margin-top:20px; font-size:1.2rem; color:#ff69b4;">
+                Click here or drag a cute photo ♡<br>
+                (Max 10MB, will be converted to JPG)
+            </p>
         </div>
-    </form>
-</div>
+
+        <!-- Live preview when image is selected -->
+        <div id="preview-area" class="hidden" style="text-align:center;">
+            <img id="preview-img" src="" alt="Preview" style="max-height:380px; border-radius:25px; border:6px solid #ff69b4; box-shadow:0 15px 35px rgba(255,105,180,0.3);">
+            <div style="margin-top:20px;">
+                <button type="button" id="cancel-preview" class="btn btn-secondary" style="padding:10px 25px;">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+<!-- Simple required note -->
+<small style="color:#ff69b4; display:block; margin-top:8px;">* Required – this will be the main product photo</small>
 
 <?php include '../_foot.php'; ?>

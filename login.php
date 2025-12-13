@@ -26,6 +26,8 @@ if (is_post()) {
         $_SESSION['user_id']     = $user->id;
         $_SESSION['show_welcome']= true;
 
+        load_cart_from_db();  // NEW: Load saved cart
+
         temp('info', "Welcome back, cutie " . encode($user->username) . "! ♡");
         redirect('/');
     } 

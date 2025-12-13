@@ -99,3 +99,72 @@ $(document).ready(function () {
         });
     });
 });
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const fileInput     = document.getElementById('file-input');
+    const dropzone      = document.getElementById('dropzone-upload');
+    const placeholder   = document.getElementById('placeholder');
+    const previewArea   = document.getElementById('preview-area');
+    const previewImg    = document.getElementById('preview-img');
+    const cancelBtn     = document.getElementById('cancel-preview');
+    const cancelContainer = document.getElementById('cancel-container');
+
+    function showPreview(file) {
+        if (!file) return;
+
+        if (file.size > 10 * 1024 * 1024) {
+            alert('Too big! Please choose an image under 10MB ♡');
+            fileInput.value = '';
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            previewImg.src = e.target.result;
+            placeholder.classList.add('hidden');
+            previewArea.classList.remove('hidden');
+            cancelContainer.classList.remove('hidden'); // Show cancel button
+        };
+        reader.readAsDataURL(file);
+    }
+
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files[0]) showPreview(fileInput.files[0]);
+    });
+
+    cancelBtn.addEventListener('click', () => {
+        fileInput.value = '';
+        previewArea.classList.add('hidden');
+        placeholder.classList.remove('hidden');
+        cancelContainer.classList.add('hidden'); // Hide cancel button
+    });
+
+    dropzone.addEventListener('click', () => fileInput.click());
+
+    // Drag & drop effects
+    ['dragover', 'dragenter'].forEach(ev => {
+        dropzone.addEventListener(ev, e => {
+            e.preventDefault();
+            dropzone.style.background = '#fff0f8';
+            dropzone.style.borderColor = '#ff1493';
+        });
+    });
+
+    ['dragleave', 'dragend', 'drop'].forEach(ev => {
+        dropzone.addEventListener(ev, e => {
+            e.preventDefault();
+            dropzone.style.background = '';
+            dropzone.style.borderColor = '#ff69b4';
+        });
+    });
+
+    dropzone.addEventListener('drop', e => {
+        e.preventDefault();
+        if (e.dataTransfer.files[0]) {
+            fileInput.files = e.dataTransfer.files;
+            showPreview(e.dataTransfer.files[0]);
+        }
+    });
+});

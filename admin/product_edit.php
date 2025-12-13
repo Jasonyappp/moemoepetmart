@@ -90,75 +90,81 @@ include '../_head.php'; // 你的粉色后台头部
 
         <div class="form-grid">
 
-            <!-- 左侧：基本信息 -->
-            <div>
-                <label>Category</label>
-                <input type="text" value="<?= ($product->category_name ?? 'Uncategorized') ?> (<?= ($product->category_code) ?>)" disabled>
+    <!-- Left: Basic info -->
+    <div>
+        <label>Category</label>
+        <input type="text" value="<?= ($product->category_name ?? 'Uncategorized') ?> (<?= ($product->category_code) ?>)" disabled>
 
-                <label>Product Code <small>(Cannot change)</small></label>
-                <input type="text" value="<?= ($product->product_code) ?>" disabled style="background:#f0f0f0; font-weight:bold;">
+        <label>Product Code <small>(Cannot change)</small></label>
+        <input type="text" value="<?= ($product->product_code) ?>" disabled style="background:#f0f0f0; font-weight:bold;">
 
-                <label>Product Name <span class="req">*</span></label>
-                <input type="text" name="product_name" value="<?= ($product->product_name) ?>" required>
+        <label>Product Name <span class="req">*</span></label>
+        <input type="text" name="product_name" value="<?= ($product->product_name) ?>" required>
 
-                <label>Price (RM) <span class="req">*</span></label>
-                <input type="number" step="0.01" name="price" value="<?= $product->price ?>" required>
+        <label>Price (RM) <span class="req">*</span></label>
+        <input type="number" step="0.01" name="price" value="<?= $product->price ?>" required>
 
-                <label>Stock Quantity</label>
-                <input type="number" name="stock_quantity" value="<?= $product->stock_quantity ?>" min="0">
+        <label>Stock Quantity</label>
+        <input type="number" name="stock_quantity" value="<?= $product->stock_quantity ?>" min="0">
+    </div>
+
+    <!-- Right: Image column – current image first, then upload box below it -->
+    <div class="image-column" style="display: flex; flex-direction: column; align-items: center; gap: 40px;">
+
+        <!-- Current Main Image -->
+        <?php if ($product->photo_name): ?>
+        <div class="current-image-section" style="text-align:center;">
+            <p style="color:#ff69b4; font-weight:bold; font-size:1.3rem; margin-bottom:20px;">
+                Current Main Image ♡
+            </p>
+            <img src="../admin/uploads/products/<?= encode($product->photo_name) ?>" 
+                 alt="Current product image" 
+                 class="product-preview-img"
+                 style="max-width:100%; max-height:420px; object-fit:contain;">
+            <div style="margin-top:25px;">
+                <a href="?id=<?= $id ?>&delete_photo=1" 
+                  class="btn-primary"
+                   style="padding:12px 30px; background:#ff6b9d; font-size:1.1rem"
+                   onclick="return confirm('Permanently delete this image? Cannot undo ♡');">
+                    Delete Current Image
+                </a>
+            </div>
+        </div>
+        <?php endif; ?>
+
+        <!-- Upload New Image Section (now below current image) -->
+        <div id="dropzone-upload" class="dropzone-pink" style="max-width:500px;">
+            <input type="file" name="productImage" accept="image/*" id="file-input" style="display:none;">
+
+            <div id="placeholder" class="preview-placeholder">
+                <img src="/public/images/photo.jpg" alt="Upload" class="product-preview-img">
+                <p style="margin-top:20px; font-size:1.3rem; color:#ff69b4;">
+                    Click or drag a new photo here ♡<br>
+                    <small>(Max 10MB • Will replace current image)</small>
+                </p>
             </div>
 
-            <!-- 右侧：图片管理 -->
-            <div>
-                <label>Current Main Image</label>
-                <div class="existing-images" style="margin:20px 0;">
-                    <?php if ($product->photo_name): ?>
-                        <div class="image-item">
-                            <img src="../admin/uploads/products/<?= $product->photo_name ?>" alt="Main image">
-                            <div>
-                                <a href="?id=<?= $id ?>&delete_photo=1" 
-                                   onclick="return confirm('Are you sure you want to delete this main image?')"
-                                   style="color:white; background:rgba(255,71,87,0.9); padding:6px 12px; border-radius:50px; font-size:0.9rem;">
-                                   Delete
-                                </a>
-                            </div>
-                        </div>
-                    <?php else: ?>
-                        <p style="text-align:center;color:#ff69b4;padding:40px 0;font-size:1.3rem;">
-                            There is no main image yet.
-                        </p>
-                    <?php endif; ?>
-                </div>
-
-                <label>Replace Main Image</label>
-                
-                <!-- 关键！改成你 CSS 里写好的 id -->
-                <div id="dropzone-upload" class="dz-message">
-                    Click or drag a new cute photo to replace ♡<br>
-                    <input 
-                        type="file" 
-                        name="productImage" 
-                        accept="image/*" 
-                        id="file-input" 
-                        style="display:none !important;"
-                    >
-                    <strong style="font-size:3rem;margin:15px 0;display:block;">Drop here~</strong>
-                </div>
-
-                <!-- 预览区域（你的 JS 已经完美支持）-->
-                <div id="preview-area" class="hidden" style="margin-top:25px;text-align:center;">
-                    <p style="color:#ff1493;font-weight:bold;">Soon to be replaced with:</p>
-                    <img id="preview-img" src="" style="max-height:340px;border-radius:25px;border:6px solid #ff69b4;box-shadow:0 15px 35px rgba(255,105,180,0.4);">
-                    <button type="button" id="cancel-preview" class="moe-btn moe-btn-secondary" style="margin-top:15px;padding:12px 30px;font-size:1rem;">
+            <div id="preview-area" class="hidden" style="text-align:center;">
+                <p style="color:#ff1493; font-weight:bold; font-size:1.4rem; margin-bottom:20px;">
+                    New Image Preview ♡
+                </p>
+                <img id="preview-img" src="" alt="New preview" class="product-preview-img">
+                <div style="margin-top:25px;">
+                    <button type="button" id="cancel-preview" class="btn btn-secondary" style="padding:12px 30px;">
                         Cancel Replacement
                     </button>
                 </div>
-
-                <!-- 隐藏的 file input（必须保留）-->
-                <!-- <input type="file" name="productImage" accept="image/*" id="file-input" class="hidden"> -->
             </div>
-
         </div>
+
+    </div>
+</div>
+
+<div style="margin-top: 20px; padding-right: 15px; text-align: right;">
+            <p style="color: #ff69b4; font-size: 1.1rem;">
+                Optional* – only upload if you want to change the main photo
+            </p>
+        </div>   
 
         <!-- 描述（跨列）-->
         <div style="margin-top:35px;">
@@ -175,65 +181,5 @@ include '../_head.php'; // 你的粉色后台头部
     </form>
 </div>
 
-<!-- 保留你原来的完整拖拽 + 预览 JS -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const input = document.getElementById('file-input');
-    const previewArea = document.getElementById('preview-area');
-    const previewImg = document.getElementById('preview-img');
-    const cancelBtn = document.getElementById('cancel-preview');
-    const hasImageDiv = document.getElementById('has-image');
-    const noImageDiv = document.getElementById('no-image');
-    const dropzone = document.getElementById('dropzone-upload');
 
-    // 当前是否有主图（用于取消时恢复对应提示）
-    const hasMainImage = <?= $product->photo_name ? 'true' : 'false' ?>;
-
-    function showPreview(file) {
-        if (!file) return;
-        if (file.size > 10*1024*1024) { alert('图片不能超过10MB哦~'); input.value=''; return; }
-        const reader = new FileReader();
-        reader.onload = e => {
-            hasImageDiv.classList.add('hidden');
-            noImageDiv.classList.add('hidden');
-            previewArea.classList.remove('hidden');
-            previewImg.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-    
-
-    input.addEventListener('change', () => input.files[0] && showPreview(input.files[0]));
-
-    cancelBtn.addEventListener('click', () => {
-        input.value = '';
-        previewArea.classList.add('hidden');
-        if (<?= $product->photo_name ? 'true' : 'false' ?>) {
-            hasImageDiv.classList.remove('hidden');
-        } else {
-            noImageDiv.classList.remove('hidden');
-        }
-    });
-
-    // 拖拽效果
-    ['dragover','dragenter'].forEach(e => dropzone.addEventListener(e, ev => {
-        ev.preventDefault();
-        dropzone.style.borderColor = '#ff1493';
-        dropzone.style.background = '#fff0f5';
-    }));
-    ['dragleave','dragend','drop'].forEach(e => dropzone.addEventListener(e, ev => {
-        ev.preventDefault();
-        dropzone.style.borderColor = '#ff69b4';
-        dropzone.style.background = '';
-    }));
-    dropzone.addEventListener('drop', e => {
-        if (e.dataTransfer.files[0]) {
-            input.files = e.dataTransfer.files;
-            showPreview(e.dataTransfer.files[0]);
-        }
-    });
-
-    dropzone.addEventListener('click', () => input.click());
-});
-</script>
 

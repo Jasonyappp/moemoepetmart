@@ -358,3 +358,4 @@ function clear_cart() {
         $_db->prepare("DELETE FROM cart_item WHERE user_id = ?")->execute([current_user()->id]);
     }
 }
+
