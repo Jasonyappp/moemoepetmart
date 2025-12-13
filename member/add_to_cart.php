@@ -17,8 +17,20 @@ if (is_post()) {
     $stm = $_db->prepare("SELECT stock_quantity FROM product WHERE product_id = ? AND is_active = 1");
     $stm->execute([$id]);
     $stock = $stm->fetchColumn();
-    if ($stock === false || $stock < $qty) {
-        echo json_encode(['success' => false, 'message' => 'Not enough stock!']);
+    if ($stock === false) {
+        echo json_encode(['success' => false, 'message' => 'Product not available!']);
+        exit;
+    }
+
+    // NEW: Get current qty in cart for this product (from DB, since cart is synced)
+    $stm_current = $_db->prepare("SELECT quantity FROM cart_item WHERE user_id = ? AND product_id = ?");
+    $stm_current->execute([$user_id, $id]);
+    $current_qty = (int)$stm_current->fetchColumn() ?: 0;
+
+    // NEW: Check if new total (current + adding) exceeds stock
+    $new_total_qty = $current_qty + $qty;
+    if ($stock < $new_total_qty) {
+        echo json_encode(['success' => false, 'message' => 'Not enough stock! (Max available: ' . ($stock - $current_qty) . ')']);
         exit;
     }
 
@@ -33,4 +45,3 @@ if (is_post()) {
     $total_items = array_sum(array_column($_SESSION['cart'], 'qty'));
     echo json_encode(['success' => true, 'total_items' => $total_items]);
 }
-?>
