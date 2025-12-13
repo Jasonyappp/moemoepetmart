@@ -10,7 +10,7 @@ include '_head.php';
         <p class="hero-subtitle">Your one-stop shop for the cutest pets & premium pet supplies ♡</p>
         <div class="hero-buttons">
             <a href="/pets.php" class="btn btn-primary">Adopt a Pet</a>
-            <a href="/products.php" class="btn btn-secondary">Shop Now</a>
+            <a href="/member/products.php" class="btn btn-secondary">Shop Now ♡</a>
         </div>
     </div>
     <div class="hero-paw">🐾</div>

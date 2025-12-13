@@ -305,3 +305,56 @@ function delete_old_product_photo($product_id) {
         return false;
     }
 }    
+
+
+// Add these functions to your _base.php
+
+function load_cart_from_db() {
+    if (is_login()) {
+        global $_db;
+        $user_id = current_user()->id;
+        $stm = $_db->prepare("SELECT c.product_id, p.product_name, p.price, c.quantity 
+                             FROM cart_item c 
+                             JOIN product p ON c.product_id = p.product_id 
+                             WHERE c.user_id = ?");
+        $stm->execute([$user_id]);
+        $items = $stm->fetchAll();
+
+        $_SESSION['cart'] = [];
+        foreach ($items as $item) {
+            $_SESSION['cart'][$item->product_id] = [
+                'product_id' => $item->product_id,
+                'name'       => $item->product_name,
+                'price'      => $item->price,
+                'qty'        => $item->quantity
+            ];
+        }
+    }
+}
+
+function save_cart_to_db() {
+    if (!is_login()) return;
+
+    global $_db;
+    $user_id = current_user()->id;
+
+    // Always clear the DB first (even if cart is empty!)
+    $_db->prepare("DELETE FROM cart_item WHERE user_id = ?")->execute([$user_id]);
+
+    // Only insert if there are items
+    if (!empty($_SESSION['cart'])) {
+        $stm = $_db->prepare("INSERT INTO cart_item (user_id, product_id, quantity) VALUES (?, ?, ?)");
+        foreach ($_SESSION['cart'] as $item) {
+            $stm->execute([$user_id, $item['product_id'], $item['qty']]);
+        }
+    }
+    // If cart is empty → table stays empty → perfect!
+}
+
+function clear_cart() {
+    unset($_SESSION['cart']);
+    if (is_login()) {
+        global $_db;
+        $_db->prepare("DELETE FROM cart_item WHERE user_id = ?")->execute([current_user()->id]);
+    }
+}

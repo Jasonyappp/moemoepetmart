@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 06, 2025 at 07:14 AM
+-- Generation Time: Dec 13, 2025 at 06:36 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,21 @@ SET time_zone = "+00:00";
 --
 -- Database: `moemoe_petmart`
 --
+CREATE DATABASE IF NOT EXISTS `moemoe_petmart` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `moemoe_petmart`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cart_item`
+--
+
+CREATE TABLE `cart_item` (
+  `cart_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -49,6 +64,50 @@ INSERT INTO `category` (`category_id`, `category_code`, `category_name`, `descri
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `orders`
+--
+
+CREATE TABLE `orders` (
+  `order_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `total_amount` decimal(10,2) NOT NULL,
+  `order_date` datetime NOT NULL DEFAULT current_timestamp(),
+  `status` enum('Pending Payment','To Ship','Shipped','Completed','Cancelled','Return/Refund') NOT NULL DEFAULT 'Pending Payment'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`order_id`, `user_id`, `total_amount`, `order_date`, `status`) VALUES
+(10, 6, 399.00, '2025-12-13 13:04:56', 'Pending Payment'),
+(11, 6, 39.99, '2025-12-13 13:06:26', 'Pending Payment');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_items`
+--
+
+CREATE TABLE `order_items` (
+  `item_id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `unit_price` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `order_items`
+--
+
+INSERT INTO `order_items` (`item_id`, `order_id`, `product_id`, `quantity`, `unit_price`) VALUES
+(12, 10, 3, 1, 399.00),
+(13, 11, 2, 1, 39.99);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `product`
 --
 
@@ -71,9 +130,8 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`product_id`, `product_code`, `product_name`, `description`, `price`, `stock_quantity`, `category_id`, `is_active`, `created_at`, `updated_at`, `photo_name`) VALUES
-(1, 'TOY0001', 'Feather Teaser Wand Set', '33556340', 29.90, 10, 1, 1, '2025-11-23 23:22:24', '2025-12-05 19:14:14', 'prod_6932be86a704f.jpg'),
-(2, 'CAG0001', 'Luxury Hamster Villa Cage', '3-level cage with wheel', 299.00, 12, 2, 1, '2025-11-23 23:22:24', '2025-12-04 10:14:24', '6930ee8070de4.jpg'),
-(3, 'FOD0001', 'Royal Canin Puppy 10kg', 'Complete food for puppies', 399.00, 15, 3, 1, '2025-11-23 23:22:24', '2025-12-02 18:36:42', 'product3.jpg');
+(2, 'CAG0001', 'Luxury Hamster Villa Cage', '3-level cage with wheel', 39.99, 4, 2, 1, '2025-11-23 23:22:24', '2025-12-13 13:06:26', '6930ee8070de4.jpg'),
+(3, 'FOD0001', 'Royal Canin Puppy 10kg', 'Complete food for puppies', 399.00, 9, 3, 1, '2025-11-23 23:22:24', '2025-12-13 13:04:56', 'product3.jpg');
 
 -- --------------------------------------------------------
 
@@ -129,11 +187,20 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `email`, `phone`, `password`, `role`, `created_at`, `profile_pic`) VALUES
 (1, 'admin123', '', '', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', '2025-11-22 17:27:12', NULL),
-(5, 'abc', 'abc123@yahoo.com', '012-3456789', '$2y$10$EKljSiD3aP0XAT.wLJdBKe7puFh/gvRdAGlaGoHU7aJ3tHfWqdqGi', 'member', '2025-11-22 22:32:05', 'uploads/profile_pics/5_1763821950_otter.jpg');
+(5, 'abc', 'abc123@yahoo.com', '012-3456789', '$2y$10$EKljSiD3aP0XAT.wLJdBKe7puFh/gvRdAGlaGoHU7aJ3tHfWqdqGi', 'member', '2025-11-22 22:32:05', 'uploads/profile_pics/5_1763821950_otter.jpg'),
+(6, 'haha', 'haha@gmail.com', '012-2222222', '$2y$10$VybeVzjUtq7U2kpxMCJuV.zUuOi1vHO9l.u/./ThjRVMB8WuekqJS', 'member', '2025-12-06 23:12:07', 'uploads/profile_pics/6_1765302986_iu-3.jpg');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `cart_item`
+--
+ALTER TABLE `cart_item`
+  ADD PRIMARY KEY (`cart_id`),
+  ADD UNIQUE KEY `user_product` (`user_id`,`product_id`),
+  ADD KEY `product_id` (`product_id`);
 
 --
 -- Indexes for table `category`
@@ -142,6 +209,21 @@ ALTER TABLE `category`
   ADD PRIMARY KEY (`category_id`),
   ADD UNIQUE KEY `category_code` (`category_code`),
   ADD KEY `idx_code` (`category_code`);
+
+--
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`order_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD PRIMARY KEY (`item_id`),
+  ADD KEY `order_id` (`order_id`),
+  ADD KEY `product_id` (`product_id`);
 
 --
 -- Indexes for table `product`
@@ -178,10 +260,28 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `cart_item`
+--
+ALTER TABLE `cart_item`
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+
+--
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
   MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `order_items`
+--
+ALTER TABLE `order_items`
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `product`
@@ -199,11 +299,31 @@ ALTER TABLE `product_image`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `cart_item`
+--
+ALTER TABLE `cart_item`
+  ADD CONSTRAINT `cart_item_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `cart_item_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `product`

@@ -25,8 +25,19 @@
 
     <nav>
     <div class="nav-left">
-        <a href="/">Home</a>
-        <a href="/products.php">Products</a>
+    <a href="/">Home</a>
+    <a href="/member/products.php">Products</a>
+    <a href="/member/cart.php" class="cart-link">
+        Cart 
+        <?php 
+        $cart_count = 0;
+        if (isset($_SESSION['cart'])) {
+            $cart_count = array_sum(array_column($_SESSION['cart'], 'qty'));
+        }
+        if ($cart_count > 0): ?>
+            <span class="cart-count"><?= $cart_count ?></span>
+        <?php endif; ?>
+    </a>
     </div>
 
     <div class="nav-right">
@@ -34,7 +45,7 @@
             $user = current_user();
             $displayName = encode(username());
             $roleText    = user_role() === 'admin' ? 'Admin ♛' : 'Member ♡';
-            $avatar = !empty($user->profile_pic) ? $user->profile_pic : '/images/default-avatar.png';
+            $avatar = !empty($user->profile_pic) ? '/' . $user->profile_pic : '/images/default-avatar.png';  //After ? I add '/' to make it can detect the subfolder in member so that the profile photo can display
         ?>
 
             <div class="user-menu">
@@ -50,6 +61,7 @@
                 <div class="user-dropdown">
                     <?php if (user_role() === 'member'): ?>
                         <a href="/profile.php">Profile</a>
+                        <a href="/member/my_purchase.php">My Purchases</a>
                     <?php elseif (user_role() === 'admin'): ?>
                         <a href="/admin.php">Admin Dashboard</a>
                     <?php endif; ?>
@@ -65,3 +77,6 @@
 </nav>
     <main>
         <h1><?= $_title ?? 'Untitled' ?></h1>
+
+
+     
