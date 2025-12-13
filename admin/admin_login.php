@@ -27,8 +27,7 @@ include '../_head.php';
 ?>
 
 <div class="login-container">
-    <div class="login-card admin-secret-card">
-
+    <div class="login-card">
         <div class="login-paw">
             <img src="/images/pet-shop.png" alt="Moe Moe Pet Mart">
         </div>

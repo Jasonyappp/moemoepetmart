@@ -17,9 +17,7 @@ if (is_post()) {
     // BLOCK ADMIN FROM LOGGING IN HERE — NO EXCEPTIONS!
     if ($user && $user->role === 'admin') {
         $_err['login'] = 'Admins are not allowed to login here!<br>Use the <strong>Secret Admin Door</strong> instead ♡';
-        // Optional: add a helpful link
-        // $_err['login'] .= '<br><br><a href="/admin_login.php" style="color:#ff69b4;font-weight:bold;">→ Click here for Admin Login</a>';
-        $username = ''; // clear the input so they can't just resubmit
+        $username = '';
     }
     // Normal member login (only if NOT admin)
     else if ($user && password_verify($password, $user->password)) {
@@ -27,8 +25,6 @@ if (is_post()) {
         $_SESSION['role']        = $user->role;
         $_SESSION['user_id']     = $user->id;
         $_SESSION['show_welcome']= true;
-
-        load_cart_from_db();  // NEW: Load saved cart
 
         temp('info', "Welcome back, cutie " . encode($user->username) . "! ♡");
         redirect('/');
@@ -67,6 +63,12 @@ if (is_post()) {
                        placeholder="Your secret password">
             </div>
 
+            <div style="text-align: right; margin: -10px 0 15px 0;">
+                <a href="/forgetpassword/forget_password.php" style="color: #ff69b4; font-size: 0.9rem; text-decoration: none; font-weight: 500;">
+                    Forgot Password? 🔑
+                </a>
+            </div>
+
             <button type="submit" class="btn-login-full">
                 Login as Member ♡
             </button>
@@ -81,7 +83,6 @@ if (is_post()) {
 
         <div class="login-footer">
             <a href="/">← Back to Home</a>
-            <!-- Secret hint only you understand -->
             <div style="margin-top:20px; font-size:0.8rem; color:#ff69b4;">
                 Admins: use the secret pink door
             </div>

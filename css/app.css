@@ -224,6 +224,7 @@ main {
     font-family: 'Kalam', cursive;
     font-size: 1.8rem;
     margin-bottom: 1rem;
+    text-decoration: none;
 }
 
 /* About Section */
@@ -2573,21 +2574,6 @@ footer {
 }
 
 
-/* ==== REMOVE UNDERLINE FROM PRODUCT NAME LINKS ==== */
-.product-grid .product-card a,
-.product-card a h3,
-.product-card h3 a {
-    text-decoration: none !important;
-    color: inherit !important;           /* keeps your pink color */
-}
-
-/* Optional: Add underline only on hover for better UX */
-.product-grid .product-card a:hover h3,
-.product-card a:hover h3 {
-    text-decoration: underline;
-    text-decoration-color: #ff69b4;
-    text-underline-offset: 4px;
-}
 
 
 /* ———————————————————————
