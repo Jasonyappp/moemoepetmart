@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 14, 2025 at 03:07 PM
+-- Generation Time: Dec 14, 2025 at 09:01 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `moemoe_petmart`
 --
+CREATE DATABASE IF NOT EXISTS `moemoe_petmart` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `moemoe_petmart`;
 
 -- --------------------------------------------------------
 
@@ -155,8 +157,15 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`product_id`, `product_code`, `product_name`, `description`, `price`, `stock_quantity`, `category_id`, `is_active`, `created_at`, `updated_at`, `photo_name`) VALUES
-(2, 'CAG0001', 'Luxury Hamster Villa Cage', '3-level cage with wheel', 39.99, 4, 2, 1, '2025-11-23 23:22:24', '2025-12-14 16:03:18', '6930ee8070de4.jpg'),
-(3, 'FOD0001', 'Royal Canin Puppy 10kg', 'Complete food for puppies', 399.00, 4, 3, 1, '2025-11-23 23:22:24', '2025-12-14 15:32:45', 'product3.jpg');
+(2, 'CAG0001', 'Luxury Cat Villa Carrier', '3-level cage with wheel', 43.90, 25, 2, 1, '2025-11-23 23:22:24', '2025-12-15 02:46:02', 'prod_693f05ea19699.jpg'),
+(3, 'FOD0001', 'Royal Canin Puppy 10kg', '~ Each pack is designed for adult dogs and available in different sizes to meet your feeding needs.', 109.00, 90, 3, 1, '2025-11-23 23:22:24', '2025-12-15 03:56:11', 'prod_693f165ba2028.jpg'),
+(89, 'CAG0002', 'Big Home Shape Cage', 'Available for cat & dog', 139.90, 18, 2, 1, '2025-12-15 03:00:35', '2025-12-15 03:00:35', '693f095361e88.jpg'),
+(91, 'CAG0004', 'Standard Pet Cage', 'Normal cage for our cute pets', 35.90, 50, 2, 1, '2025-12-15 03:04:33', '2025-12-15 03:11:15', 'prod_693f0bd3c4960.jpg'),
+(92, 'CAG0005', 'Luxury Hamster Villa Cage', 'Benefit:\r\n-Can put many hamsters', 239.00, 12, 2, 1, '2025-12-15 03:06:43', '2025-12-15 03:06:43', '693f0ac353967.jpg'),
+(93, 'CAG0003', 'Transparent Carries', 'Benefits:\r\n- Easily see your cutest pets', 55.90, 24, 2, 1, '2025-12-15 03:15:09', '2025-12-15 03:15:09', '693f0cbd71b9b.jpg'),
+(94, 'ACC0001', 'Pet Automatic Retractable Leash', '• Length Options: 3m / 5m\r\n• Material: Polyester + PP', 10.90, 50, 5, 1, '2025-12-15 03:24:38', '2025-12-15 03:30:53', 'prod_693f106d7be39.jpg'),
+(95, 'CLR0001', 'Pet Hair Remover Comb', '✔️Simply push the button, wipe, making it super simple to remove all the hair from the brush, so it\'s ready for the next time use.\r\n✔️Suit for dog, cat, rabbits and other pets, making them neat and clean.', 15.60, 45, 4, 1, '2025-12-15 03:38:35', '2025-12-15 03:38:35', '693f123b2857e.jpg'),
+(96, 'TOY0001', 'Cat Teaser Stick Toys with Bell', '🐾 Give your pets endless fun with this Cat Teaser Stick Toy with Bell. Interactive design, featuring a dangling bell and feather that will keep your cat entertained and engaged for hours!', 4.99, 28, 1, 1, '2025-12-15 03:43:09', '2025-12-15 03:43:09', '693f134dee5c4.jpg');
 
 -- --------------------------------------------------------
 
@@ -289,7 +298,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart_item`
 --
 ALTER TABLE `cart_item`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -313,7 +322,7 @@ ALTER TABLE `order_items`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 
 --
 -- AUTO_INCREMENT for table `product_image`
