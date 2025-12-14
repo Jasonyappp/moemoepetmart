@@ -73,8 +73,8 @@ $cats = $_db->query("SELECT * FROM category ORDER BY category_name")->fetchAll()
         <ul>
             <li><a href="../admin.php"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
             <li><a href="product_list.php" class="active"><i class="fas fa-box"></i> <span>Products</span></a></li>
-            <li><a href="#"><i class="fas fa-shopping-cart"></i> <span>Orders (Soon)</span></a></li>
-            <li><a href="#"><i class="fas fa-users"></i> <span>Members (Soon)</span></a></li>
+            <li><a href="member_list.php"><i class="fas fa-users"></i> Members</a></li>
+            <li><a href="order_list.php"><i class="fas fa-clipboard-list"></i> Orders</a></li>
             <li><a href="/logout.php"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a></li>
         </ul>
     </aside>

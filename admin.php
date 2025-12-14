@@ -47,9 +47,8 @@ setTimeout(() => {
         <ul>
             <li><a href="admin.php" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
             <li><a href="admin/product_list.php"><i class="fas fa-box"></i> Products</a></li>
-            <li><a href="category_list.php"><i class="fas fa-tags"></i> Categories</a></li>
-            <li><a href="#"><i class="fas fa-shopping-cart"></i> Orders</a></li>
-            <li><a href="#"><i class="fas fa-users"></i> Users</a></li>
+            <li><a href="admin/member_list.php"><i class="fas fa-users"></i> Members</a></li>
+            <li><a href="admin/order_list.php"><i class="fas fa-shopping-cart"></i> Orders</a></li>
             <li><a href="/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
     </aside>
@@ -69,21 +68,22 @@ setTimeout(() => {
                 <span class="btn">Manage Products</span>
             </a>
 
-            <!-- Orders -->
-            <div class="dashboard-card coming-soon">
+            <!-- Users -->
+          <a href="admin/member_list.php" class="dashboard-card">
+            <i class="fas fa-user-friends"></i>
+            <h3>Member</h3>
+            <p>Management</p>
+            <span class="btn">Manage Members</span>
+        </a>
+
+                    <!-- Orders -->
+            <a href="admin/order_list.php" class="dashboard-card">
                 <i class="fas fa-clipboard-list"></i>
                 <h3>Order</h3>
                 <p>Management</p>
-                <span class="btn">Coming Soon</span>
-            </div>
-
-            <!-- Users -->
-            <div class="dashboard-card coming-soon">
-                <i class="fas fa-user-friends"></i>
-                <h3>User</h3>
-                <p>Management</p>
-                <span class="btn">Coming Soon</span>
-            </div>
+                <span class="btn">Manage Orders</span>
+                 </a>
+           
         </div>
     </main>
 </div>
