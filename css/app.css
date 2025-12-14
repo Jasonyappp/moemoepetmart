@@ -5831,3 +5831,116 @@ footer {
     font-size: 1.8rem;
     opacity: 0.8;
 }
+
+
+/*design for product detail*/
+
+.quantity-section {
+    margin: 2rem 0;
+    text-align: left;
+}
+
+.quantity-label {
+    display: block;
+    font-size: 1.3rem;
+    color: #ff69b4;
+    font-weight: bold;
+    margin-bottom: 0.8rem;
+    font-family: 'Kalam', cursive;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 3px solid #ff69b4;
+    border-radius: 50px;
+    overflow: hidden;
+    width: fit-content;
+    box-shadow: 0 8px 20px rgba(255,105,180,0.2);
+}
+
+.qty-btn {
+    width: 55px;
+    height: 55px;
+    background: linear-gradient(135deg, #fff0f5, #ffeef8);
+    border: none;
+    font-size: 1.8rem;
+    color: #ff69b4;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.qty-btn:hover:not(:disabled) {
+    background: #ff69b4;
+    color: white;
+    transform: scale(1.1);
+}
+
+.qty-btn:disabled {
+    background: #f0f0f0;
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+.qty-input {
+    width: 100px;
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #ff1493;
+    border: none;
+    padding: 15px;
+    background: transparent;
+}
+
+.qty-input:focus {
+    outline: none;
+}
+
+.stock-info {
+    display: block;
+    margin-top: 0.8rem;
+    color: #888;
+    font-size: 0.95rem;
+    font-style: italic;
+}
+
+.btn-add-to-cart-premium {
+    background: linear-gradient(135deg, #ff69b4, #ff1493);
+    color: white;
+    border: none;
+    padding: 1.2rem 3rem;
+    font-size: 1.4rem;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(255,20,147,0.4);
+    transition: all 0.4s ease;
+    margin-top: 1.5rem;
+    display: block;
+    width: 100%;
+    max-width: 350px;
+}
+
+.btn-add-to-cart-premium:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(255,20,147,0.6);
+}
+
+.btn-add-to-cart-premium:active {
+    transform: translateY(0);
+}
+
+.out-of-stock-premium {
+    background: linear-gradient(135deg, #ffebee, #ffcdd2);
+    color: #c62828;
+    padding: 1.5rem;
+    border-radius: 20px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-align: center;
+    margin: 2rem 0;
+    border: 3px dashed #ef9a9a;
+}

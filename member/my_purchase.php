@@ -130,10 +130,12 @@ $orders = $stm->fetchAll();
 <style>
 .purchase-tabs {
     display: flex;
-    gap: 1rem;
+    gap: 0rem;
     margin: 2rem 0;
-    border-bottom: 2px solid #ff69b4;
-    overflow-x: auto;
+    border-bottom: 1px solid #ff69b4;
+    border-left: 1px solid #ffbae0;
+    border-top: 1px solid #ffbae0;
+    background: #fff0f5;
 }
 
 .purchase-tabs a {
@@ -142,6 +144,7 @@ $orders = $stm->fetchAll();
     color: #555;
     font-weight: bold;
     position: relative;
+    border-right: 1px solid #ffbae0;
 }
 
 .purchase-tabs a.active {
@@ -154,7 +157,7 @@ $orders = $stm->fetchAll();
     bottom: -2px;
     left: 0;
     width: 100%;
-    height: 2px;
+    height: 5px;
     background: #ff1493;
 }
 

@@ -76,10 +76,11 @@ $(document).ready(function () {
         btn.prop('disabled', true).html('Adding... ♡');
 
         // THIS LINE IS THE FIX!!!
-        $.post('add_to_cart.php', {   // ← removed the leading slash /
+        $.post('add_to_cart.php', {  // No leading slash → works from any folder
             product_id: id,
             product_name: name,
-            price: price
+            price: price,
+            qty: 1  // Always add 1 from listing
         }, function (res) {
             if (res.success) {
                 $('.cart-count, .cart-badge').text(res.total_items);
@@ -92,10 +93,75 @@ $(document).ready(function () {
             }
         }, 'json')
         .fail(function() {
-            alert('Connection error! Please try again ♡');
+            alert('Error!!!😖 Please login your account & try again ♡');
         })
         .always(function () {
             btn.prop('disabled', false).html('Add to Cart ♡');
+        });
+    });
+
+    // PRODUCT DETAIL: + / - buttons + custom input + Add to Cart with quantity
+    $('.qty-minus').on('click', function () {
+        const $input = $(this).siblings('.qty-input');
+        let val = parseInt($input.val());
+        if (val > 1) {
+            $input.val(--val);
+        }
+    });
+
+    $('.qty-plus').on('click', function () {
+        const $input = $(this).siblings('.qty-input');
+        const max = parseInt($input.attr('max'));
+        let val = parseInt($input.val());
+        if (val < max) {
+            $input.val(++val);
+        }
+    });
+
+    // Allow typing quantity + auto-correct
+    $('.qty-input').on('input', function () {
+        let val = parseInt(this.value) ;
+        const max = parseInt($(this).attr('max'));
+        val = Math.max(0, Math.min(val, max));
+        this.value = val;
+    });
+
+    // Add to Cart from detail page (with selected quantity)
+    $('.btn-add-to-cart-premium').on('click', function () {
+        const btn = $(this);
+        const id = btn.data('id');
+        const name = btn.data('name');
+        const price = btn.data('price');
+        const qty = parseInt(btn.closest('.product-info').find('.qty-input').val());
+
+        if (!id || !name || !price || qty < 1) {
+            alert('Invalid product or quantity! ♡');
+            return;
+        }
+
+        btn.prop('disabled', true).html('Adding... ♡');
+
+        $.post('add_to_cart.php', {
+            product_id: id,
+            product_name: name,
+            price: price,
+            qty: qty
+        }, function (res) {
+            if (res.success) {
+                $('.cart-count, .cart-badge').text(res.total_items);
+                if (res.total_items > 0) {
+                    $('.cart-count, .cart-badge').fadeIn(300);
+                }
+                alert(`Added ${qty} × ${name} to cart! ♡`);
+            } else {
+                alert(res.message || 'Cannot add to cart~');
+            }
+        }, 'json')
+        .fail(function() {
+            alert('Error!!!😖 Please login your account & try again ♡');
+        })
+        .always(function () {
+            btn.prop('disabled', false).html('🛍️ Add to Cart ♡');
         });
     });
 });
@@ -166,5 +232,72 @@ document.addEventListener('DOMContentLoaded', function () {
             fileInput.files = e.dataTransfer.files;
             showPreview(e.dataTransfer.files[0]);
         }
+    });
+});
+
+// Enhanced Add to Cart with Quantity Validation
+document.querySelectorAll('.btn-add-to-cart, .btn-add-to-cart-premium').forEach(button => {
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const productId = this.dataset.id;
+        const qtyInput = this.closest('.product-info, .add-to-cart-section').querySelector('.qty-input');
+        let qty = parseInt(qtyInput ? qtyInput.value : 1);  // Fallback to 1 if no input
+
+        // Validation
+        if (isNaN(qty) || qty < 1) {
+            alert('Invalid quantity! Please select at least 1. ♡');
+            if (qtyInput) qtyInput.focus();
+            return;
+        }
+
+        const maxStock = parseInt(this.dataset.max || qtyInput?.max || 999);
+        if (qty > maxStock) {
+            alert(`Not enough stock! Maximum available: ${maxStock} ♡`);
+            if (qtyInput) qtyInput.value = maxStock;
+            return;
+        }
+
+        // Proceed with AJAX add to cart (assuming existing fetch or $.post logic)
+        fetch('/member/add_to_cart.php', {  // Adjust path if needed
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+                product_id: productId,
+                qty: qty
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Added to cart successfully! ♡ Total items: ' + data.total_items);
+                // Update cart badge (if exists)
+                const badge = document.querySelector('.cart-badge');
+                if (badge) badge.textContent = data.total_items;
+            } else {
+                alert(data.message || 'Failed to add to cart. Please try again ♡');
+            }
+        })
+        .catch(error => {
+            console.error('Add to cart error:', error);
+            alert('Error adding to cart. Please check your connection ♡');
+        });
+    });
+});
+
+// Quantity +/- buttons (ensure min 1)
+document.querySelectorAll('.qty-minus').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const input = btn.nextElementSibling;  // Assuming structure: - input +
+        let val = parseInt(input.value);
+        if (val > 1) input.value = val - 1;
+    });
+});
+
+document.querySelectorAll('.qty-plus').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const input = btn.previousElementSibling;
+        const max = parseInt(input.max);
+        let val = parseInt(input.value);
+        if (val < max) input.value = val + 1;
     });
 });

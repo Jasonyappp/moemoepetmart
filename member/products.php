@@ -1,6 +1,6 @@
 <?php
 require '../_base.php';
-require_login();
+
 
 if (user_role() === 'admin') {
     temp('error', 'Admins cannot shop here! Use member account ♡');
@@ -15,6 +15,7 @@ $sql = "SELECT p.*, c.category_name
         FROM product p 
         JOIN category c ON p.category_id = c.category_id 
         WHERE p.is_active = 1";
+
 if ($search !== '') {
     $sql .= " AND (p.product_name LIKE :search OR p.description LIKE :search)";
 }
@@ -43,7 +44,10 @@ include '../_head.php';
             <?php foreach ($products as $p): ?>
                 <div class="product-card">
                     <?php if ($p->photo_name): ?>
-                        <img src="/admin/uploads/products/<?= encode($p->photo_name) ?>" alt="<?= encode($p->product_name) ?>">
+                    <!----add this for when click product_image can jump to product_detail--->
+                        <a href="product_detail.php?id=<?= $p->product_id ?>">
+                            <img src="/admin/uploads/products/<?= encode($p->photo_name) ?>" alt="<?= encode($p->product_name) ?>">
+                        </a>
                     <?php endif; ?>
                     <a href="product_detail.php?id=<?= $p->product_id ?>">
                         <h3><?= encode($p->product_name) ?></h3>

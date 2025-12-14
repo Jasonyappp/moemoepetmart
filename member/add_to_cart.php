@@ -5,13 +5,24 @@ header('Content-Type: application/json');
 
 if (is_post()) {
     $id = (int)post('product_id', 0);
-    $qty = max(1, (int)post('qty', 1));
-    $user_id = current_user()->id;
+    $raw_qty = post('qty', '1');  // Default to string '1' for safety
+    $qty = is_numeric($raw_qty) ? (int)$raw_qty : 0;
 
     if ($id <= 0) {
         echo json_encode(['success' => false, 'message' => 'Invalid product!']);
         exit;
     }
+
+    if ($qty < 1 || !is_numeric($raw_qty)) {
+        echo json_encode(['success' => false, 'message' => 'Invalid quantity! Please select at least 1. ♡']);
+        exit;
+    }
+
+    // Optional: Cap max qty to prevent abuse
+    $qty = min($qty, 999);
+
+    $user_id = current_user()->id;
+
 
     // Check stock
     $stm = $_db->prepare("SELECT stock_quantity FROM product WHERE product_id = ? AND is_active = 1");

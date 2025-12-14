@@ -1,6 +1,6 @@
 <?php
 require '../_base.php';
-require_login();
+
 
 if (user_role() === 'admin') {
     temp('error', 'Admins cannot shop here! Use member account ♡');
@@ -54,25 +54,27 @@ include '../_head.php';
                 </div>
             <?php endif; ?>
 
-            <!-- SHOPEE-STYLE QUANTITY + ADD TO CART -->
+            <!-- NEW PREMIUM QUANTITY SELECTOR -->
             <?php if ($product->stock_quantity > 0): ?>
-                <div class="add-to-cart-section">
-                    <div class="quantity-box">
-                        <button type="button" class="qty-btn minus" <?= $product->stock_quantity <= 1 ? 'disabled' : '' ?>>−</button>
-                        <input type="number" class="qty-input" value="1" min="1" max="<?= $product->stock_quantity ?>" readonly>
-                        <button type="button" class="qty-btn plus" <?= $product->stock_quantity <= 1 ? 'disabled' : '' ?>>+</button>
+                <div class="quantity-section">
+                    <label class="quantity-label">Quantity ♡</label>
+                    <div class="quantity-controls">
+                        <button type="button" class="qty-btn qty-minus">-</button>
+                        <input type="number" class="qty-input" value="1" min="1" max="<?= $product->stock_quantity ?>">
+                        <button type="button" class="qty-btn qty-plus">+</button>
                     </div>
-
-                    <button class="btn-add-to-cart" 
-                            data-id="<?= $product->product_id ?>"
-                            data-name="<?= encode($product->product_name) ?>"
-                            data-price="<?= $product->price ?>"
-                            data-max="<?= $product->stock_quantity ?>">
-                        <span class="cart-icon">Add to Cart</span>
-                    </button>
+                    <span class="stock-info">Available: <?= $product->stock_quantity ?> in stock</span>
                 </div>
+
+                <button class="btn-add-to-cart-premium" 
+                        data-id="<?= $product->product_id ?>"
+                        data-name="<?= encode($product->product_name) ?>"
+                        data-price="<?= $product->price ?>"
+                        data-max="<?= $product->stock_quantity ?>">
+                    🛍️ Add to Cart ♡
+                </button>
             <?php else: ?>
-                <div class="out-of-stock">Out of Stock~</div>
+                <div class="out-of-stock-premium">Out of Stock 😿</div>
             <?php endif; ?>
 
             <div class="back-link">
@@ -85,10 +87,10 @@ include '../_head.php';
 <style>
 .product-detail-shopee {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: flex;
     gap: 2rem;
     background: white;
-    padding: 2rem;
+    padding: 1.5rem;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(255,105,180,0.1);
     margin: 2rem 0;
@@ -232,61 +234,6 @@ include '../_head.php';
 }
 </style>
 
-<script>
-// Shopee-style Quantity Selector + Add to Cart
-$(document).ready(function() {
-    const $minus = $('.qty-btn.minus');
-    const $plus = $('.qty-btn.plus');
-    const $input = $('.qty-input');
-    const $btn = $('.btn-add-to-cart');
-    const maxStock = parseInt($btn.data('max'));
 
-    $minus.on('click', function() {
-        let val = parseInt($input.val());
-        if (val > 1) {
-            $input.val(--val);
-        }
-    });
-
-    $plus.on('click', function() {
-        let val = parseInt($input.val());
-        if (val < maxStock) {
-            $input.val(++val);
-        }
-    });
-
-    $input.on('change', function() {
-        let val = parseInt(this.value);
-        if (isNaN(val) || val < 1) this.value = 1;
-        if (val > maxStock) this.value = maxStock;
-    });
-
-    $btn.on('click', function() {
-        const qty = parseInt($input.val());
-        const id = $btn.data('id');
-        const name = $btn.data('name');
-        const price = $btn.data('price');
-
-        $btn.prop('disabled', true).html('Adding... ♡');
-
-        $.post('add_to_cart.php', {
-            product_id: id,
-            product_name: name,
-            price: price,
-            qty: qty
-        }, function(res) {
-            if (res.success) {
-                $('.cart-count, .cart-badge').text(res.total_items).fadeIn(200);
-                alert(`Added ${qty} × ${name} to cart! ♡`);
-            } else {
-                alert(res.message || 'Failed to add to cart~');
-            }
-        }, 'json')
-        .always(function() {
-            $btn.prop('disabled', false).html('<span class="cart-icon">Add to Cart</span>');
-        });
-    });
-});
-</script>
 
 <?php include '../_foot.php'; ?>
