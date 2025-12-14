@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 13, 2025 at 12:00 PM
+-- Generation Time: Dec 14, 2025 at 03:07 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -69,7 +69,12 @@ CREATE TABLE `orders` (
   `order_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `total_amount` decimal(10,2) NOT NULL,
+  `payment_method` varchar(50) DEFAULT NULL,
+  `card_last4` varchar(4) DEFAULT NULL,
+  `qr_code` text DEFAULT NULL,
+  `qr_generated_at` datetime DEFAULT NULL,
   `order_date` datetime NOT NULL DEFAULT current_timestamp(),
+  `order_status` varchar(50) DEFAULT 'Pending Payment',
   `status` enum('Pending Payment','To Ship','Shipped','Completed','Cancelled','Return/Refund') NOT NULL DEFAULT 'Pending Payment'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -77,13 +82,19 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`order_id`, `user_id`, `total_amount`, `order_date`, `status`) VALUES
-(10, 6, 399.00, '2025-12-13 13:04:56', 'Pending Payment'),
-(11, 6, 39.99, '2025-12-13 13:06:26', 'Pending Payment'),
-(12, 6, 3591.00, '2025-12-13 14:05:52', 'Pending Payment'),
-(25, 7, 100.00, '2025-12-13 18:33:10', 'Pending Payment'),
-(27, 6, 90.00, '2025-12-13 18:34:40', 'Pending Payment'),
-(28, 6, 189.96, '2025-12-13 18:46:20', 'Pending Payment');
+INSERT INTO `orders` (`order_id`, `user_id`, `total_amount`, `payment_method`, `card_last4`, `qr_code`, `qr_generated_at`, `order_date`, `order_status`, `status`) VALUES
+(10, 6, 399.00, NULL, NULL, NULL, NULL, '2025-12-13 13:04:56', 'Pending Payment', 'Pending Payment'),
+(11, 6, 39.99, NULL, NULL, NULL, NULL, '2025-12-13 13:06:26', 'Pending Payment', 'Pending Payment'),
+(48, 7, 39.99, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:04:42', 'To Ship', 'Pending Payment'),
+(49, 7, 399.00, 'Touch n Go', NULL, '/images_tng/tng_qr.jpg', '2025-12-14 15:05:33', '2025-12-14 15:05:19', 'To Ship', 'Pending Payment'),
+(50, 7, 438.99, 'Credit/Debit Card', '1234', NULL, NULL, '2025-12-14 15:07:10', 'To Ship', 'Pending Payment'),
+(51, 7, 39.99, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:14:06', 'To Ship', 'Pending Payment'),
+(52, 7, 399.00, 'Credit/Debit Card', '1234', NULL, NULL, '2025-12-14 15:14:49', 'To Ship', 'Pending Payment'),
+(53, 7, 438.99, 'Touch n Go', NULL, '/images_tng/tng_qr.jpg', '2025-12-14 15:15:44', '2025-12-14 15:15:27', 'To Ship', 'Pending Payment'),
+(54, 7, 399.00, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:24:59', 'To Ship', 'Pending Payment'),
+(55, 7, 39.99, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:29:55', 'To Ship', 'Pending Payment'),
+(56, 7, 399.00, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:32:45', 'To Ship', 'Pending Payment'),
+(57, 7, 39.99, 'Touch n Go', NULL, '/images_tng/tng_qr.jpeg', '2025-12-14 16:05:28', '2025-12-14 16:03:18', 'To Ship', 'Pending Payment');
 
 -- --------------------------------------------------------
 
@@ -106,11 +117,18 @@ CREATE TABLE `order_items` (
 INSERT INTO `order_items` (`item_id`, `order_id`, `product_id`, `quantity`, `unit_price`) VALUES
 (12, 10, 3, 1, 399.00),
 (13, 11, 2, 1, 39.99),
-(14, 12, 3, 9, 399.00),
-(15, 25, 90, 2, 50.00),
-(16, 27, 89, 3, 30.00),
-(17, 28, 2, 4, 39.99),
-(18, 28, 89, 1, 30.00);
+(49, 48, 2, 1, 39.99),
+(50, 49, 3, 1, 399.00),
+(51, 50, 2, 1, 39.99),
+(52, 50, 3, 1, 399.00),
+(53, 51, 2, 1, 39.99),
+(54, 52, 3, 1, 399.00),
+(55, 53, 2, 1, 39.99),
+(56, 53, 3, 1, 399.00),
+(57, 54, 3, 1, 399.00),
+(58, 55, 2, 1, 39.99),
+(59, 56, 3, 1, 399.00),
+(60, 57, 2, 1, 39.99);
 
 -- --------------------------------------------------------
 
@@ -137,11 +155,8 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`product_id`, `product_code`, `product_name`, `description`, `price`, `stock_quantity`, `category_id`, `is_active`, `created_at`, `updated_at`, `photo_name`) VALUES
-(2, 'CAG0001', 'Luxury Hamster Villa Cage', '3-level cage with wheel', 39.99, 0, 2, 1, '2025-11-23 23:22:24', '2025-12-13 18:46:20', 'prod_693d0d4f1fd8c.jpg'),
-(3, 'FOD0001', 'Royal Canin Puppy 10kg', 'Complete food for puppies', 399.00, 0, 3, 1, '2025-11-23 23:22:24', '2025-12-13 14:05:52', 'product3.jpg'),
-(89, 'ACC0001', '123', 'hi', 30.00, 36, 5, 1, '2025-12-13 15:33:21', '2025-12-13 18:46:20', 'prod_693d2bfb708a3.jpg'),
-(90, 'ACC0002', 'Luxury Hamster Villa Cage', 'asasas', 50.00, 8, 5, 1, '2025-12-13 17:05:30', '2025-12-13 18:33:10', '693d2c5a7bdc1.jpg'),
-(91, 'ACC0003', 'po', 'sasas', 60.00, 50, 5, 1, '2025-12-13 18:41:45', '2025-12-13 18:48:25', 'prod_693d447938469.jpg');
+(2, 'CAG0001', 'Luxury Hamster Villa Cage', '3-level cage with wheel', 39.99, 4, 2, 1, '2025-11-23 23:22:24', '2025-12-14 16:03:18', '6930ee8070de4.jpg'),
+(3, 'FOD0001', 'Royal Canin Puppy 10kg', 'Complete food for puppies', 399.00, 4, 3, 1, '2025-11-23 23:22:24', '2025-12-14 15:32:45', 'product3.jpg');
 
 -- --------------------------------------------------------
 
@@ -186,8 +201,6 @@ CREATE TABLE `users` (
   `email` varchar(100) NOT NULL,
   `phone` varchar(20) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `reset_token` varchar(255) DEFAULT NULL,
-  `reset_token_expiry` datetime DEFAULT NULL,
   `role` enum('member','admin') NOT NULL DEFAULT 'member',
   `created_at` datetime DEFAULT current_timestamp(),
   `profile_pic` varchar(255) DEFAULT NULL
@@ -197,11 +210,11 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `email`, `phone`, `password`, `reset_token`, `reset_token_expiry`, `role`, `created_at`, `profile_pic`) VALUES
-(1, 'admin123', '', '', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', NULL, NULL, 'admin', '2025-11-22 17:27:12', NULL),
-(5, 'abc', 'abc123@yahoo.com', '012-3456789', '$2y$10$EKljSiD3aP0XAT.wLJdBKe7puFh/gvRdAGlaGoHU7aJ3tHfWqdqGi', NULL, NULL, 'member', '2025-11-22 22:32:05', 'uploads/profile_pics/5_1763821950_otter.jpg'),
-(6, 'haha', 'haha@gmail.com', '012-2222222', '$2y$10$VybeVzjUtq7U2kpxMCJuV.zUuOi1vHO9l.u/./ThjRVMB8WuekqJS', NULL, NULL, 'member', '2025-12-06 23:12:07', 'uploads/profile_pics/6_1765302986_iu-3.jpg'),
-(7, '2415423', 'yapkj-wm24@student.tarc.edu.my', '011121212111', '$2y$10$Qa4bawMkXILYW4lvFyvITuTxU0n/rYT8BioNxG0DQed6ug4iXxebS', 'b1c49312ba24d78a39c9db5f5d5521531704a8103228b066db6c2d74a2633d74', '2025-12-13 19:52:09', 'member', '2025-12-13 14:15:16', NULL);
+INSERT INTO `users` (`id`, `username`, `email`, `phone`, `password`, `role`, `created_at`, `profile_pic`) VALUES
+(1, 'admin123', '', '', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', '2025-11-22 17:27:12', NULL),
+(5, 'abc', 'abc123@yahoo.com', '012-3456789', '$2y$10$EKljSiD3aP0XAT.wLJdBKe7puFh/gvRdAGlaGoHU7aJ3tHfWqdqGi', 'member', '2025-11-22 22:32:05', 'uploads/profile_pics/5_1763821950_otter.jpg'),
+(6, 'haha', 'haha@gmail.com', '012-2222222', '$2y$10$VybeVzjUtq7U2kpxMCJuV.zUuOi1vHO9l.u/./ThjRVMB8WuekqJS', 'member', '2025-12-06 23:12:07', 'uploads/profile_pics/6_1765302986_iu-3.jpg'),
+(7, 'aaa', 'tanyijia-wp23@student.tarc.edu.my', '0123456789', '$2y$10$k5r/g6EeYTTKXn1w06SEUutPnBB9ASLIHWZbut1A5pbh/8Z0bigS.', 'member', '2025-12-13 16:42:33', NULL);
 
 --
 -- Indexes for dumped tables
@@ -276,7 +289,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart_item`
 --
 ALTER TABLE `cart_item`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -288,19 +301,19 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT for table `product_image`
