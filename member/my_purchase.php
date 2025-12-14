@@ -48,7 +48,7 @@ if ($tab !== 'all') {
             $status = null;
     }
     if ($status) {
-        $where .= ' AND o.status = ?';
+        $where .= ' AND o.order_status = ?';
         $params[] = $status;
     }
 }
@@ -92,7 +92,7 @@ $orders = $stm->fetchAll();
                         <span class="order-id">Order #<?= $order->order_id ?></span>
                         <span class="order-date"><?= date('M d, Y', strtotime($order->order_date)) ?></span>
                         <span class="order-status <?= strtolower(str_replace(' ', '-', $order->status)) ?>">
-                            <?= $order->status ?>
+                            <?= $order->order_status ?>
                         </span>
                     </div>
                     
@@ -105,18 +105,27 @@ $orders = $stm->fetchAll();
                     </div>
                     
                     <div class="order-actions">
-                        <?php if ($order->status === 'Pending Payment'): ?>
-                            <a href="pay_order.php?id=<?= $order->order_id ?>" class="btn btn-pay">Pay Now ♡</a>
-                        <?php elseif ($order->status === 'Shipped'): ?>
+                        <?php if ($order->order_status === 'Pending Payment'): ?>
+                            <a href="payment.php?id=<?= $order->order_id ?>" class="btn btn-pay">Pay Now ♡</a>
+                        <?php elseif ($order->order_status === 'Shipped'): ?>
                             <a href="confirm_receive.php?id=<?= $order->order_id ?>" class="btn btn-receive">Confirm Received ♡</a>
                         <?php endif; ?>
+
+                        <!-- Always show View Details -->
                         <a href="order_detail.php?id=<?= $order->order_id ?>" class="btn btn-detail">View Details</a>
+
+                        <!-- Extra: View Invoice button ONLY for unpaid orders -->
+                        <?php if ($order->order_status === 'Pending Payment'): ?>
+                            <a href="invoice.php?id=<?= $order->order_id ?>" class="btn btn-invoice">View Invoice ♡</a>
+                        <?php endif; ?>
                     </div>
                 </div>
             <?php endforeach; ?>
         </div>
     <?php endif; ?>
 </div>
+
+
 
 <style>
 .purchase-tabs {

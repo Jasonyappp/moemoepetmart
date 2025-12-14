@@ -16,7 +16,7 @@ if (is_post()) {
         $_db->beginTransaction();
 
         // Insert order
-        $stm = $_db->prepare("INSERT INTO orders (user_id, total_amount, order_date) VALUES (?, ?, NOW())");
+        $stm = $_db->prepare("INSERT INTO orders (user_id, total_amount, order_date, order_status) VALUES (?, ?, NOW(), 'Pending Payment')");
         $stm->execute([$user->id, $total]);
         $order_id = $_db->lastInsertId();
 
@@ -33,9 +33,10 @@ if (is_post()) {
 
         $_db->commit();
         clear_cart();  // NEW: Clear both session and DB
-        temp('info', "Order placed! ID: $order_id ♡ Check my purchase for details.");
-        redirect('/member/my_purchase.php');  // Redirect to profile (you can add order history there if needed)
-    } catch (Exception $e) {
+        temp('info', "Order placed successfully! ID: #$order_id ♡ Please review your invoice.");
+        redirect('/member/invoice.php?id=' . $order_id);
+
+    }catch (Exception $e){
         $_db->rollBack();
         temp('error', 'Checkout failed: ' . $e->getMessage());
     }
@@ -69,10 +70,10 @@ include '../_head.php';
         <tr>
             <td colspan="3"><strong>Total</strong></td>
             <td><strong>RM <?= number_format($total, 2) ?></strong></td>
-        </tr>
+        </tr> 
     </table>
 
-    <form method="post">
+    <form method="post"> 
         <button type="submit" class="btn btn-primary" onclick="return confirm('Confirm and place order? ♡')">Place Order ♡</button>
         <a href="cart.php" class="btn btn-secondary">← Edit Cart</a>
     </form>

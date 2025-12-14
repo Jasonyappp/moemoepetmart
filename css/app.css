@@ -5258,7 +5258,7 @@ footer {
     text-align: center;
     box-shadow: 0 2px 5px rgba(255,20,147,0.4);
 }
-
+ 
 
 /* ==== REMOVE UNDERLINE FROM PRODUCT NAME LINKS ==== */
 .product-grid .product-card a,
@@ -5454,4 +5454,201 @@ footer {
 
 .hidden {
     display: none !important;
+}
+
+.btn-invoice {
+    background: #ff9800;  /* Orange - stands out for unpaid */
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+.btn-detail {
+    background: #2196f3;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+.purchase-list {
+    margin-top: 2rem;
+}
+
+.purchase-card {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    box-shadow: 0 5px 15px rgba(255,105,180,0.1);
+    border: 1px solid #ffe4f0;
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.order-id {
+    font-weight: bold;
+    color: #ff69b4;
+}
+
+.order-date {
+    color: #888;
+}
+
+.order-status {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.order-status.pending-payment { background: #fff3e0; color: #ef6c00; }
+.order-status.to-ship         { background: #e3f2fd; color: #1565c0; }
+.order-status.shipped         { background: #e8f5e9; color: #2e7d32; }
+.order-status.completed       { background: #f1f8e9; color: #558b2f; }
+.order-status.cancelled       { background: #ffebee; color: #c62828; }
+.order-status.return-refund   { background: #fffde7; color: #f57f17; }
+
+.order-items {
+    margin: 1rem 0;
+    color: #555;
+    font-size: 1.05rem;
+}
+
+.order-total {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #ff1493;
+    text-align: right;
+    margin: 1.5rem 0;
+}
+
+/* Action Buttons */
+.order-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.order-actions a {
+    padding: 0.7rem 1.3rem;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.95rem;
+    transition: all 0.3s;
+}
+
+.btn-pay      { background: #ff5722; color: white; }
+.btn-receive  { background: #4caf50; color: white; }
+.btn-invoice  { background: #ff9800; color: white; }
+.btn-receipt  { background: #4caf50; color: white; }
+.btn-detail   { background: #2196f3; color: white; }
+
+/* Expandable Details */
+.order-details {
+    margin: 1.5rem 0;
+    border: 2px solid #ff69b4;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.order-details summary {
+    padding: 1.2rem;
+    background: #fff0f5;
+    cursor: pointer;
+    font-weight: bold;
+    color: #ff1493;
+    font-size: 1.1rem;
+}
+
+.order-details summary::-webkit-details-marker {
+    color: #ff69b4;
+}
+
+.details-content {
+    padding: 1.5rem;
+    background: #fdf6f9;
+}
+
+.items-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background: white;
+}
+
+.items-table th,
+.items-table td {
+    border: 1px solid #ffd4e4;
+    padding: 1rem;
+    text-align: left;
+}
+
+.items-table th {
+    background: #fff0f5;
+    font-weight: bold;
+    color: #ff69b4;
+}
+
+.items-table img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.total-row {
+    background: #fff0f5 !important;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #ff1493;
+}
+
+/* Empty State */
+.empty-purchases {
+    text-align: center;
+    padding: 5rem 2rem;
+    color: #888;
+}
+
+.empty-purchases img {
+    width: 200px;
+    opacity: 0.7;
+    margin-bottom: 1rem;
+}
+
+.empty-purchases p {
+    font-size: 1.4rem;
+    margin: 1.5rem 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .order-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .order-actions {
+        justify-content: center;
+    }
+    .items-table th,
+    .items-table td {
+        padding: 0.7rem;
+        font-size: 0.9rem;
+    }
 }
