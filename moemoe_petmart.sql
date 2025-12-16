@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 16, 2025 at 07:47 AM
+-- Generation Time: Dec 16, 2025 at 01:29 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -206,6 +206,7 @@ CREATE TABLE `users` (
   `username` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
   `phone` varchar(20) NOT NULL,
+  `home_address` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `role` enum('member','admin') NOT NULL DEFAULT 'member',
   `created_at` datetime DEFAULT current_timestamp(),
@@ -219,11 +220,33 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `email`, `phone`, `password`, `role`, `created_at`, `profile_pic`, `locked`, `lock_reason`, `locked_at`) VALUES
-(1, 'Seahnijun', '', '', '$2y$10$jSANxKW6shQ/CsKMsKzSXeqiOue5QFD2DnhPO/SwQJDAwdgtR1lRO', 'admin', '2025-11-22 17:27:12', 'uploads/profile_pics/1_1765859839_admin.jpg', 0, NULL, NULL),
-(5, 'abc', 'abc123@yahoo.com', '012-3456789', '$2y$10$EKljSiD3aP0XAT.wLJdBKe7puFh/gvRdAGlaGoHU7aJ3tHfWqdqGi', 'member', '2025-11-22 22:32:05', 'uploads/profile_pics/5_1763821950_otter.jpg', 0, NULL, NULL),
-(6, 'haha', 'haha@gmail.com', '012-2222222', '$2y$10$VybeVzjUtq7U2kpxMCJuV.zUuOi1vHO9l.u/./ThjRVMB8WuekqJS', 'member', '2025-12-06 23:12:07', 'uploads/profile_pics/6_1765302986_iu-3.jpg', 0, 'Payment issues', NULL),
-(7, 'aaa', 'tanyijia-wp23@student.tarc.edu.my', '0123456789', '$2y$10$k5r/g6EeYTTKXn1w06SEUutPnBB9ASLIHWZbut1A5pbh/8Z0bigS.', 'member', '2025-12-13 16:42:33', NULL, 0, 'Suspicious activity', NULL);
+INSERT INTO `users` (`id`, `username`, `email`, `phone`, `home_address`, `password`, `role`, `created_at`, `profile_pic`, `locked`, `lock_reason`, `locked_at`) VALUES
+(1, 'Seahnijun', '', '', '0', '$2y$10$jSANxKW6shQ/CsKMsKzSXeqiOue5QFD2DnhPO/SwQJDAwdgtR1lRO', 'admin', '2025-11-22 17:27:12', 'uploads/profile_pics/1_1765859839_admin.jpg', 0, NULL, NULL),
+(5, 'abc', 'abc123@yahoo.com', '012-3456789', '0', '$2y$10$EKljSiD3aP0XAT.wLJdBKe7puFh/gvRdAGlaGoHU7aJ3tHfWqdqGi', 'member', '2025-11-22 22:32:05', 'uploads/profile_pics/5_1765885108_otter.jpg', 0, NULL, NULL),
+(6, 'haha', 'haha@gmail.com', '012-2222222', '0', '$2y$10$VybeVzjUtq7U2kpxMCJuV.zUuOi1vHO9l.u/./ThjRVMB8WuekqJS', 'member', '2025-12-06 23:12:07', 'uploads/profile_pics/6_1765302986_iu-3.jpg', 0, 'Payment issues', NULL),
+(7, 'aaa', 'tanyijia-wp23@student.tarc.edu.my', '0123456789', '0', '$2y$10$k5r/g6EeYTTKXn1w06SEUutPnBB9ASLIHWZbut1A5pbh/8Z0bigS.', 'member', '2025-12-13 16:42:33', NULL, 0, 'Suspicious activity', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_addresses`
+--
+
+CREATE TABLE `user_addresses` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `address_name` varchar(100) DEFAULT 'Home',
+  `full_address` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user_addresses`
+--
+
+INSERT INTO `user_addresses` (`id`, `user_id`, `address_name`, `full_address`, `created_at`) VALUES
+(2, 5, 'Home', '21, Jalan CapyBara 520, 57000 Kuala Lumpur', '2025-12-16 11:35:45'),
+(3, 5, 'Mama house', '45, Jalan Bintang 3, 58100 Kuala Lumpur', '2025-12-16 11:36:15');
 
 --
 -- Indexes for dumped tables
@@ -291,6 +314,13 @@ ALTER TABLE `users`
   ADD KEY `idx_username` (`username`);
 
 --
+-- Indexes for table `user_addresses`
+--
+ALTER TABLE `user_addresses`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -337,6 +367,12 @@ ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+-- AUTO_INCREMENT for table `user_addresses`
+--
+ALTER TABLE `user_addresses`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- Constraints for dumped tables
 --
 
@@ -371,6 +407,12 @@ ALTER TABLE `product`
 --
 ALTER TABLE `product_image`
   ADD CONSTRAINT `product_image_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `user_addresses`
+--
+ALTER TABLE `user_addresses`
+  ADD CONSTRAINT `user_addresses_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

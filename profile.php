@@ -9,6 +9,11 @@ if (!$user) {
     redirect('/login.php');
 }
 
+// Get user's addresses
+$stm = $_db->prepare("SELECT * FROM user_addresses WHERE user_id = ? ORDER BY created_at DESC");
+$stm->execute([$user->id]);
+$addresses = $stm->fetchAll();
+
 $_title = 'My Profile ♡ Moe Moe Pet Mart';
 include '_head.php';
 ?>
@@ -18,22 +23,18 @@ include '_head.php';
         <h2>My Profile ♡</h2>
         <p>Welcome back, <?= encode($user->username) ?>!</p>
 
-        <!-- Profile Picture Section -->
+        <!-- Profile Picture -->
         <div class="profile-picture-section">
             <div class="profile-pic-container">
                 <?php if ($user->profile_pic && file_exists($user->profile_pic)): ?>
-                    <img src="/<?= encode($user->profile_pic) ?>?t=<?= time() ?>"
-                         alt="Profile Picture"
-                         class="profile-pic">
+                    <img src="/<?= encode($user->profile_pic) ?>?t=<?= time() ?>" class="profile-pic">
                 <?php else: ?>
-                    <div class="default-avatar">
-                        <span>🐾</span>
-                    </div>
+                    <div class="default-avatar">🐾</div>
                 <?php endif; ?>
             </div>
         </div>
 
-        <!-- Profile Information Section -->
+        <!-- Profile Info -->
         <div class="profile-info">
             <div class="profile-field">
                 <div class="field-label">Username</div>
@@ -41,12 +42,12 @@ include '_head.php';
             </div>
 
             <div class="profile-field">
-                <div class="field-label">Email Address</div>
+                <div class="field-label">Email</div>
                 <div class="field-value"><?= encode($user->email) ?></div>
             </div>
 
             <div class="profile-field">
-                <div class="field-label">Phone Number</div>
+                <div class="field-label">Phone</div>
                 <div class="field-value"><?= encode($user->phone) ?></div>
             </div>
 
@@ -56,7 +57,37 @@ include '_head.php';
             </div>
         </div>
 
-        <!-- Profile Actions -->
+        <!-- ========== SIMPLE ADDRESS DISPLAY ========== -->
+        <div class="address-display-simple">
+            <h3>🏠 Your Addresses</h3>
+            
+            <?php if (!empty($addresses)): ?>
+                <div class="address-list-simple">
+                    <?php foreach ($addresses as $addr): ?>
+                        <div class="address-card-simple">
+                            <?php if (!empty($addr->address_name)): ?>
+                                <div class="address-name"><?= encode($addr->address_name) ?></div>
+                            <?php endif; ?>
+                            <div class="address-text"><?= nl2br(encode($addr->full_address)) ?></div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php else: ?>
+                <div class="no-address">
+                    <p style="color: #ff69b4; text-align: center;">
+                        No addresses saved yet~
+                    </p>
+                    <p style="text-align: center; margin-top: 10px;">
+                        <a href="edit_profile.php" style="color: #ff1493; font-weight: 600;">
+                            ➕ Add your first address
+                        </a>
+                    </p>
+                </div>
+            <?php endif; ?>
+        </div>
+        <!-- ========== END ADDRESS DISPLAY ========== -->
+
+        <!-- Actions -->
         <div class="profile-actions">
             <a href="edit_profile.php" class="btn btn-primary">Edit Profile ♡</a>
             <a href="change_password.php" class="btn btn-secondary">Change Password</a>
