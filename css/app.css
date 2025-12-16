@@ -5944,3 +5944,83 @@ footer {
     margin: 2rem 0;
     border: 3px dashed #ef9a9a;
 }
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.85em;
+    font-weight: bold;
+}
+.status-badge.active {
+    background: #e0ffe0;
+    color: #006400;
+}
+.status-badge.locked {
+    background: #ffe0e0;
+    color: #a00;
+}
+
+
+
+        .purchase-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(255,105,180,0.1);
+        }
+        .order-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.1rem;
+        }
+        .order-id { font-weight: bold; color: #ff69b4; font-size: 1.2rem; }
+        .order-status {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+        .order-status.pending-payment { background: #fff3e0; color: #ef6c00; }
+        .order-status.to-ship { background: #e3f2fd; color: #1565c0; }
+        .order-status.shipped { background: #e8f5e9; color: #2e7d32; }
+        .order-status.completed { background: #f1f8e9; color: #558b2f; }
+        .order-status.cancelled { background: #ffebee; color: #c62828; }
+        .order-status.return-refund { background: #fffde7; color: #f57f17; }
+
+        .order-summary {
+            margin: 15px 0;
+            line-height: 1.6;
+        }
+        .order-total {
+            text-align: right;
+            font-size: 1.4rem;
+            margin: 15px 0;
+        }
+
+        details summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #ff69b4;
+            margin: 20px 0 10px;
+        }
+        .details-content {
+            padding: 20px;
+            background: #fffafc;
+            border-radius: 15px;
+            border: 1px solid #ffd4e4;
+        }
+        .order-items-table { /* same as before */ }
+        .status-update-form {
+            margin: 20px 0;
+            padding: 15px;
+            background: #fff5f9;
+            border-radius: 12px;
+            display: inline-flex;
+            gap: 15px;
+            align-items: center;
+        }
+   

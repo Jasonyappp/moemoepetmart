@@ -301,3 +301,4 @@ document.querySelectorAll('.qty-plus').forEach(btn => {
         if (val < max) input.value = val + 1;
     });
 });
+

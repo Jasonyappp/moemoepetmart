@@ -49,6 +49,7 @@ setTimeout(() => {
             <li><a href="admin/product_list.php"><i class="fas fa-box"></i> Products</a></li>
             <li><a href="admin/member_list.php"><i class="fas fa-users"></i> Members</a></li>
             <li><a href="admin/order_list.php"><i class="fas fa-shopping-cart"></i> Orders</a></li>
+            <li><a href="/admin/profile.php"><i class="fas fa-user-cog"></i> <span>My Profile ♛</span></a></li>
             <li><a href="/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
     </aside>

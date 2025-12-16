@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 14, 2025 at 09:01 PM
+-- Generation Time: Dec 16, 2025 at 07:47 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `moemoe_petmart`
 --
-CREATE DATABASE IF NOT EXISTS `moemoe_petmart` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `moemoe_petmart`;
 
 -- --------------------------------------------------------
 
@@ -96,7 +94,9 @@ INSERT INTO `orders` (`order_id`, `user_id`, `total_amount`, `payment_method`, `
 (54, 7, 399.00, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:24:59', 'To Ship', 'Pending Payment'),
 (55, 7, 39.99, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:29:55', 'To Ship', 'Pending Payment'),
 (56, 7, 399.00, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:32:45', 'To Ship', 'Pending Payment'),
-(57, 7, 39.99, 'Touch n Go', NULL, '/images_tng/tng_qr.jpeg', '2025-12-14 16:05:28', '2025-12-14 16:03:18', 'To Ship', 'Pending Payment');
+(57, 7, 39.99, 'Touch n Go', NULL, '/images_tng/tng_qr.jpeg', '2025-12-14 16:05:28', '2025-12-14 16:03:18', 'Cancelled', 'Pending Payment'),
+(58, 6, 399.00, 'Touch n Go', NULL, '/images_tng/tng_qr.jpeg', '2025-12-14 22:18:02', '2025-12-14 22:17:42', 'Cancelled', 'Pending Payment'),
+(59, 6, 7385.00, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-15 00:07:30', 'Pending Payment', 'Pending Payment');
 
 -- --------------------------------------------------------
 
@@ -130,7 +130,10 @@ INSERT INTO `order_items` (`item_id`, `order_id`, `product_id`, `quantity`, `uni
 (57, 54, 3, 1, 399.00),
 (58, 55, 2, 1, 39.99),
 (59, 56, 3, 1, 399.00),
-(60, 57, 2, 1, 39.99);
+(60, 57, 2, 1, 39.99),
+(61, 58, 3, 1, 399.00),
+(62, 59, 3, 15, 399.00),
+(63, 59, 89, 14, 100.00);
 
 -- --------------------------------------------------------
 
@@ -157,15 +160,9 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`product_id`, `product_code`, `product_name`, `description`, `price`, `stock_quantity`, `category_id`, `is_active`, `created_at`, `updated_at`, `photo_name`) VALUES
-(2, 'CAG0001', 'Luxury Cat Villa Carrier', '3-level cage with wheel', 43.90, 25, 2, 1, '2025-11-23 23:22:24', '2025-12-15 02:46:02', 'prod_693f05ea19699.jpg'),
-(3, 'FOD0001', 'Royal Canin Puppy 10kg', '~ Each pack is designed for adult dogs and available in different sizes to meet your feeding needs.', 109.00, 90, 3, 1, '2025-11-23 23:22:24', '2025-12-15 03:56:11', 'prod_693f165ba2028.jpg'),
-(89, 'CAG0002', 'Big Home Shape Cage', 'Available for cat & dog', 139.90, 18, 2, 1, '2025-12-15 03:00:35', '2025-12-15 03:00:35', '693f095361e88.jpg'),
-(91, 'CAG0004', 'Standard Pet Cage', 'Normal cage for our cute pets', 35.90, 50, 2, 1, '2025-12-15 03:04:33', '2025-12-15 03:11:15', 'prod_693f0bd3c4960.jpg'),
-(92, 'CAG0005', 'Luxury Hamster Villa Cage', 'Benefit:\r\n-Can put many hamsters', 239.00, 12, 2, 1, '2025-12-15 03:06:43', '2025-12-15 03:06:43', '693f0ac353967.jpg'),
-(93, 'CAG0003', 'Transparent Carries', 'Benefits:\r\n- Easily see your cutest pets', 55.90, 24, 2, 1, '2025-12-15 03:15:09', '2025-12-15 03:15:09', '693f0cbd71b9b.jpg'),
-(94, 'ACC0001', 'Pet Automatic Retractable Leash', '• Length Options: 3m / 5m\r\n• Material: Polyester + PP', 10.90, 50, 5, 1, '2025-12-15 03:24:38', '2025-12-15 03:30:53', 'prod_693f106d7be39.jpg'),
-(95, 'CLR0001', 'Pet Hair Remover Comb', '✔️Simply push the button, wipe, making it super simple to remove all the hair from the brush, so it\'s ready for the next time use.\r\n✔️Suit for dog, cat, rabbits and other pets, making them neat and clean.', 15.60, 45, 4, 1, '2025-12-15 03:38:35', '2025-12-15 03:38:35', '693f123b2857e.jpg'),
-(96, 'TOY0001', 'Cat Teaser Stick Toys with Bell', '🐾 Give your pets endless fun with this Cat Teaser Stick Toy with Bell. Interactive design, featuring a dangling bell and feather that will keep your cat entertained and engaged for hours!', 4.99, 28, 1, 1, '2025-12-15 03:43:09', '2025-12-15 03:43:09', '693f134dee5c4.jpg');
+(2, 'CAG0001', 'Luxury Hamster Villa Cage', '3-level cage with wheel', 39.99, 4, 2, 1, '2025-11-23 23:22:24', '2025-12-14 16:03:18', '6930ee8070de4.jpg'),
+(3, 'FOD0001', 'Royal Canin Puppy 10kg', 'Complete food for puppies', 399.00, 85, 3, 1, '2025-11-23 23:22:24', '2025-12-15 00:07:30', 'product3.jpg'),
+(89, 'CAG0002', 'Royal Canin Puppy lol 10kg', 'hhihi', 100.00, 86, 2, 1, '2025-12-15 00:05:46', '2025-12-15 00:07:30', '693ee05a30a59.jpg');
 
 -- --------------------------------------------------------
 
@@ -212,18 +209,21 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `role` enum('member','admin') NOT NULL DEFAULT 'member',
   `created_at` datetime DEFAULT current_timestamp(),
-  `profile_pic` varchar(255) DEFAULT NULL
+  `profile_pic` varchar(255) DEFAULT NULL,
+  `locked` tinyint(1) DEFAULT 0,
+  `lock_reason` varchar(255) DEFAULT NULL,
+  `locked_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `email`, `phone`, `password`, `role`, `created_at`, `profile_pic`) VALUES
-(1, 'admin123', '', '', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', '2025-11-22 17:27:12', NULL),
-(5, 'abc', 'abc123@yahoo.com', '012-3456789', '$2y$10$EKljSiD3aP0XAT.wLJdBKe7puFh/gvRdAGlaGoHU7aJ3tHfWqdqGi', 'member', '2025-11-22 22:32:05', 'uploads/profile_pics/5_1763821950_otter.jpg'),
-(6, 'haha', 'haha@gmail.com', '012-2222222', '$2y$10$VybeVzjUtq7U2kpxMCJuV.zUuOi1vHO9l.u/./ThjRVMB8WuekqJS', 'member', '2025-12-06 23:12:07', 'uploads/profile_pics/6_1765302986_iu-3.jpg'),
-(7, 'aaa', 'tanyijia-wp23@student.tarc.edu.my', '0123456789', '$2y$10$k5r/g6EeYTTKXn1w06SEUutPnBB9ASLIHWZbut1A5pbh/8Z0bigS.', 'member', '2025-12-13 16:42:33', NULL);
+INSERT INTO `users` (`id`, `username`, `email`, `phone`, `password`, `role`, `created_at`, `profile_pic`, `locked`, `lock_reason`, `locked_at`) VALUES
+(1, 'Seahnijun', '', '', '$2y$10$jSANxKW6shQ/CsKMsKzSXeqiOue5QFD2DnhPO/SwQJDAwdgtR1lRO', 'admin', '2025-11-22 17:27:12', 'uploads/profile_pics/1_1765859839_admin.jpg', 0, NULL, NULL),
+(5, 'abc', 'abc123@yahoo.com', '012-3456789', '$2y$10$EKljSiD3aP0XAT.wLJdBKe7puFh/gvRdAGlaGoHU7aJ3tHfWqdqGi', 'member', '2025-11-22 22:32:05', 'uploads/profile_pics/5_1763821950_otter.jpg', 0, NULL, NULL),
+(6, 'haha', 'haha@gmail.com', '012-2222222', '$2y$10$VybeVzjUtq7U2kpxMCJuV.zUuOi1vHO9l.u/./ThjRVMB8WuekqJS', 'member', '2025-12-06 23:12:07', 'uploads/profile_pics/6_1765302986_iu-3.jpg', 0, 'Payment issues', NULL),
+(7, 'aaa', 'tanyijia-wp23@student.tarc.edu.my', '0123456789', '$2y$10$k5r/g6EeYTTKXn1w06SEUutPnBB9ASLIHWZbut1A5pbh/8Z0bigS.', 'member', '2025-12-13 16:42:33', NULL, 0, 'Suspicious activity', NULL);
 
 --
 -- Indexes for dumped tables
@@ -298,7 +298,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart_item`
 --
 ALTER TABLE `cart_item`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -310,19 +310,19 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
 
 --
 -- AUTO_INCREMENT for table `product_image`

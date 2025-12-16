@@ -11,7 +11,6 @@ $limit = (int)($_GET['limit'] ?? 10);
 $offset = ($page - 1) * $limit;
 
 $search = trim($_GET['search'] ?? '');
-$user_id = (int)($_GET['user_id'] ?? 0); // For viewing specific member's orders
 
 $where = "WHERE u.role = 'member'";
 $params = [];
@@ -29,9 +28,59 @@ $count_stmt->execute($params);
 $total = $count_stmt->fetchColumn();
 $total_pages = max(1, ceil($total / $limit));
 
+// Predefined lock reasons
+$predefined_reasons = [
+    '' => '— No reason —',
+    'Suspicious activity' => 'Suspicious activity',
+    'Multiple failed logins' => 'Multiple failed logins',
+    'Violation of terms' => 'Violation of terms',
+    'Payment issues' => 'Payment issues',
+    'Spam / fake account' => 'Spam / fake account',
+    'Requested by user' => 'Requested by user',
+    'Other' => 'Other (type below)'
+];
+
+// Handle lock/unlock action
+if (is_post() && post('action') === 'toggle_lock' && post('member_id')) {
+    $member_id = (int)post('member_id');
+    $selected_reason = post('predefined_reason') ?? '';
+    $custom_reason = trim(post('custom_reason') ?? '');
+
+    // Determine final reason
+    $final_reason = '';
+    if ($selected_reason === 'Other') {
+        $final_reason = $custom_reason !== '' ? $custom_reason : 'Other (no details provided)';
+    } elseif ($selected_reason !== '' && $selected_reason !== '— No reason —') {
+        $final_reason = $selected_reason;
+    }
+
+    // Get current locked status
+    $stmt = $_db->prepare("SELECT locked FROM users WHERE id = ? AND role = 'member'");
+    $stmt->execute([$member_id]);
+    $current = $stmt->fetchColumn();
+
+    if ($current !== false) {
+        $new_status = $current ? 0 : 1;
+
+        if ($new_status == 1) {
+            // Locking → update status + reason
+            $sql = "UPDATE users SET locked = ?, lock_reason = ? WHERE id = ? AND role = 'member'";
+            $_db->prepare($sql)->execute([$new_status, $final_reason, $member_id]);
+        } else {
+            // Unlocking → only change status (reason kept for history)
+            $_db->prepare("UPDATE users SET locked = ? WHERE id = ? AND role = 'member'")
+                ->execute([$new_status, $member_id]);
+        }
+
+        $status_text = $new_status ? 'locked' : 'unlocked';
+        temp('info', "Member account has been $status_text ♡");
+    }
+    redirect("member_list.php?page=$page&limit=$limit&search=" . urlencode($search));
+}
+
 // Fetch members
 $sql = "
-    SELECT u.id, u.username, u.email, u.phone, u.created_at,
+    SELECT u.id, u.username, u.email, u.phone, u.created_at, u.locked, u.lock_reason,
            COUNT(o.order_id) AS total_orders
     FROM users u
     LEFT JOIN orders o ON u.id = o.user_id
@@ -44,45 +93,6 @@ $sql = "
 $stmt = $_db->prepare($sql);
 $stmt->execute($params);
 $members = $stmt->fetchAll();
-
-// If viewing a specific member's orders
-$selected_member = null;
-$member_orders = [];
-if ($user_id > 0) {
-    $stmt = $_db->prepare("SELECT id, username FROM users WHERE id = ? AND role = 'member'");
-    $stmt->execute([$user_id]);
-    $selected_member = $stmt->fetch();
-
-    if ($selected_member) {
-        // Handle status update
-        if (is_post() && post('order_id')) {
-            $order_id = post('order_id');
-            $new_status = post('order_status');
-
-            $allowed = ['Pending Payment', 'To Ship', 'Shipped', 'Completed', 'Cancelled', 'Return/Refund'];
-            if (in_array($new_status, $allowed)) {
-                $_db->prepare("UPDATE orders SET order_status = ? WHERE order_id = ? AND user_id = ?")
-                    ->execute([$new_status, $order_id, $user_id]);
-                temp('info', "Order #$order_id status updated to: $new_status ♡");
-                redirect("member_list.php?user_id=$user_id");
-            }
-        }
-
-        // Fetch member's orders
-        $sql_orders = "
-            SELECT o.*, GROUP_CONCAT(CONCAT(oi.quantity, ' x ', p.product_name) SEPARATOR ', ') AS items_summary
-            FROM orders o
-            LEFT JOIN order_items oi ON o.order_id = oi.order_id
-            LEFT JOIN product p ON oi.product_id = p.product_id
-            WHERE o.user_id = ?
-            GROUP BY o.order_id
-            ORDER BY o.order_date DESC
-        ";
-        $stmt_orders = $_db->prepare($sql_orders);
-        $stmt_orders->execute([$user_id]);
-        $member_orders = $stmt_orders->fetchAll();
-    }
-}
 ?>
 
 <!DOCTYPE html>
@@ -92,10 +102,17 @@ if ($user_id > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $_title ?> • Moe Moe Pet Mart</title>
     <link rel="stylesheet" href="/css/app.css">
+    <style>
+        .reason-group { margin-bottom: 8px; }
+        .custom-reason { display: none; margin-top: 6px; }
+        .custom-reason textarea { width: 100%; padding: 6px; font-size: 0.9rem; border: 1px solid #ff69b4; border-radius: 4px; }
+        select { width: 100%; padding: 6px; border: 1px solid #ff69b4; border-radius: 4px; font-size: 0.9rem; }
+    </style>
 </head>
 <body>
 
 <div class="admin-layout">
+    <!-- Sidebar same as before -->
     <aside class="admin-sidebar">
         <div class="logo"><h2>MoeMoePet</h2></div>
         <ul>
@@ -119,116 +136,93 @@ if ($user_id > 0) {
         <div class="toolbar">
             <input type="text" name="search" placeholder="Search by username, email or phone..." value="<?= encode($search) ?>">
             <button onclick="applyFilters()">Apply</button>
-            <?php if ($user_id > 0): ?>
-                <a href="member_list.php" class="btn-add">← Back to Members List</a>
-            <?php endif; ?>
         </div>
 
         <div class="table-card">
-            <?php if ($user_id > 0 && $selected_member): ?>
-                <!-- === VIEWING SPECIFIC MEMBER'S ORDERS === -->
-                <h2 style="text-align:center; color:#ff69b4; margin-bottom:20px;">
-                    Orders for <?= encode($selected_member->username) ?> ♡
-                </h2>
-
-                <?php if (empty($member_orders)): ?>
-                    <div class="empty-full" style="text-align:center;padding:60px;color:#999;">
-                        This member has no orders yet~ ♡
-                    </div>
-                <?php else: ?>
-                    <div class="purchase-list">
-                        <?php foreach ($member_orders as $order): ?>
-                            <div class="purchase-card">
-                                <div class="order-header">
-                                    <span class="order-id">Order #<?= $order->order_id ?></span>
-                                    <span class="order-date"><?= date('M d, Y H:i', strtotime($order->order_date)) ?></span>
-                                    <span class="order-status <?= strtolower(str_replace(' ', '-', $order->order_status)) ?>">
-                                        <?= $order->order_status ?>
-                                    </span>
-                                </div>
-
-                                <div class="order-items">
-                                    <p>Items: <?= encode($order->items_summary ?? 'No items') ?></p>
-                                </div>
-
-                                <div class="order-total">
-                                    Total: RM <?= number_format($order->total_amount, 2) ?>
-                                </div>
-
-                                <!-- Admin: Change Status -->
-                                <div style="margin-top:15px; padding:15px; background:#fff5f9; border-radius:12px;">
-                                    <form method="post" style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-                                        <input type="hidden" name="order_id" value="<?= $order->order_id ?>">
-                                        <strong>Update Status:</strong>
-                                        <select name="order_status" style="padding:8px; border-radius:8px; border:2px solid #ff69b4;">
-                                            <option value="Pending Payment" <?= $order->order_status === 'Pending Payment' ? 'selected' : '' ?>>Pending Payment</option>
-                                            <option value="To Ship" <?= $order->order_status === 'To Ship' ? 'selected' : '' ?>>To Ship</option>
-                                            <option value="Shipped" <?= $order->order_status === 'Shipped' ? 'selected' : '' ?>>Shipped</option>
-                                            <option value="Completed" <?= $order->order_status === 'Completed' ? 'selected' : '' ?>>Completed</option>
-                                            <option value="Cancelled" <?= $order->order_status === 'Cancelled' ? 'selected' : '' ?>>Cancelled</option>
-                                            <option value="Return/Refund" <?= $order->order_status === 'Return/Refund' ? 'selected' : '' ?>>Return/Refund</option>
-                                        </select>
-                                        <button type="submit" style="padding:8px 20px; background:#ff69b4; color:white; border:none; border-radius:8px;">
-                                            Update ♡
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-
-            <?php else: ?>
-                <!-- === MAIN MEMBERS LIST === -->
-                <?php if (empty($members)): ?>
-                    <div class="empty-full" style="text-align:center;padding:60px;color:#999;">
-                        No members registered yet~<br>Waiting for our first cute customer! ♡
-                    </div>
-                <?php else: ?>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Username</th>
-                                <th>Email</th>
-                                <th>Phone Number</th>
-                                <th>Total Orders</th>
-                                <th>Join Date</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($members as $m): ?>
-                            <tr>
-                                <td><strong><?= encode($m->username) ?></strong></td>
-                                <td><?= encode($m->email ?? '—') ?></td>
-                                <td><?= encode($m->phone ?? '—') ?></td>
-                                <td><span class="total-orders-badge"><?= $m->total_orders ?></span></td>
-                                <td><?= date('d M Y', strtotime($m->created_at)) ?></td>
-                                <td class="action-links">
-                                    <a href="member_list.php?user_id=<?= $m->id ?>"
-                                       class="text-pink-500 hover:text-pink-700 hover:underline font-medium transition">
-                                        👀 View Orders ♡
-                                    </a>
-                                </td>
-                            </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                <?php endif; ?>
-
-                <!-- Pagination -->
-                <?php if ($total > $limit): ?>
-                <div class="pagination">
-                    <span>Page <?= $page ?> of <?= $total_pages ?></span>
-                    <?php if ($page > 1): ?>
-                        <a href="?page=<?= $page-1 ?>&limit=<?= $limit ?>&search=<?= urlencode($search) ?>">Previous</a>
-                    <?php endif; ?>
-                    <?php if ($page < $total_pages): ?>
-                        <a href="?page=<?= $page+1 ?>&limit=<?= $limit ?>&search=<?= urlencode($search) ?>">Next</a>
-                    <?php endif; ?>
-                    <span><?= $offset + 1 ?>–<?= min($offset + $limit, $total) ?> of <?= $total ?> members</span>
+            <?php if (empty($members)): ?>
+                <div class="empty-full" style="text-align:center;padding:60px;color:#999;">
+                    No members registered yet~<br>Waiting for our first cute customer! ♡
                 </div>
+            <?php else: ?>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Phone Number</th>
+                            <th>Join Date</th>
+                            <th>Status</th>
+                            <th>Status Details</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($members as $m): ?>
+                        <tr>
+                            <td><strong><?= encode($m->username) ?></strong></td>
+                            <td><?= encode($m->email ?? '—') ?></td>
+                            <td><?= encode($m->phone ?? '—') ?></td>
+                            <td><?= date('d M Y', strtotime($m->created_at)) ?></td>
+                            <td>
+                                <span class="status-badge <?= $m->locked ? 'locked' : 'active' ?>">
+                                    <?= $m->locked ? 'Locked' : 'Active' ?>
+                                </span>
+                            </td>
+                            <td>
+                                <?php if ($m->locked && !empty($m->lock_reason)): ?>
+                                    <span style="font-size:0.85rem; color:#e91e63;"><?= encode($m->lock_reason) ?></span>
+                                <?php elseif ($m->locked): ?>
+                                    <span style="font-size:0.85rem; color:#999;">No reason provided</span>
+                                <?php else: ?>
+                                    —
+                                <?php endif; ?>
+                            </td>
+                            <td class="action-links">
+                                <form method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to <?= $m->locked ? 'unlock' : 'lock' ?> this account?')">
+                                    <input type="hidden" name="action" value="toggle_lock">
+                                    <input type="hidden" name="member_id" value="<?= $m->id ?>">
+
+                                    <?php if (!$m->locked): ?>
+                                        <div class="reason-group">
+                                            <select name="predefined_reason" onchange="toggleCustom(this)">
+                                                <?php foreach ($predefined_reasons as $value => $text): ?>
+                                                    <option value="<?= encode($value) ?>"><?= encode($text) ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                        <div class="custom-reason" id="custom_<?= $m->id ?>">
+                                            <textarea name="custom_reason" rows="2" placeholder="Type your custom reason here ♡"></textarea>
+                                        </div>
+                                    <?php else: ?>
+                                        <div style="margin-bottom:8px; color:#999; font-style:italic;">
+                                            Unlocking will not clear existing reason
+                                        </div>
+                                    <?php endif; ?>
+
+                                    <button type="submit" class="text-pink-500 hover:text-pink-700 font-medium transition" 
+                                            style="background:none;border:none;cursor:pointer;">
+                                        <?= $m->locked ? '🔓 Unlock' : '🔒 Lock' ?> ♡
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php endif; ?>
+
+            <!-- Pagination same as before -->
+            <?php if ($total > $limit): ?>
+            <div class="pagination">
+                <span>Page <?= $page ?> of <?= $total_pages ?></span>
+                <?php if ($page > 1): ?>
+                    <a href="?page=<?= $page-1 ?>&limit=<?= $limit ?>&search=<?= urlencode($search) ?>">Previous</a>
                 <?php endif; ?>
+                <?php if ($page < $total_pages): ?>
+                    <a href="?page=<?= $page+1 ?>&limit=<?= $limit ?>&search=<?= urlencode($search) ?>">Next</a>
+                <?php endif; ?>
+                <span><?= $offset + 1 ?>–<?= min($offset + $limit, $total) ?> of <?= $total ?> members</span>
+            </div>
             <?php endif; ?>
         </div>
     </main>
@@ -240,11 +234,24 @@ function applyFilters() {
     const url = new URL(location);
     url.searchParams.set('search', search);
     url.searchParams.set('page', 1);
-    <?php if ($user_id > 0): ?>
-        url.searchParams.set('user_id', '<?= $user_id ?>');
-    <?php endif; ?>
     location = url.toString();
 }
+
+// Toggle custom reason textarea
+function toggleCustom(select) {
+    const row = select.closest('tr');
+    const memberId = row.querySelector('input[name="member_id"]').value;
+    const customDiv = document.getElementById('custom_' + memberId);
+    
+    if (select.value === 'Other') {
+        customDiv.style.display = 'block';
+    } else {
+        customDiv.style.display = 'none';
+    }
+}
+
+// Initialize on page load (in case of validation errors, but not needed here)
+document.querySelectorAll('select[name="predefined_reason"]').forEach(toggleCustom);
 </script>
 
 </body>

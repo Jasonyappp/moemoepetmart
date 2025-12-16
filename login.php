@@ -19,14 +19,19 @@ if (is_post()) {
         $_err['login'] = 'Admins are not allowed to login here!<br>Use the <strong>Secret Admin Door</strong> instead ♡';
         $username = '';
     }
-    // Normal member login (only if NOT admin)
-    else if ($user && password_verify($password, $user->password)) {
+    // Check if account is LOCKED
+    elseif ($user && $user->locked == 1) {
+        $reason = !empty($user->lock_reason) ? '<br><strong>Reason:</strong> ' . encode($user->lock_reason) : '';
+        $_err['login'] = 'Your account has been <strong>locked</strong> by an administrator.' . $reason . '<br>Please contact support for assistance ♡';
+    }
+    // Normal member login (password correct + not admin + not locked)
+    elseif ($user && password_verify($password, $user->password)) {
         $_SESSION['user']        = $user->username;
         $_SESSION['role']        = $user->role;
         $_SESSION['user_id']     = $user->id;
         $_SESSION['show_welcome']= true;
 
-        load_cart_from_db();  // NEW: Load saved cart
+        load_cart_from_db();  // Load saved cart
 
         temp('info', "Welcome back, cutie " . encode($user->username) . "! ♡");
         redirect('/');

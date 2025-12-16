@@ -104,11 +104,26 @@ function logout() {
     session_destroy();
 }
 
-// Require login - redirect to login if not logged in
+// Also checks if member's account is locked
 function require_login() {
     if (!is_login()) {
         temp('info', 'Please login first~ ♡');
         redirect('/login.php');
+    }
+
+    // Additional check: If user is a member and account is locked → log them out
+    if ($_SESSION['role'] === 'member') {
+        global $_db;
+        
+        $stmt = $_db->prepare("SELECT locked FROM users WHERE id = ?");
+        $stmt->execute([$_SESSION['user_id']]);
+        $locked = $stmt->fetchColumn();
+
+        if ($locked == 1) {
+            logout(); // Clear session properly
+            temp('error', 'Your account has been locked by an administrator.<br>Please contact support for assistance ♡');
+            redirect('/login.php');
+        }
     }
 }
 
