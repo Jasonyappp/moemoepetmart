@@ -6065,4 +6065,28 @@ footer {
             gap: 15px;
             align-items: center;
         }
-   
+        
+   .btn-favorite {
+    background: linear-gradient(135deg, #ff69b4, #ff1493);
+    color: white;
+    border: none;
+    padding: 1rem 3rem;
+    font-size: 1.3rem;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(255,20,147,0.4);
+    transition: all 0.3s;
+    display: inline-block;
+}
+
+.btn-favorite:hover:not(.favorited) {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(255,20,147,0.5);
+}
+
+.btn-favorite.favorited {
+    background: #ccc;
+    cursor: not-allowed;
+    box-shadow: none;
+}

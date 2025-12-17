@@ -24,6 +24,15 @@ if (!$product) {
     temp('error', 'Product not found~');
     redirect('products.php');
 }
+$is_favorited = false;
+if (is_login() && user_role() === 'member') {
+    global $_db;
+    $user_id = current_user()->id;
+    $stm = $_db->prepare("SELECT favorite_id FROM favorites WHERE user_id = ? AND product_id = ?");
+    $stm->execute([$user_id, $id]);
+    $is_favorited = (bool)$stm->fetch();
+}
+
 
 $_title = encode($product->product_name) . ' ♡ Moe Moe Pet Mart';
 include '../_head.php';
@@ -54,28 +63,41 @@ include '../_head.php';
                 </div>
             <?php endif; ?>
 
-            <!-- NEW PREMIUM QUANTITY SELECTOR -->
-            <?php if ($product->stock_quantity > 0): ?>
-                <div class="quantity-section">
-                    <label class="quantity-label">Quantity ♡</label>
-                    <div class="quantity-controls">
-                        <button type="button" class="qty-btn qty-minus">-</button>
-                        <input type="number" class="qty-input" value="1" min="1" max="<?= $product->stock_quantity ?>">
-                        <button type="button" class="qty-btn qty-plus">+</button>
-                    </div>
-                    <span class="stock-info">Available: <?= $product->stock_quantity ?> in stock</span>
-                </div>
+        <?php if ($product->stock_quantity > 0): ?>
+    <div class="quantity-section">
+        <label class="quantity-label">Quantity ♡</label>
+        <div class="quantity-and-favorite">
+            <!-- Favorite button on the LEFT -->
+            <button class="btn-favorite-small <?= $is_favorited ? 'favorited' : '' ?>" 
+                    data-id="<?= $product->product_id ?>"
+                    title="<?= $is_favorited ? 'Already in Favorites ♡' : 'Add to Favorites ♡' ?>">
+                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" 
+                     fill="<?= $is_favorited ? '#ff69b4' : 'none' ?>" 
+                     stroke="#ff69b4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+            </button>
 
-                <button class="btn-add-to-cart-premium" 
-                        data-id="<?= $product->product_id ?>"
-                        data-name="<?= encode($product->product_name) ?>"
-                        data-price="<?= $product->price ?>"
-                        data-max="<?= $product->stock_quantity ?>">
-                    🛍️ Add to Cart ♡
-                </button>
-            <?php else: ?>
-                <div class="out-of-stock-premium">Out of Stock 😿</div>
-            <?php endif; ?>
+            <!-- Quantity controls next to it -->
+            <div class="quantity-controls">
+                <button type="button" class="qty-btn qty-minus">-</button>
+                <input type="number" class="qty-input" value="1" min="1" max="<?= $product->stock_quantity ?>">
+                <button type="button" class="qty-btn qty-plus">+</button>
+            </div>
+        </div>
+        <span class="stock-info">Available: <?= $product->stock_quantity ?> in stock</span>
+    </div>
+
+    <button class="btn-add-to-cart-premium" 
+            data-id="<?= $product->product_id ?>"
+            data-name="<?= encode($product->product_name) ?>"
+            data-price="<?= $product->price ?>"
+            data-max="<?= $product->stock_quantity ?>">
+        🛍️ Add to Cart ♡
+    </button>
+<?php else: ?>
+    <div class="out-of-stock-premium">Out of Stock 😿</div>
+<?php endif; ?>
 
             <div class="back-link">
                 <a href="products.php">← Back to Products</a>
@@ -232,8 +254,92 @@ include '../_head.php';
         justify-content: center;
     }
 }
+.quantity-and-favorite {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* space between heart and quantity box */
+    margin: 12px 0;
+}
+
+.btn-favorite-small {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+}
+
+.btn-favorite-small:hover {
+    background: #fff0f5;
+    transform: scale(1.15);
+}
+
+.btn-favorite-small.favorited {
+}
+
+.btn-favorite-small svg {
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 2px 6px rgba(255,105,180,0.3));
+}
 </style>
 
+<script>
+// Full toggle favorite button: add OR remove with the same heart
+document.querySelectorAll('.btn-favorite-small').forEach(button => {
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
 
+        const btn = this;
+        const svg = btn.querySelector('svg');
+        const productId = btn.dataset.id;
+        const isCurrentlyFavorited = btn.classList.contains('favorited');
+
+        // Pulse animation
+        btn.style.transform = 'scale(1.2)';
+        setTimeout(() => btn.style.transform = '', 200);
+
+        // Choose correct endpoint
+        const url = isCurrentlyFavorited ? 'remove_from_favorite.php' : 'add_to_favorite.php';
+
+        fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({ product_id: productId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                if (isCurrentlyFavorited) {
+                    // Just removed
+                    btn.classList.remove('favorited');
+                    svg.setAttribute('fill', 'none');
+                    svg.setAttribute('stroke', '#ff69b4');
+                    btn.title = 'Add to Favorites ♡';
+                    alert('Removed from favorites ♡');
+                } else {
+                    // Just added
+                    btn.classList.add('favorited');
+                    svg.setAttribute('fill', '#ff69b4');
+                    svg.setAttribute('stroke', '#ff1493');
+                    btn.title = 'Remove from Favorites ♡';
+                    alert('Added to favorites! ♡');
+                }
+            } else {
+                alert(data.message || 'Something went wrong ♡');
+            }
+        })
+        .catch(() => {
+            alert('Connection error. Please try again ♡');
+        });
+    });
+});
+</script>
 
 <?php include '../_foot.php'; ?>

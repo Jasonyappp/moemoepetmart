@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 16, 2025 at 01:29 PM
+-- Generation Time: Dec 17, 2025 at 03:24 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,8 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `moemoe_petmart`
 --
-CREATE DATABASE IF NOT EXISTS `moemoe_petmart` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `moemoe_petmart`;
+
 -- --------------------------------------------------------
 
 --
@@ -63,6 +62,19 @@ INSERT INTO `category` (`category_id`, `category_code`, `category_name`, `descri
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `favorites`
+--
+
+CREATE TABLE `favorites` (
+  `favorite_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `added_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `orders`
 --
 
@@ -97,7 +109,8 @@ INSERT INTO `orders` (`order_id`, `user_id`, `total_amount`, `payment_method`, `
 (56, 7, 399.00, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:32:45', 'To Ship', 'Pending Payment'),
 (57, 7, 39.99, 'Touch n Go', NULL, '/images_tng/tng_qr.jpeg', '2025-12-14 16:05:28', '2025-12-14 16:03:18', 'Cancelled', 'Pending Payment'),
 (58, 6, 399.00, 'Touch n Go', NULL, '/images_tng/tng_qr.jpeg', '2025-12-14 22:18:02', '2025-12-14 22:17:42', 'Cancelled', 'Pending Payment'),
-(59, 6, 7385.00, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-15 00:07:30', 'Pending Payment', 'Pending Payment');
+(59, 6, 7385.00, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-15 00:07:30', 'Pending Payment', 'Pending Payment'),
+(60, 6, 299.76, 'Touch n Go', NULL, '/images_tng/tng_qr.jpeg', '2025-12-17 09:52:48', '2025-12-17 09:52:38', 'To Ship', 'Pending Payment');
 
 -- --------------------------------------------------------
 
@@ -134,7 +147,9 @@ INSERT INTO `order_items` (`item_id`, `order_id`, `product_id`, `quantity`, `uni
 (60, 57, 2, 1, 39.99),
 (61, 58, 3, 1, 399.00),
 (62, 59, 3, 15, 399.00),
-(63, 59, 89, 14, 100.00);
+(63, 59, 89, 14, 100.00),
+(64, 60, 89, 2, 139.90),
+(65, 60, 96, 4, 4.99);
 
 -- --------------------------------------------------------
 
@@ -163,13 +178,13 @@ CREATE TABLE `product` (
 INSERT INTO `product` (`product_id`, `product_code`, `product_name`, `description`, `price`, `stock_quantity`, `category_id`, `is_active`, `created_at`, `updated_at`, `photo_name`) VALUES
 (2, 'CAG0001', 'Luxury Cat Villa Carrier', '3-level cage with wheel', 43.90, 25, 2, 1, '2025-11-23 23:22:24', '2025-12-15 02:46:02', 'prod_693f05ea19699.jpg'),
 (3, 'FOD0001', 'Royal Canin Puppy 10kg', '~ Each pack is designed for adult dogs and available in different sizes to meet your feeding needs.', 109.00, 90, 3, 1, '2025-11-23 23:22:24', '2025-12-15 03:56:11', 'prod_693f165ba2028.jpg'),
-(89, 'CAG0002', 'Big Home Shape Cage', 'Available for cat & dog', 139.90, 18, 2, 1, '2025-12-15 03:00:35', '2025-12-15 03:00:35', '693f095361e88.jpg'),
+(89, 'CAG0002', 'Big Home Shape Cage', 'Available for cat & dog', 139.90, 16, 2, 1, '2025-12-15 03:00:35', '2025-12-17 09:52:38', '693f095361e88.jpg'),
 (91, 'CAG0004', 'Standard Pet Cage', 'Normal cage for our cute pets', 35.90, 50, 2, 1, '2025-12-15 03:04:33', '2025-12-15 03:11:15', 'prod_693f0bd3c4960.jpg'),
 (92, 'CAG0005', 'Luxury Hamster Villa Cage', 'Benefit:\r\n-Can put many hamsters', 239.00, 12, 2, 1, '2025-12-15 03:06:43', '2025-12-15 03:06:43', '693f0ac353967.jpg'),
 (93, 'CAG0003', 'Transparent Carries', 'Benefits:\r\n- Easily see your cutest pets', 55.90, 24, 2, 1, '2025-12-15 03:15:09', '2025-12-15 03:15:09', '693f0cbd71b9b.jpg'),
 (94, 'ACC0001', 'Pet Automatic Retractable Leash', '• Length Options: 3m / 5m\r\n• Material: Polyester + PP', 10.90, 50, 5, 1, '2025-12-15 03:24:38', '2025-12-15 03:30:53', 'prod_693f106d7be39.jpg'),
 (95, 'CLR0001', 'Pet Hair Remover Comb', '✔️Simply push the button, wipe, making it super simple to remove all the hair from the brush, so it\'s ready for the next time use.\r\n✔️Suit for dog, cat, rabbits and other pets, making them neat and clean.', 15.60, 45, 4, 1, '2025-12-15 03:38:35', '2025-12-15 03:38:35', '693f123b2857e.jpg'),
-(96, 'TOY0001', 'Cat Teaser Stick Toys with Bell', '🐾 Give your pets endless fun with this Cat Teaser Stick Toy with Bell. Interactive design, featuring a dangling bell and feather that will keep your cat entertained and engaged for hours!', 4.99, 28, 1, 1, '2025-12-15 03:43:09', '2025-12-15 03:43:09', '693f134dee5c4.jpg');
+(96, 'TOY0001', 'Cat Teaser Stick Toys with Bell', '🐾 Give your pets endless fun with this Cat Teaser Stick Toy with Bell. Interactive design, featuring a dangling bell and feather that will keep your cat entertained and engaged for hours!', 4.99, 24, 1, 1, '2025-12-15 03:43:09', '2025-12-17 09:52:38', '693f134dee5c4.jpg');
 
 -- --------------------------------------------------------
 
@@ -230,7 +245,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `username`, `email`, `phone`, `home_address`, `password`, `role`, `created_at`, `profile_pic`, `locked`, `lock_reason`, `locked_at`) VALUES
 (1, 'Seahnijun', '', '', '0', '$2y$10$jSANxKW6shQ/CsKMsKzSXeqiOue5QFD2DnhPO/SwQJDAwdgtR1lRO', 'admin', '2025-11-22 17:27:12', 'uploads/profile_pics/1_1765859839_admin.jpg', 0, NULL, NULL),
 (5, 'abc', 'abc123@yahoo.com', '012-3456789', '0', '$2y$10$EKljSiD3aP0XAT.wLJdBKe7puFh/gvRdAGlaGoHU7aJ3tHfWqdqGi', 'member', '2025-11-22 22:32:05', 'uploads/profile_pics/5_1765885108_otter.jpg', 0, NULL, NULL),
-(6, 'haha', 'haha@gmail.com', '012-2222222', '0', '$2y$10$VybeVzjUtq7U2kpxMCJuV.zUuOi1vHO9l.u/./ThjRVMB8WuekqJS', 'member', '2025-12-06 23:12:07', 'uploads/profile_pics/6_1765302986_iu-3.jpg', 0, 'Payment issues', NULL),
+(6, 'haha', 'haha@gmail.com', '012-2222222', '0', '$2y$10$VybeVzjUtq7U2kpxMCJuV.zUuOi1vHO9l.u/./ThjRVMB8WuekqJS', 'member', '2025-12-06 23:12:07', 'uploads/profile_pics/6_1765302986_iu-3.jpg', 0, 'Suspicious activity', NULL),
 (7, 'aaa', 'tanyijia-wp23@student.tarc.edu.my', '0123456789', '0', '$2y$10$k5r/g6EeYTTKXn1w06SEUutPnBB9ASLIHWZbut1A5pbh/8Z0bigS.', 'member', '2025-12-13 16:42:33', NULL, 0, 'Suspicious activity', NULL);
 
 -- --------------------------------------------------------
@@ -274,6 +289,14 @@ ALTER TABLE `category`
   ADD PRIMARY KEY (`category_id`),
   ADD UNIQUE KEY `category_code` (`category_code`),
   ADD KEY `idx_code` (`category_code`);
+
+--
+-- Indexes for table `favorites`
+--
+ALTER TABLE `favorites`
+  ADD PRIMARY KEY (`favorite_id`),
+  ADD UNIQUE KEY `user_product_unique` (`user_id`,`product_id`),
+  ADD KEY `fk_favorites_product` (`product_id`);
 
 --
 -- Indexes for table `orders`
@@ -335,7 +358,7 @@ ALTER TABLE `user_addresses`
 -- AUTO_INCREMENT for table `cart_item`
 --
 ALTER TABLE `cart_item`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -344,22 +367,28 @@ ALTER TABLE `category`
   MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT for table `favorites`
+--
+ALTER TABLE `favorites`
+  MODIFY `favorite_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 
 --
 -- AUTO_INCREMENT for table `product_image`
@@ -389,6 +418,13 @@ ALTER TABLE `user_addresses`
 ALTER TABLE `cart_item`
   ADD CONSTRAINT `cart_item_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `cart_item_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `favorites`
+--
+ALTER TABLE `favorites`
+  ADD CONSTRAINT `fk_favorites_product` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_favorites_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `orders`

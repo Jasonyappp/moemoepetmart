@@ -374,3 +374,37 @@ function clear_cart() {
     }
 }
 
+
+// Add this to your _base.php file (at the end, after other functions)
+
+// Function to add product to user's favorites
+function add_to_favorites($product_id) {
+    global $_db;
+    
+    if (!is_login() || user_role() !== 'member') {
+        return ['success' => false, 'message' => 'Please login as member to add favorites ♡'];
+    }
+
+    $user_id = current_user()->id;
+    
+    // Validate product exists and is active
+    $stm = $_db->prepare("SELECT product_id FROM product WHERE product_id = ? AND is_active = 1");
+    $stm->execute([$product_id]);
+    if (!$stm->fetch()) {
+        return ['success' => false, 'message' => 'Invalid product!'];
+    }
+
+    // Check if already favorited
+    $stm_check = $_db->prepare("SELECT favorite_id FROM favorites WHERE user_id = ? AND product_id = ?");
+    $stm_check->execute([$user_id, $product_id]);
+    if ($stm_check->fetch()) {
+        return ['success' => false, 'message' => 'Already in favorites ♡'];
+    }
+
+    // Add to favorites
+    $stm_insert = $_db->prepare("INSERT INTO favorites (user_id, product_id) VALUES (?, ?)");
+    $stm_insert->execute([$user_id, $product_id]);
+
+    return ['success' => true, 'message' => 'Added to favorites successfully ♡'];
+}
+?>

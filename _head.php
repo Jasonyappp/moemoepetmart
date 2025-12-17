@@ -63,6 +63,7 @@
                         <a href="/profile.php">Profile</a>
                         <a href="/member/my_purchase.php">My Purchases</a>
                         <a href="/member/order_history.php">Order History</a>
+                        <a href="/member/favorites.php">My Favorites ♡</a>
                     <?php elseif (user_role() === 'admin'): ?>
                         <a href="/admin.php">Admin Dashboard</a>
                     <?php endif; ?>
