@@ -48,8 +48,23 @@ if (is_post()) {
     if ($password === '') {
         $_err['password'] = 'Password is required~';
         $hasError = true;
-    } elseif (strlen($password) < 4) {
-        $_err['password'] = 'Password must be at least 4 characters ♡';
+    } elseif (strlen($password) < 8) {  // Increased min length to 8 for better security
+        $_err['password'] = 'Password must be at least 8 characters ♡';
+        $hasError = true;
+    } elseif (strlen($password) > 128) {  // Added max length to prevent abuse
+        $_err['password'] = 'Password is too long! Maximum 128 characters ♡';
+        $hasError = true;
+    } elseif (!preg_match('/[A-Z]/', $password)) {
+        $_err['password'] = 'Password must include at least one uppercase letter ♡';
+        $hasError = true;
+    } elseif (!preg_match('/[a-z]/', $password)) {
+        $_err['password'] = 'Password must include at least one lowercase letter ♡';
+        $hasError = true;
+    } elseif (!preg_match('/\d/', $password)) {
+        $_err['password'] = 'Password must include at least one number ♡';
+        $hasError = true;
+    } elseif (!preg_match('/[!@#$%^&*(),.?":{}|<>]/', $password)) {
+        $_err['password'] = 'Password must include at least one special character ♡';
         $hasError = true;
     } elseif ($password !== $confirm) {
         $_err['confirm'] = 'Passwords do not match!';
@@ -119,6 +134,19 @@ if (is_post()) {
                 Register ♡
             </button>
         </form>
+
+        <!-- Security Tips -->
+        <div class="security-tips" style="margin-top: 20px; padding: 10px; background: #fff0f5; border-radius: 8px; font-size: 0.9rem;">
+            <h4>Password Tips for Security:</h4>
+            <ul>
+                <li>At least 8 characters long</li>
+                <li>Include uppercase and lowercase letters</li>
+                <li>Include at least one number</li>
+                <li>Include at least one special character (e.g., !@#$%)</li>
+                <li>Avoid using personal information or common words</li>
+                <li>Don't reuse passwords from other sites</li>
+            </ul>
+        </div>
 
         <div class="login-footer">
             <p>Already have an account?</p>
