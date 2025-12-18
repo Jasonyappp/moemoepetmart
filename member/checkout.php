@@ -8,12 +8,50 @@ if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
 }
 
 $user = current_user();
+
+// ========== GET USER'S ADDRESSES ==========
+$stm = $_db->prepare("SELECT * FROM user_addresses WHERE user_id = ? ORDER BY created_at DESC");
+$stm->execute([$user->id]);
+$addresses = $stm->fetchAll();
+
 $cart = $_SESSION['cart'];
 $total = array_sum(array_map(function($item) { return $item['price'] * $item['qty']; }, $cart));
 
 $_err = [];
 
 if (is_post()) {
+    // ========== ADDRESS HANDLING ==========
+    $shipping_address = '';
+    
+    // Check for new address first
+    $new_address = trim(post('new_full_address'));
+    if (!empty($new_address)) {
+        $shipping_address = $new_address;
+        
+        // Save if requested
+        if (isset($_POST['save_new_address'])) {
+            $address_name = trim(post('new_address_name')) ?: 'Home';
+            $stm = $_db->prepare("INSERT INTO user_addresses (user_id, address_name, full_address) VALUES (?, ?, ?)");
+            $stm->execute([$user->id, $address_name, $new_address]);
+        }
+    } 
+    // Otherwise check for saved address
+    else {
+        $selected_id = post('selected_address_id');
+        if ($selected_id && $selected_id !== 'new') {
+            $stm = $_db->prepare("SELECT full_address FROM user_addresses WHERE id = ? AND user_id = ?");
+            $stm->execute([$selected_id, $user->id]);
+            $address = $stm->fetch();
+            if ($address) {
+                $shipping_address = $address->full_address;
+            }
+        }
+    }
+    
+    if (empty($shipping_address)) {
+        $_err['address'] = 'Please provide a shipping address';
+    }
+
     $payment_method = post('payment_method', 'cod');
 
     if (!in_array($payment_method, ['cod', 'card', 'tng'])) {
@@ -67,9 +105,9 @@ if (is_post()) {
                 'tng' => 'Touch \'n Go'
             ][$payment_method];
 
-            // Insert order with card_last4
-            $stm = $_db->prepare("INSERT INTO orders (user_id, total_amount, order_date, order_status, payment_method, card_last4) VALUES (?, ?, NOW(), ?, ?, ?)");
-            $stm->execute([$user->id, $total, $status, $payment_display, ($payment_method === 'card' ? $card_last4 : null)]);
+            // Insert order with shipping address
+            $stm = $_db->prepare("INSERT INTO orders (user_id, shipping_address, total_amount, order_date, order_status, payment_method, card_last4) VALUES (?, ?, ?, NOW(), ?, ?, ?)");
+            $stm->execute([$user->id, $shipping_address, $total, $status, $payment_display, ($payment_method === 'card' ? $card_last4 : null)]);
             $order_id = $_db->lastInsertId();
 
             // Insert items + update stock
@@ -126,6 +164,73 @@ include '../_head.php';
     </table>
 
     <form method="post">
+        <!-- ========== SHIPPING ADDRESS SECTION ========== -->
+        <div class="address-checkout-section">
+            <h3 style="margin:2rem 0 1rem; color:#ff5722;">🏠 Shipping Address ♡</h3>
+            
+            <?php if (isset($_err['address'])): ?>
+                <div class="error" style="color:#ff4757; margin-bottom:10px;"><?= $_err['address'] ?></div>
+            <?php endif; ?>
+            
+            <?php if (!empty($addresses)): ?>
+                <div class="saved-addresses-checkout">
+                    <p style="margin-bottom: 15px; color: #666;">Select a saved address or add a new one:</p>
+                    
+                    <div class="address-options">
+                        <?php foreach ($addresses as $index => $addr): ?>
+                            <div class="address-option">
+                                <input type="radio" 
+                                       id="address_<?= $addr->id ?>" 
+                                       name="selected_address_id" 
+                                       value="<?= $addr->id ?>"
+                                       <?= $index === 0 ? 'checked' : '' ?>>
+                                <label for="address_<?= $addr->id ?>">
+                                    <strong style="color: #ff1493;"><?= encode($addr->address_name) ?>:</strong><br>
+                                    <?= nl2br(encode($addr->full_address)) ?>
+                                </label>
+                            </div>
+                        <?php endforeach; ?>
+                        
+                        <div class="address-option">
+                            <input type="radio" id="new_address" name="selected_address_id" value="new">
+                            <label for="new_address">
+                                <strong style="color: #ff1493;">➕ Add New Address</strong><br>
+                                <em style="color: #888; font-size: 0.9em;">Enter a different shipping address</em>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            <?php else: ?>
+                <div style="background: #fff0f5; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                    <p style="color: #ff69b4; text-align: center;">
+                        No saved addresses yet. Please enter your shipping address below.
+                    </p>
+                    <input type="hidden" name="selected_address_id" value="new">
+                </div>
+            <?php endif; ?>
+            
+            <!-- New Address Form -->
+            <div id="new_address_form" style="<?= empty($addresses) ? '' : 'display: none;' ?>; margin-top: 20px; padding: 20px; background: #fff0f5; border-radius: 15px; border: 1px dashed #ff69b4;">
+                <h4 style="color: #ff1493; margin-bottom: 15px;">Enter New Shipping Address</h4>
+                
+                <div style="margin-bottom: 15px;">
+                    <input type="text" name="new_address_name" placeholder="Address Name (Optional): Home, Work, etc." 
+                           style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ffb6c1; margin-bottom: 10px;">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <textarea name="new_full_address" rows="3" placeholder="Full Address (Required): Street, City, State, ZIP Code, Country" 
+                              style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ffb6c1;"></textarea>
+                </div>
+                
+                <label style="display: block; margin-bottom: 15px; color: #666;">
+                    <input type="checkbox" name="save_new_address" checked> 
+                    Save this address for future orders
+                </label>
+            </div>
+        </div>
+        <!-- ========== END SHIPPING ADDRESS SECTION ========== -->
+
         <h3 style="margin:2rem 0 1rem; color:#ff5722;">Payment Method ♡</h3>
         <table class="payment-table">
             <tr>
@@ -166,6 +271,13 @@ include '../_head.php';
 
 <script>
 $(document).ready(function() {
+    // Toggle new address form
+    function toggleAddressForm() {
+        const newAddressSelected = $('#new_address').is(':checked');
+        $('#new_address_form').toggle(newAddressSelected || $('.address-option').length === 0);
+    }
+    
+    // Toggle card fields
     function toggleCardFields() {
         if ($('input[name="payment_method"]:checked').val() === 'card') {
             $('#card-fields').show();
@@ -174,40 +286,31 @@ $(document).ready(function() {
         }
     }
 
+    // Initialize
+    toggleAddressForm();
     toggleCardFields();
+    
+    // Event listeners
+    $('input[name="selected_address_id"]').on('change', toggleAddressForm);
     $('input[name="payment_method"]').on('change', toggleCardFields);
-
+    
+    // Card number formatting
     $('input[name="card_number"]').on('input', function() {
         let v = this.value.replace(/\D/g, '').match(/(\d{0,4})(\d{0,4})(\d{0,4})(\d{0,4})/);
         this.value = v.slice(1).filter(Boolean).join(' ');
     });
-
+    
+    // Expiry formatting
     $('input[name="expiry"]').on('input', function() {
         let v = this.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,2})/);
         this.value = v[1] + (v[2] ? '/' + v[2] : '');
     });
-
+    
+    // CVV formatting
     $('input[name="cvv"]').on('input', function() {
         this.value = this.value.replace(/\D/g, '').slice(0, 3);
     });
 });
 </script>
-
-<style>
-.cart-summary {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 2rem 0;
-}
-.cart-summary th, .cart-summary td {
-    border: 1px solid #ff69b4;
-    padding: 1rem;
-    text-align: left;
-}
-.cart-summary th {
-    background: #fff0f5;
-    font-weight: bold;
-}
-</style>
 
 <?php include '../_foot.php'; ?>

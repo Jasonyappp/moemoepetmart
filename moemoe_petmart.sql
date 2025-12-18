@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 18, 2025 at 10:49 AM
+-- Generation Time: Dec 18, 2025 at 03:13 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -81,6 +81,7 @@ CREATE TABLE `favorites` (
 CREATE TABLE `orders` (
   `order_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
+  `shipping_address` text DEFAULT NULL,
   `total_amount` decimal(10,2) NOT NULL,
   `payment_method` varchar(50) DEFAULT NULL,
   `card_last4` varchar(4) DEFAULT NULL,
@@ -96,33 +97,41 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`order_id`, `user_id`, `total_amount`, `payment_method`, `card_last4`, `qr_code`, `qr_generated_at`, `order_date`, `order_status`, `status`, `return_reason`) VALUES
-(10, 6, 399.00, NULL, NULL, NULL, NULL, '2025-12-13 13:04:56', 'Pending Payment', 'Pending Payment', NULL),
-(11, 6, 39.99, NULL, NULL, NULL, NULL, '2025-12-13 13:06:26', 'Pending Payment', 'Pending Payment', NULL),
-(48, 7, 39.99, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:04:42', 'To Ship', 'Pending Payment', NULL),
-(49, 7, 399.00, 'Touch n Go', NULL, '/images_tng/tng_qr.jpg', '2025-12-14 15:05:33', '2025-12-14 15:05:19', 'To Ship', 'Pending Payment', NULL),
-(50, 7, 438.99, 'Credit/Debit Card', '1234', NULL, NULL, '2025-12-14 15:07:10', 'To Ship', 'Pending Payment', NULL),
-(51, 7, 39.99, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:14:06', 'To Ship', 'Pending Payment', NULL),
-(52, 7, 399.00, 'Credit/Debit Card', '1234', NULL, NULL, '2025-12-14 15:14:49', 'To Ship', 'Pending Payment', NULL),
-(53, 7, 438.99, 'Touch n Go', NULL, '/images_tng/tng_qr.jpg', '2025-12-14 15:15:44', '2025-12-14 15:15:27', 'To Ship', 'Pending Payment', NULL),
-(54, 7, 399.00, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:24:59', 'To Ship', 'Pending Payment', NULL),
-(55, 7, 39.99, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:29:55', 'To Ship', 'Pending Payment', NULL),
-(56, 7, 399.00, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:32:45', 'Completed', 'Pending Payment', NULL),
-(57, 7, 39.99, 'Touch n Go', NULL, '/images_tng/tng_qr.jpeg', '2025-12-14 16:05:28', '2025-12-14 16:03:18', 'Cancelled', 'Pending Payment', NULL),
-(58, 6, 399.00, 'Touch n Go', NULL, '/images_tng/tng_qr.jpeg', '2025-12-14 22:18:02', '2025-12-14 22:17:42', 'Cancelled', 'Pending Payment', NULL),
-(100, 7, 4.99, 'Touch \'n Go', NULL, NULL, NULL, '2025-12-18 02:52:43', 'Cancelled', 'Pending Payment', NULL),
-(101, 7, 139.90, 'Touch \'n Go', NULL, NULL, NULL, '2025-12-18 02:55:30', 'Cancelled', 'Pending Payment', NULL),
-(102, 7, 35.90, 'Touch \'n Go', NULL, NULL, NULL, '2025-12-18 16:24:44', 'To Ship', 'Pending Payment', NULL),
-(103, 7, 35.90, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-18 16:46:27', 'Cancelled', 'Pending Payment', NULL),
-(105, 7, 15.60, 'Touch \'n Go', NULL, NULL, NULL, '2025-12-18 16:48:08', 'To Ship', 'Pending Payment', NULL),
-(107, 7, 10.90, 'Touch \'n Go', NULL, NULL, NULL, '2025-12-18 17:00:16', 'Shipped', 'Pending Payment', NULL),
-(108, 7, 15.60, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-18 17:08:52', 'Pending Payment', 'Pending Payment', NULL),
-(109, 7, 4.99, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-18 17:17:48', 'Cancelled', 'Pending Payment', NULL),
-(110, 7, 43.90, 'Touch \'n Go', NULL, NULL, NULL, '2025-12-18 17:18:20', 'To Ship', 'Pending Payment', NULL),
-(111, 7, 55.90, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-18 17:22:17', 'Cancelled', 'Pending Payment', NULL),
-(112, 7, 10.90, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-18 17:27:32', 'Cancelled', 'Pending Payment', NULL),
-(113, 7, 43.90, 'Credit/Debit Card', '2222', NULL, NULL, '2025-12-18 17:28:37', 'To Ship', 'Pending Payment', NULL),
-(114, 7, 239.00, 'Touch \'n Go', NULL, NULL, NULL, '2025-12-18 17:29:06', 'Return/Refund', 'Pending Payment', 'Wrong item received');
+INSERT INTO `orders` (`order_id`, `user_id`, `shipping_address`, `total_amount`, `payment_method`, `card_last4`, `qr_code`, `qr_generated_at`, `order_date`, `order_status`, `status`, `return_reason`) VALUES
+(10, 6, NULL, 399.00, NULL, NULL, NULL, NULL, '2025-12-13 13:04:56', 'Pending Payment', 'Pending Payment', NULL),
+(11, 6, NULL, 39.99, NULL, NULL, NULL, NULL, '2025-12-13 13:06:26', 'Pending Payment', 'Pending Payment', NULL),
+(48, 7, NULL, 39.99, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:04:42', 'To Ship', 'Pending Payment', NULL),
+(49, 7, NULL, 399.00, 'Touch n Go', NULL, '/images_tng/tng_qr.jpg', '2025-12-14 15:05:33', '2025-12-14 15:05:19', 'To Ship', 'Pending Payment', NULL),
+(50, 7, NULL, 438.99, 'Credit/Debit Card', '1234', NULL, NULL, '2025-12-14 15:07:10', 'To Ship', 'Pending Payment', NULL),
+(51, 7, NULL, 39.99, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:14:06', 'To Ship', 'Pending Payment', NULL),
+(52, 7, NULL, 399.00, 'Credit/Debit Card', '1234', NULL, NULL, '2025-12-14 15:14:49', 'To Ship', 'Pending Payment', NULL),
+(53, 7, NULL, 438.99, 'Touch n Go', NULL, '/images_tng/tng_qr.jpg', '2025-12-14 15:15:44', '2025-12-14 15:15:27', 'To Ship', 'Pending Payment', NULL),
+(54, 7, NULL, 399.00, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:24:59', 'To Ship', 'Pending Payment', NULL),
+(55, 7, NULL, 39.99, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:29:55', 'To Ship', 'Pending Payment', NULL),
+(56, 7, NULL, 399.00, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:32:45', 'Completed', 'Pending Payment', NULL),
+(57, 7, NULL, 39.99, 'Touch n Go', NULL, '/images_tng/tng_qr.jpeg', '2025-12-14 16:05:28', '2025-12-14 16:03:18', 'Cancelled', 'Pending Payment', NULL),
+(58, 6, NULL, 399.00, 'Touch n Go', NULL, '/images_tng/tng_qr.jpeg', '2025-12-14 22:18:02', '2025-12-14 22:17:42', 'Cancelled', 'Pending Payment', NULL),
+(100, 7, NULL, 4.99, 'Touch \'n Go', NULL, NULL, NULL, '2025-12-18 02:52:43', 'Cancelled', 'Pending Payment', NULL),
+(101, 7, NULL, 139.90, 'Touch \'n Go', NULL, NULL, NULL, '2025-12-18 02:55:30', 'Cancelled', 'Pending Payment', NULL),
+(102, 7, NULL, 35.90, 'Touch \'n Go', NULL, NULL, NULL, '2025-12-18 16:24:44', 'To Ship', 'Pending Payment', NULL),
+(103, 7, NULL, 35.90, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-18 16:46:27', 'Cancelled', 'Pending Payment', NULL),
+(105, 7, NULL, 15.60, 'Touch \'n Go', NULL, NULL, NULL, '2025-12-18 16:48:08', 'To Ship', 'Pending Payment', NULL),
+(107, 7, NULL, 10.90, 'Touch \'n Go', NULL, NULL, NULL, '2025-12-18 17:00:16', 'Shipped', 'Pending Payment', NULL),
+(108, 7, NULL, 15.60, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-18 17:08:52', 'Pending Payment', 'Pending Payment', NULL),
+(109, 7, NULL, 4.99, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-18 17:17:48', 'Cancelled', 'Pending Payment', NULL),
+(110, 7, NULL, 43.90, 'Touch \'n Go', NULL, NULL, NULL, '2025-12-18 17:18:20', 'To Ship', 'Pending Payment', NULL),
+(111, 7, NULL, 55.90, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-18 17:22:17', 'Cancelled', 'Pending Payment', NULL),
+(112, 7, NULL, 10.90, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-18 17:27:32', 'Cancelled', 'Pending Payment', NULL),
+(113, 7, NULL, 43.90, 'Credit/Debit Card', '2222', NULL, NULL, '2025-12-18 17:28:37', 'To Ship', 'Pending Payment', NULL),
+(114, 7, NULL, 239.00, 'Touch \'n Go', NULL, NULL, NULL, '2025-12-18 17:29:06', 'Return/Refund', 'Pending Payment', 'Wrong item received'),
+(115, 5, NULL, 254.60, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-18 21:08:04', 'Cancelled', 'Pending Payment', NULL),
+(116, 5, '89, Jalan Bukit Oden 2, 54000 Kuala Lumpur', 152.90, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-18 21:39:25', 'Cancelled', 'Pending Payment', NULL),
+(117, 5, '45, Jalan Bintang 3, 58100 Kuala Lumpur', 155.50, 'Touch \'n Go', NULL, NULL, NULL, '2025-12-18 21:50:58', 'To Ship', 'Pending Payment', NULL),
+(118, 5, '45, Jalan Bintang 3, 58100 Kuala Lumpur', 15.89, 'Touch \'n Go', NULL, NULL, NULL, '2025-12-18 21:52:06', 'To Ship', 'Pending Payment', NULL),
+(119, 5, '89, Jalan Bukit Oden 2, 54000 Kuala Lumpur', 139.90, 'Touch \'n Go', NULL, NULL, NULL, '2025-12-18 22:00:09', 'Cancelled', 'Pending Payment', NULL),
+(120, 5, '89, Jalan Bukit Oden 2, 54000 Kuala Lumpur', 4.99, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-18 22:03:09', 'Cancelled', 'Pending Payment', NULL),
+(121, 5, '45, Jalan Bintang 3, 58100 Kuala Lumpur', 43.90, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-18 22:06:51', 'Cancelled', 'Pending Payment', NULL),
+(122, 5, '89, Jalan Bukit Oden 2, 54000 Kuala Lumpur', 139.90, 'Touch \'n Go', NULL, NULL, NULL, '2025-12-18 22:11:20', 'To Ship', 'Pending Payment', NULL);
 
 -- --------------------------------------------------------
 
@@ -170,7 +179,19 @@ INSERT INTO `order_items` (`item_id`, `order_id`, `product_id`, `quantity`, `uni
 (117, 111, 93, 1, 55.90),
 (118, 112, 94, 1, 10.90),
 (119, 113, 2, 1, 43.90),
-(120, 114, 92, 1, 239.00);
+(120, 114, 92, 1, 239.00),
+(121, 115, 95, 1, 15.60),
+(122, 115, 92, 1, 239.00),
+(123, 116, 2, 1, 43.90),
+(124, 116, 3, 1, 109.00),
+(125, 117, 89, 1, 139.90),
+(126, 117, 95, 1, 15.60),
+(127, 118, 96, 1, 4.99),
+(128, 118, 94, 1, 10.90),
+(129, 119, 89, 1, 139.90),
+(130, 120, 96, 1, 4.99),
+(131, 121, 2, 1, 43.90),
+(132, 122, 89, 1, 139.90);
 
 -- --------------------------------------------------------
 
@@ -197,15 +218,15 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`product_id`, `product_code`, `product_name`, `description`, `price`, `stock_quantity`, `category_id`, `is_active`, `created_at`, `updated_at`, `photo_name`) VALUES
-(2, 'CAG0001', 'Luxury Cat Villa Carrier', '3-level cage with wheel', 43.90, 17, 2, 1, '2025-11-23 23:22:24', '2025-12-18 17:28:37', 'prod_693f05ea19699.jpg'),
-(3, 'FOD0001', 'Royal Canin Puppy 10kg', '~ Each pack is designed for adult dogs and available in different sizes to meet your feeding needs.', 109.00, 85, 3, 1, '2025-11-23 23:22:24', '2025-12-18 17:32:04', 'prod_693f165ba2028.jpg'),
-(89, 'CAG0002', 'Big Home Shape Cage', 'Available for cat & dog', 139.90, 15, 2, 1, '2025-12-15 03:00:35', '2025-12-18 17:31:43', '693f095361e88.jpg'),
+(2, 'CAG0001', 'Luxury Cat Villa Carrier', '3-level cage with wheel', 43.90, 15, 2, 1, '2025-11-23 23:22:24', '2025-12-18 22:06:51', 'prod_693f05ea19699.jpg'),
+(3, 'FOD0001', 'Royal Canin Puppy 10kg', '~ Each pack is designed for adult dogs and available in different sizes to meet your feeding needs.', 109.00, 84, 3, 1, '2025-11-23 23:22:24', '2025-12-18 21:39:25', 'prod_693f165ba2028.jpg'),
+(89, 'CAG0002', 'Big Home Shape Cage', 'Available for cat & dog', 139.90, 12, 2, 1, '2025-12-15 03:00:35', '2025-12-18 22:11:20', '693f095361e88.jpg'),
 (91, 'CAG0004', 'Standard Pet Cage', 'Normal cage for our cute pets', 35.90, 43, 2, 1, '2025-12-15 03:04:33', '2025-12-18 16:46:27', 'prod_693f0bd3c4960.jpg'),
-(92, 'CAG0005', 'Luxury Hamster Villa Cage', 'Benefit:\r\n-Can put many hamsters', 239.00, 20, 2, 1, '2025-12-15 03:06:43', '2025-12-18 17:31:33', '693f0ac353967.jpg'),
+(92, 'CAG0005', 'Luxury Hamster Villa Cage', 'Benefit:\r\n-Can put many hamsters', 239.00, 19, 2, 1, '2025-12-15 03:06:43', '2025-12-18 21:08:04', '693f0ac353967.jpg'),
 (93, 'CAG0003', 'Transparent Carries', 'Benefits:\r\n- Easily see your cutest pets', 55.90, 25, 2, 1, '2025-12-15 03:15:09', '2025-12-18 17:31:25', '693f0cbd71b9b.jpg'),
-(94, 'ACC0001', 'Pet Automatic Retractable Leash', '• Length Options: 3m / 5m\r\n• Material: Polyester + PP', 10.90, 38, 5, 1, '2025-12-15 03:24:38', '2025-12-18 17:27:32', 'prod_693f106d7be39.jpg'),
-(95, 'CLR0001', 'Pet Hair Remover Comb', '✔️Simply push the button, wipe, making it super simple to remove all the hair from the brush, so it\'s ready for the next time use.\r\n✔️Suit for dog, cat, rabbits and other pets, making them neat and clean.', 15.60, 40, 4, 1, '2025-12-15 03:38:35', '2025-12-18 17:08:52', '693f123b2857e.jpg'),
-(96, 'TOY0001', 'Cat Teaser Stick Toys with Bell', '🐾 Give your pets endless fun with this Cat Teaser Stick Toy with Bell. Interactive design, featuring a dangling bell and feather that will keep your cat entertained and engaged for hours!', 4.99, 25, 1, 1, '2025-12-15 03:43:09', '2025-12-18 17:17:48', '693f134dee5c4.jpg');
+(94, 'ACC0001', 'Pet Automatic Retractable Leash', '• Length Options: 3m / 5m\r\n• Material: Polyester + PP', 10.90, 37, 5, 1, '2025-12-15 03:24:38', '2025-12-18 21:52:06', 'prod_693f106d7be39.jpg'),
+(95, 'CLR0001', 'Pet Hair Remover Comb', '✔️Simply push the button, wipe, making it super simple to remove all the hair from the brush, so it\'s ready for the next time use.\r\n✔️Suit for dog, cat, rabbits and other pets, making them neat and clean.', 15.60, 38, 4, 1, '2025-12-15 03:38:35', '2025-12-18 21:50:58', '693f123b2857e.jpg'),
+(96, 'TOY0001', 'Cat Teaser Stick Toys with Bell', '🐾 Give your pets endless fun with this Cat Teaser Stick Toy with Bell. Interactive design, featuring a dangling bell and feather that will keep your cat entertained and engaged for hours!', 4.99, 23, 1, 1, '2025-12-15 03:43:09', '2025-12-18 22:03:09', '693f134dee5c4.jpg');
 
 -- --------------------------------------------------------
 
@@ -289,7 +310,8 @@ CREATE TABLE `user_addresses` (
 
 INSERT INTO `user_addresses` (`id`, `user_id`, `address_name`, `full_address`, `created_at`) VALUES
 (2, 5, 'Home', '21, Jalan CapyBara 520, 57000 Kuala Lumpur', '2025-12-16 11:35:45'),
-(3, 5, 'Mama house', '45, Jalan Bintang 3, 58100 Kuala Lumpur', '2025-12-16 11:36:15');
+(3, 5, 'Mama house', '45, Jalan Bintang 3, 58100 Kuala Lumpur', '2025-12-16 11:36:15'),
+(5, 5, 'Grandpa House', '89, Jalan Bukit Oden 2, 54000 Kuala Lumpur', '2025-12-18 13:39:25');
 
 --
 -- Indexes for dumped tables
@@ -379,7 +401,7 @@ ALTER TABLE `user_addresses`
 -- AUTO_INCREMENT for table `cart_item`
 --
 ALTER TABLE `cart_item`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=166;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=178;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -397,13 +419,13 @@ ALTER TABLE `favorites`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=123;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=133;
 
 --
 -- AUTO_INCREMENT for table `product`
@@ -427,7 +449,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_addresses`
 --
 ALTER TABLE `user_addresses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables

@@ -77,6 +77,14 @@ include '../_head.php';
         </tr>
     </table>
 
+        <!-- Shipping Address Display -->
+    <div style="background:#fff0f5; padding:20px; border-radius:15px; margin:20px 0;">
+        <h3 style="color:#ff1493; margin-bottom:15px; text-align:center;">Shipping Address ♡</h3>
+        <div style="font-size:1.2rem; line-height:1.6; text-align:center;">
+            <?= nl2br(encode($o->shipping_address)) ?>
+        </div>
+    </div>
+
     <p style="text-align:center; margin:30px 0; color:#888; font-style:italic;">
         Your order is being prepared with love~ ♡ We'll notify you when it's shipped!
     </p>
