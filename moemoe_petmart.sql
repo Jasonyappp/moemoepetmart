@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 17, 2025 at 03:24 AM
+-- Generation Time: Dec 18, 2025 at 10:49 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -88,29 +88,41 @@ CREATE TABLE `orders` (
   `qr_generated_at` datetime DEFAULT NULL,
   `order_date` datetime NOT NULL DEFAULT current_timestamp(),
   `order_status` varchar(50) DEFAULT 'Pending Payment',
-  `status` enum('Pending Payment','To Ship','Shipped','Completed','Cancelled','Return/Refund') NOT NULL DEFAULT 'Pending Payment'
+  `status` enum('Pending Payment','To Ship','Shipped','Completed','Cancelled','Return/Refund') NOT NULL DEFAULT 'Pending Payment',
+  `return_reason` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`order_id`, `user_id`, `total_amount`, `payment_method`, `card_last4`, `qr_code`, `qr_generated_at`, `order_date`, `order_status`, `status`) VALUES
-(10, 6, 399.00, NULL, NULL, NULL, NULL, '2025-12-13 13:04:56', 'Pending Payment', 'Pending Payment'),
-(11, 6, 39.99, NULL, NULL, NULL, NULL, '2025-12-13 13:06:26', 'Pending Payment', 'Pending Payment'),
-(48, 7, 39.99, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:04:42', 'To Ship', 'Pending Payment'),
-(49, 7, 399.00, 'Touch n Go', NULL, '/images_tng/tng_qr.jpg', '2025-12-14 15:05:33', '2025-12-14 15:05:19', 'To Ship', 'Pending Payment'),
-(50, 7, 438.99, 'Credit/Debit Card', '1234', NULL, NULL, '2025-12-14 15:07:10', 'To Ship', 'Pending Payment'),
-(51, 7, 39.99, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:14:06', 'To Ship', 'Pending Payment'),
-(52, 7, 399.00, 'Credit/Debit Card', '1234', NULL, NULL, '2025-12-14 15:14:49', 'To Ship', 'Pending Payment'),
-(53, 7, 438.99, 'Touch n Go', NULL, '/images_tng/tng_qr.jpg', '2025-12-14 15:15:44', '2025-12-14 15:15:27', 'To Ship', 'Pending Payment'),
-(54, 7, 399.00, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:24:59', 'To Ship', 'Pending Payment'),
-(55, 7, 39.99, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:29:55', 'To Ship', 'Pending Payment'),
-(56, 7, 399.00, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:32:45', 'To Ship', 'Pending Payment'),
-(57, 7, 39.99, 'Touch n Go', NULL, '/images_tng/tng_qr.jpeg', '2025-12-14 16:05:28', '2025-12-14 16:03:18', 'Cancelled', 'Pending Payment'),
-(58, 6, 399.00, 'Touch n Go', NULL, '/images_tng/tng_qr.jpeg', '2025-12-14 22:18:02', '2025-12-14 22:17:42', 'Cancelled', 'Pending Payment'),
-(59, 6, 7385.00, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-15 00:07:30', 'Pending Payment', 'Pending Payment'),
-(60, 6, 299.76, 'Touch n Go', NULL, '/images_tng/tng_qr.jpeg', '2025-12-17 09:52:48', '2025-12-17 09:52:38', 'To Ship', 'Pending Payment');
+INSERT INTO `orders` (`order_id`, `user_id`, `total_amount`, `payment_method`, `card_last4`, `qr_code`, `qr_generated_at`, `order_date`, `order_status`, `status`, `return_reason`) VALUES
+(10, 6, 399.00, NULL, NULL, NULL, NULL, '2025-12-13 13:04:56', 'Pending Payment', 'Pending Payment', NULL),
+(11, 6, 39.99, NULL, NULL, NULL, NULL, '2025-12-13 13:06:26', 'Pending Payment', 'Pending Payment', NULL),
+(48, 7, 39.99, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:04:42', 'To Ship', 'Pending Payment', NULL),
+(49, 7, 399.00, 'Touch n Go', NULL, '/images_tng/tng_qr.jpg', '2025-12-14 15:05:33', '2025-12-14 15:05:19', 'To Ship', 'Pending Payment', NULL),
+(50, 7, 438.99, 'Credit/Debit Card', '1234', NULL, NULL, '2025-12-14 15:07:10', 'To Ship', 'Pending Payment', NULL),
+(51, 7, 39.99, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:14:06', 'To Ship', 'Pending Payment', NULL),
+(52, 7, 399.00, 'Credit/Debit Card', '1234', NULL, NULL, '2025-12-14 15:14:49', 'To Ship', 'Pending Payment', NULL),
+(53, 7, 438.99, 'Touch n Go', NULL, '/images_tng/tng_qr.jpg', '2025-12-14 15:15:44', '2025-12-14 15:15:27', 'To Ship', 'Pending Payment', NULL),
+(54, 7, 399.00, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:24:59', 'To Ship', 'Pending Payment', NULL),
+(55, 7, 39.99, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:29:55', 'To Ship', 'Pending Payment', NULL),
+(56, 7, 399.00, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-14 15:32:45', 'Completed', 'Pending Payment', NULL),
+(57, 7, 39.99, 'Touch n Go', NULL, '/images_tng/tng_qr.jpeg', '2025-12-14 16:05:28', '2025-12-14 16:03:18', 'Cancelled', 'Pending Payment', NULL),
+(58, 6, 399.00, 'Touch n Go', NULL, '/images_tng/tng_qr.jpeg', '2025-12-14 22:18:02', '2025-12-14 22:17:42', 'Cancelled', 'Pending Payment', NULL),
+(100, 7, 4.99, 'Touch \'n Go', NULL, NULL, NULL, '2025-12-18 02:52:43', 'Cancelled', 'Pending Payment', NULL),
+(101, 7, 139.90, 'Touch \'n Go', NULL, NULL, NULL, '2025-12-18 02:55:30', 'Cancelled', 'Pending Payment', NULL),
+(102, 7, 35.90, 'Touch \'n Go', NULL, NULL, NULL, '2025-12-18 16:24:44', 'To Ship', 'Pending Payment', NULL),
+(103, 7, 35.90, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-18 16:46:27', 'Cancelled', 'Pending Payment', NULL),
+(105, 7, 15.60, 'Touch \'n Go', NULL, NULL, NULL, '2025-12-18 16:48:08', 'To Ship', 'Pending Payment', NULL),
+(107, 7, 10.90, 'Touch \'n Go', NULL, NULL, NULL, '2025-12-18 17:00:16', 'Shipped', 'Pending Payment', NULL),
+(108, 7, 15.60, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-18 17:08:52', 'Pending Payment', 'Pending Payment', NULL),
+(109, 7, 4.99, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-18 17:17:48', 'Cancelled', 'Pending Payment', NULL),
+(110, 7, 43.90, 'Touch \'n Go', NULL, NULL, NULL, '2025-12-18 17:18:20', 'To Ship', 'Pending Payment', NULL),
+(111, 7, 55.90, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-18 17:22:17', 'Cancelled', 'Pending Payment', NULL),
+(112, 7, 10.90, 'Cash on Delivery', NULL, NULL, NULL, '2025-12-18 17:27:32', 'Cancelled', 'Pending Payment', NULL),
+(113, 7, 43.90, 'Credit/Debit Card', '2222', NULL, NULL, '2025-12-18 17:28:37', 'To Ship', 'Pending Payment', NULL),
+(114, 7, 239.00, 'Touch \'n Go', NULL, NULL, NULL, '2025-12-18 17:29:06', 'Return/Refund', 'Pending Payment', 'Wrong item received');
 
 -- --------------------------------------------------------
 
@@ -146,10 +158,19 @@ INSERT INTO `order_items` (`item_id`, `order_id`, `product_id`, `quantity`, `uni
 (59, 56, 3, 1, 399.00),
 (60, 57, 2, 1, 39.99),
 (61, 58, 3, 1, 399.00),
-(62, 59, 3, 15, 399.00),
-(63, 59, 89, 14, 100.00),
-(64, 60, 89, 2, 139.90),
-(65, 60, 96, 4, 4.99);
+(106, 100, 96, 1, 4.99),
+(107, 101, 89, 1, 139.90),
+(108, 102, 91, 1, 35.90),
+(109, 103, 91, 1, 35.90),
+(111, 105, 95, 1, 15.60),
+(113, 107, 94, 1, 10.90),
+(114, 108, 95, 1, 15.60),
+(115, 109, 96, 1, 4.99),
+(116, 110, 2, 1, 43.90),
+(117, 111, 93, 1, 55.90),
+(118, 112, 94, 1, 10.90),
+(119, 113, 2, 1, 43.90),
+(120, 114, 92, 1, 239.00);
 
 -- --------------------------------------------------------
 
@@ -176,15 +197,15 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`product_id`, `product_code`, `product_name`, `description`, `price`, `stock_quantity`, `category_id`, `is_active`, `created_at`, `updated_at`, `photo_name`) VALUES
-(2, 'CAG0001', 'Luxury Cat Villa Carrier', '3-level cage with wheel', 43.90, 25, 2, 1, '2025-11-23 23:22:24', '2025-12-15 02:46:02', 'prod_693f05ea19699.jpg'),
-(3, 'FOD0001', 'Royal Canin Puppy 10kg', '~ Each pack is designed for adult dogs and available in different sizes to meet your feeding needs.', 109.00, 90, 3, 1, '2025-11-23 23:22:24', '2025-12-15 03:56:11', 'prod_693f165ba2028.jpg'),
-(89, 'CAG0002', 'Big Home Shape Cage', 'Available for cat & dog', 139.90, 16, 2, 1, '2025-12-15 03:00:35', '2025-12-17 09:52:38', '693f095361e88.jpg'),
-(91, 'CAG0004', 'Standard Pet Cage', 'Normal cage for our cute pets', 35.90, 50, 2, 1, '2025-12-15 03:04:33', '2025-12-15 03:11:15', 'prod_693f0bd3c4960.jpg'),
-(92, 'CAG0005', 'Luxury Hamster Villa Cage', 'Benefit:\r\n-Can put many hamsters', 239.00, 12, 2, 1, '2025-12-15 03:06:43', '2025-12-15 03:06:43', '693f0ac353967.jpg'),
-(93, 'CAG0003', 'Transparent Carries', 'Benefits:\r\n- Easily see your cutest pets', 55.90, 24, 2, 1, '2025-12-15 03:15:09', '2025-12-15 03:15:09', '693f0cbd71b9b.jpg'),
-(94, 'ACC0001', 'Pet Automatic Retractable Leash', '• Length Options: 3m / 5m\r\n• Material: Polyester + PP', 10.90, 50, 5, 1, '2025-12-15 03:24:38', '2025-12-15 03:30:53', 'prod_693f106d7be39.jpg'),
-(95, 'CLR0001', 'Pet Hair Remover Comb', '✔️Simply push the button, wipe, making it super simple to remove all the hair from the brush, so it\'s ready for the next time use.\r\n✔️Suit for dog, cat, rabbits and other pets, making them neat and clean.', 15.60, 45, 4, 1, '2025-12-15 03:38:35', '2025-12-15 03:38:35', '693f123b2857e.jpg'),
-(96, 'TOY0001', 'Cat Teaser Stick Toys with Bell', '🐾 Give your pets endless fun with this Cat Teaser Stick Toy with Bell. Interactive design, featuring a dangling bell and feather that will keep your cat entertained and engaged for hours!', 4.99, 24, 1, 1, '2025-12-15 03:43:09', '2025-12-17 09:52:38', '693f134dee5c4.jpg');
+(2, 'CAG0001', 'Luxury Cat Villa Carrier', '3-level cage with wheel', 43.90, 17, 2, 1, '2025-11-23 23:22:24', '2025-12-18 17:28:37', 'prod_693f05ea19699.jpg'),
+(3, 'FOD0001', 'Royal Canin Puppy 10kg', '~ Each pack is designed for adult dogs and available in different sizes to meet your feeding needs.', 109.00, 85, 3, 1, '2025-11-23 23:22:24', '2025-12-18 17:32:04', 'prod_693f165ba2028.jpg'),
+(89, 'CAG0002', 'Big Home Shape Cage', 'Available for cat & dog', 139.90, 15, 2, 1, '2025-12-15 03:00:35', '2025-12-18 17:31:43', '693f095361e88.jpg'),
+(91, 'CAG0004', 'Standard Pet Cage', 'Normal cage for our cute pets', 35.90, 43, 2, 1, '2025-12-15 03:04:33', '2025-12-18 16:46:27', 'prod_693f0bd3c4960.jpg'),
+(92, 'CAG0005', 'Luxury Hamster Villa Cage', 'Benefit:\r\n-Can put many hamsters', 239.00, 20, 2, 1, '2025-12-15 03:06:43', '2025-12-18 17:31:33', '693f0ac353967.jpg'),
+(93, 'CAG0003', 'Transparent Carries', 'Benefits:\r\n- Easily see your cutest pets', 55.90, 25, 2, 1, '2025-12-15 03:15:09', '2025-12-18 17:31:25', '693f0cbd71b9b.jpg'),
+(94, 'ACC0001', 'Pet Automatic Retractable Leash', '• Length Options: 3m / 5m\r\n• Material: Polyester + PP', 10.90, 38, 5, 1, '2025-12-15 03:24:38', '2025-12-18 17:27:32', 'prod_693f106d7be39.jpg'),
+(95, 'CLR0001', 'Pet Hair Remover Comb', '✔️Simply push the button, wipe, making it super simple to remove all the hair from the brush, so it\'s ready for the next time use.\r\n✔️Suit for dog, cat, rabbits and other pets, making them neat and clean.', 15.60, 40, 4, 1, '2025-12-15 03:38:35', '2025-12-18 17:08:52', '693f123b2857e.jpg'),
+(96, 'TOY0001', 'Cat Teaser Stick Toys with Bell', '🐾 Give your pets endless fun with this Cat Teaser Stick Toy with Bell. Interactive design, featuring a dangling bell and feather that will keep your cat entertained and engaged for hours!', 4.99, 25, 1, 1, '2025-12-15 03:43:09', '2025-12-18 17:17:48', '693f134dee5c4.jpg');
 
 -- --------------------------------------------------------
 
@@ -358,7 +379,7 @@ ALTER TABLE `user_addresses`
 -- AUTO_INCREMENT for table `cart_item`
 --
 ALTER TABLE `cart_item`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=166;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -370,19 +391,19 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `favorites`
 --
 ALTER TABLE `favorites`
-  MODIFY `favorite_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `favorite_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
 
 --
 -- AUTO_INCREMENT for table `product`

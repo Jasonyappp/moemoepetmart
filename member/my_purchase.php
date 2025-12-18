@@ -67,7 +67,13 @@ $orders = $stm->fetchAll();
 ?>
 
 <div class="container">
-    <h2>My Purchases ♡</h2>
+    <div style="display: flex; justify-content: center; align-items: center; position: relative; margin-bottom: 2rem; height: 60px;">
+
+        <h2>My Purchases ♡</h2>
+        <a href="?tab=completed" style="color:#666; text-decoration:none; font-size:1rem; font-weight:normal; white-space: nowrap; margin-left: 380px;">
+                View Order History >
+        </a>
+    </div>
 
     <!-- Tabs like Shopee -->
     <div class="purchase-tabs">
@@ -106,18 +112,13 @@ $orders = $stm->fetchAll();
                     
                     <div class="order-actions">
                         <?php if ($order->order_status === 'Pending Payment'): ?>
-                            <a href="payment.php?id=<?= $order->order_id ?>" class="btn btn-pay">Pay Now ♡</a>
+                            <a href="cancel_order.php?id=<?= $order->order_id ?>" class="btn btn-cancel">Cancel Order ♡</a>
                         <?php elseif ($order->order_status === 'Shipped'): ?>
                             <a href="confirm_receive.php?id=<?= $order->order_id ?>" class="btn btn-receive">Confirm Received ♡</a>
+                        <?php elseif ($order->order_status === 'Completed'): ?>
+                            <a href="request_return.php?id=<?= $order->order_id ?>" class="btn btn-return">Request Return/Refund ♡</a>
                         <?php endif; ?>
-
-                        <!-- Always show View Details -->
                         <a href="order_detail.php?id=<?= $order->order_id ?>" class="btn btn-detail">View Details</a>
-
-                        <!-- Extra: View Invoice button ONLY for unpaid orders -->
-                        <?php if ($order->order_status === 'Pending Payment'): ?>
-                            <a href="invoice.php?id=<?= $order->order_id ?>" class="btn btn-invoice">View Invoice ♡</a>
-                        <?php endif; ?>
                     </div>
                 </div>
             <?php endforeach; ?>

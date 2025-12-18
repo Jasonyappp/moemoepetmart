@@ -302,3 +302,52 @@ document.querySelectorAll('.qty-plus').forEach(btn => {
     });
 });
 
+//payment
+// Card number formatting (XXXX XXXX XXXX XXXX)
+const cardNumber = document.querySelector('input[name="card_number"]');
+if (cardNumber) {
+    cardNumber.addEventListener('input', function() {
+        let v = this.value.replace(/\D/g, '').match(/(\d{0,4})(\d{0,4})(\d{0,4})(\d{0,4})/);
+        this.value = v.slice(1).filter(Boolean).join(' ');
+    });
+}
+
+// Expiry formatting (MM/YY)
+const expiry = document.querySelector('input[name="card_expiry"]');
+if (expiry) {
+    expiry.addEventListener('input', function() {
+        let v = this.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,2})/);
+        this.value = v[1] + (v[2] ? '/' + v[2] : '');
+    });
+}
+
+$(document).ready(function() {
+    // Function to show/hide card fields
+    function toggleCardFields() {
+        if ($('input[name="payment_method"]:checked').val() === 'card') {
+            $('#card-fields-row').show();
+        } else {
+            $('#card-fields-row').hide();
+        }
+    }
+
+    // Run immediately on page load (important for back button or pre-checked)
+    toggleCardFields();
+
+    // Run every time a payment method radio is changed
+    $('input[name="payment_method"]').on('change', toggleCardFields);
+
+    // Card number formatting: XXXX XXXX XXXX XXXX
+    $('input[name="card_number"]').on('input', function() {
+        let v = this.value.replace(/\D/g, '').match(/(\d{0,4})(\d{0,4})(\d{0,4})(\d{0,4})/);
+        this.value = v.slice(1).filter(Boolean).join(' ');
+    });
+
+    // Expiry date formatting: MM/YY
+    $('input[name="expiry"]').on('input', function() {
+        let v = this.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,2})/);
+        this.value = v[1] + (v[2] ? '/' + v[2] : '');
+    });
+});
+
+
