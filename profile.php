@@ -64,11 +64,32 @@ include '_head.php';
             <?php if (!empty($addresses)): ?>
                 <div class="address-list-simple">
                     <?php foreach ($addresses as $addr): ?>
-                        <div class="address-card-simple">
+                        <div class="address-card-simple" style="background: #fff0f5; padding: 15px; border-radius: 10px; margin-bottom: 15px; border-left: 4px solid #ff69b4;">
                             <?php if (!empty($addr->address_name)): ?>
-                                <div class="address-name"><?= encode($addr->address_name) ?></div>
+                                <div class="address-name" style="font-weight: bold; color: #ff1493; margin-bottom: 5px;">
+                                    <?= encode($addr->address_name) ?>
+                                </div>
                             <?php endif; ?>
-                            <div class="address-text"><?= nl2br(encode($addr->full_address)) ?></div>
+                            
+                            <?php if (!empty($addr->recipient_name)): ?>
+                                <div class="recipient-info" style="margin-bottom: 8px;">
+                                    <span style="color: #555;">
+                                        📦 <strong>To:</strong> <?= encode($addr->recipient_name) ?>
+                                    </span>
+                                    <br>
+                                    <span style="color: #555;">
+                                        📞 <strong>Phone:</strong> <?= encode($addr->recipient_phone) ?>
+                                    </span>
+                                </div>
+                            <?php endif; ?>
+                            
+                            <div class="address-text" style="color: #333; line-height: 1.4;">
+                                <?= nl2br(encode($addr->full_address)) ?>
+                            </div>
+                            
+                            <div class="address-date" style="margin-top: 8px; font-size: 0.85em; color: #888;">
+                                Added: <?= date('M j, Y', strtotime($addr->created_at)) ?>
+                            </div>
                         </div>
                     <?php endforeach; ?>
                 </div>

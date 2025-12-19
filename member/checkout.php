@@ -20,6 +20,21 @@ $total = array_sum(array_map(function($item) { return $item['price'] * $item['qt
 $_err = [];
 
 if (is_post()) {
+    // ========== RECIPIENT DETAILS ==========
+    $recipient_name = trim(post('recipient_name'));
+    $recipient_phone = trim(post('recipient_phone'));
+    
+    // Validate recipient details
+    if (empty($recipient_name)) {
+        $_err['recipient_name'] = 'Recipient name is required';
+    }
+    
+    if (empty($recipient_phone)) {
+        $_err['recipient_phone'] = 'Recipient phone is required';
+    } elseif (!preg_match('/^01[0-9]-?[0-9]{7,8}$/', $recipient_phone)) {
+        $_err['recipient_phone'] = 'Please enter a valid Malaysian phone number';
+    }
+
     // ========== ADDRESS HANDLING ==========
     $shipping_address = '';
     
@@ -28,22 +43,29 @@ if (is_post()) {
     if (!empty($new_address)) {
         $shipping_address = $new_address;
         
-        // Save if requested
+        // Save if requested (but continue to place order!)
         if (isset($_POST['save_new_address'])) {
             $address_name = trim(post('new_address_name')) ?: 'Home';
-            $stm = $_db->prepare("INSERT INTO user_addresses (user_id, address_name, full_address) VALUES (?, ?, ?)");
-            $stm->execute([$user->id, $address_name, $new_address]);
+            $stm = $_db->prepare("INSERT INTO user_addresses (user_id, address_name, full_address, recipient_name, recipient_phone) VALUES (?, ?, ?, ?, ?)");
+            $stm->execute([$user->id, $address_name, $new_address, $recipient_name, $recipient_phone]);
         }
-    } 
+    }
     // Otherwise check for saved address
     else {
         $selected_id = post('selected_address_id');
         if ($selected_id && $selected_id !== 'new') {
-            $stm = $_db->prepare("SELECT full_address FROM user_addresses WHERE id = ? AND user_id = ?");
+            $stm = $_db->prepare("SELECT full_address, recipient_name, recipient_phone FROM user_addresses WHERE id = ? AND user_id = ?");
             $stm->execute([$selected_id, $user->id]);
             $address = $stm->fetch();
             if ($address) {
                 $shipping_address = $address->full_address;
+                // Use saved recipient details if form fields are empty
+                if (empty($recipient_name) && !empty($address->recipient_name)) {
+                    $recipient_name = $address->recipient_name;
+                }
+                if (empty($recipient_phone) && !empty($address->recipient_phone)) {
+                    $recipient_phone = $address->recipient_phone;
+                }
             }
         }
     }
@@ -75,11 +97,9 @@ if (is_post()) {
             $exp_month = (int)$matches[1];
             $exp_year = 2000 + (int)$matches[2]; // YY → 20YY
 
-            // Current date: December 17, 2025
-            $current_year = 2025;
-            $current_month = 12;
+            $current_year = date('Y');
+            $current_month = date('m');
 
-            // Card is expired if year < current year OR (year == current year AND month < current month)
             if ($exp_year < $current_year || ($exp_year == $current_year && $exp_month < $current_month)) {
                 $_err['expiry'] = 'Card has expired. Please use a valid card.';
             }
@@ -105,9 +125,9 @@ if (is_post()) {
                 'tng' => 'Touch \'n Go'
             ][$payment_method];
 
-            // Insert order with shipping address
-            $stm = $_db->prepare("INSERT INTO orders (user_id, shipping_address, total_amount, order_date, order_status, payment_method, card_last4) VALUES (?, ?, ?, NOW(), ?, ?, ?)");
-            $stm->execute([$user->id, $shipping_address, $total, $status, $payment_display, ($payment_method === 'card' ? $card_last4 : null)]);
+            // Insert order with shipping address AND recipient details
+            $stm = $_db->prepare("INSERT INTO orders (user_id, shipping_address, recipient_name, recipient_phone, total_amount, order_date, order_status, payment_method, card_last4) VALUES (?, ?, ?, ?, ?, NOW(), ?, ?, ?)");
+            $stm->execute([$user->id, $shipping_address, $recipient_name, $recipient_phone, $total, $status, $payment_display, ($payment_method === 'card' ? $card_last4 : null)]);
             $order_id = $_db->lastInsertId();
 
             // Insert items + update stock
@@ -147,7 +167,7 @@ include '../_head.php';
 
     <table class="cart-summary">
         <tr><th>Product</th><th>Price</th><th>Qty</th><th>Subtotal</th></tr>
-        <?php foreach ($cart as $item): 
+        <?php foreach ($cart as $item):
             $subtotal = $item['price'] * $item['qty'];
         ?>
             <tr>
@@ -164,6 +184,45 @@ include '../_head.php';
     </table>
 
     <form method="post">
+        <!-- ========== RECIPIENT DETAILS SECTION ========== -->
+        <div style="margin: 2rem 0;">
+            <h3 style="margin-bottom: 1rem; color:#ff5722;">📞 Recipient Details ♡</h3>
+            
+            <div style="background: #fff0f5; padding: 20px; border-radius: 15px; border: 1px solid #ffb6c1;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 15px;">
+                    <div>
+                        <label for="recipient_name" style="display: block; margin-bottom: 8px; color: #ff1493; font-weight: bold;">
+                            Recipient Name *
+                        </label>
+                        <input type="text" 
+                               id="recipient_name" 
+                               name="recipient_name" 
+                               value="<?= post('recipient_name', $user->name ?? '') ?>" 
+                               placeholder="Enter recipient's full name" 
+                               style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ff69b4;">
+                        <?= err('recipient_name') ?>
+                    </div>
+                    
+                    <div>
+                        <label for="recipient_phone" style="display: block; margin-bottom: 8px; color: #ff1493; font-weight: bold;">
+                            Phone Number *
+                        </label>
+                        <input type="tel" 
+                               id="recipient_phone" 
+                               name="recipient_phone" 
+                               value="<?= post('recipient_phone') ?>" 
+                               placeholder="e.g., 012-3456789" 
+                               style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ff69b4;">
+                        <?= err('recipient_phone') ?>
+                    </div>
+                </div>
+                <p style="color: #666; font-size: 0.9em; margin-top: 10px;">
+                    <small>* Required fields. Delivery will be made to this recipient.</small>
+                </p>
+            </div>
+        </div>
+        <!-- ========== END RECIPIENT DETAILS SECTION ========== -->
+
         <!-- ========== SHIPPING ADDRESS SECTION ========== -->
         <div class="address-checkout-section">
             <h3 style="margin:2rem 0 1rem; color:#ff5722;">🏠 Shipping Address ♡</h3>
@@ -186,6 +245,9 @@ include '../_head.php';
                                        <?= $index === 0 ? 'checked' : '' ?>>
                                 <label for="address_<?= $addr->id ?>">
                                     <strong style="color: #ff1493;"><?= encode($addr->address_name) ?>:</strong><br>
+                                    <?php if (!empty($addr->recipient_name)): ?>
+                                        <span style="color: #555;">To: <?= encode($addr->recipient_name) ?> | ☎ <?= encode($addr->recipient_phone) ?></span><br>
+                                    <?php endif; ?>
                                     <?= nl2br(encode($addr->full_address)) ?>
                                 </label>
                             </div>
@@ -220,11 +282,11 @@ include '../_head.php';
                 
                 <div style="margin-bottom: 15px;">
                     <textarea name="new_full_address" rows="3" placeholder="Full Address (Required): Street, City, State, ZIP Code, Country" 
-                              style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ffb6c1;"></textarea>
+                              style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ffb6c1;"><?= post('new_full_address') ?></textarea>
                 </div>
                 
                 <label style="display: block; margin-bottom: 15px; color: #666;">
-                    <input type="checkbox" name="save_new_address" checked> 
+                    <input type="checkbox" name="save_new_address" checked>
                     Save this address for future orders
                 </label>
             </div>
@@ -244,7 +306,7 @@ include '../_head.php';
             <tr id="card-fields" style="display:none;">
                 <td colspan="2">
                     <div style="background:#fff0f5; padding:20px; border-radius:15px; margin:15px 0;">
-                        <input type="text" name="card_number" placeholder="Card Number (1234 5678 9012 3456)" maxlength="19" style="width:100%; padding:12px; margin:8px 0; border-radius:8px; border:1px solid #ff69b4;">
+                        <input типу="text" name="card_number" placeholder="Card Number (1234 5678 9012 3456)" maxlength="19" style="width:100%; padding:12px; margin:8px 0; border-radius:8px; border:1px solid #ff69b4;">
                         <?= err('card_number') ?>
 
                         <div style="display:flex; gap:15px;">
@@ -285,13 +347,38 @@ $(document).ready(function() {
             $('#card-fields').hide();
         }
     }
+    
+    // Phone number formatting
+    $('#recipient_phone').on('input', function() {
+        let value = this.value.replace(/\D/g, '');
+        if (value.length > 3) {
+            this.value = value.substring(0, 3) + '-' + value.substring(3, 11);
+        }
+    });
 
     // Initialize
     toggleAddressForm();
     toggleCardFields();
     
     // Event listeners
-    $('input[name="selected_address_id"]').on('change', toggleAddressForm);
+    $('input[name="selected_address_id"]').on('change', function() {
+        toggleAddressForm();
+        
+        // Auto-fill recipient details when selecting saved address
+        const selectedId = $(this).val();
+        if (selectedId !== 'new') {
+            const $label = $('label[for="address_' + selectedId + '"]');
+            const recipientText = $label.find('span[style*="color: #555"]').text();
+            if (recipientText) {
+                const match = recipientText.match(/To: (.+?) \| ☎ (.+)/);
+                if (match) {
+                    $('#recipient_name').val(match[1].trim());
+                    $('#recipient_phone').val(match[2].trim());
+                }
+            }
+        }
+    });
+    
     $('input[name="payment_method"]').on('change', toggleCardFields);
     
     // Card number formatting

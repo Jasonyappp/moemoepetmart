@@ -79,6 +79,22 @@ include '../_head.php';
             </tr>
         </table>
 
+        <div style="background:#fff; padding:25px; border-radius:20px; margin:30px 0; border:2px solid #ffeef8; box-shadow:0 10px 30px rgba(255,105,180,0.15);">
+        <h3 style="color:#ff1493; text-align:center; margin-bottom:20px; font-family:'Kalam', cursive;">Delivery Details ♡</h3>
+        <div style="text-align:center; font-size:1.2rem; line-height:1.8;">
+            <p style="margin:10px 0;">
+                <strong>📦 Recipient:</strong> <?= encode($o->recipient_name) ?>
+            </p>
+            <p style="margin:10px 0;">
+                <strong>📞 Phone:</strong> <?= encode($o->recipient_phone) ?>
+            </p>
+            <p style="margin:15px 0; padding:15px; background:#fff5f9; border-radius:12px; border-left:4px solid #ff69b4;">
+                <strong>🏠 Shipping Address:</strong><br>
+                <?= nl2br(encode($o->shipping_address)) ?>
+            </p>
+        </div>
+   
+
         <div style="text-align:center; margin-top:40px;">
             <a href="/member/my_purchase.php" style="padding:15px 40px; background:#ff69b4; color:white; text-decoration:none; border-radius:15px;">
                 ← Back to My Purchases

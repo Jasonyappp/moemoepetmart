@@ -126,52 +126,42 @@ if (is_post() && isset($_FILES['profile_pic']) && !empty($_FILES['profile_pic'][
 // ========== HANDLE ADDING NEW ADDRESS ==========
 if (is_post() && isset($_POST['add_address'])) {
     $address_name = trim(post('address_name')) ?: 'Home';
+    $recipient_name = trim(post('recipient_name'));
+    $recipient_phone = trim(post('recipient_phone'));
     $full_address = trim(post('full_address'));
+    
+    if (empty($recipient_name)) {
+        temp('error', 'Recipient name is required~');
+        redirect('/edit_profile.php');
+    }
+    
+    if (empty($recipient_phone)) {
+        temp('error', 'Recipient phone is required~');
+        redirect('/edit_profile.php');
+    }
     
     if (empty($full_address)) {
         temp('error', 'Address cannot be empty~');
         redirect('/edit_profile.php');
-    } else {
-        try {
-            // NOW THIS WILL WORK - Table is fixed with auto_increment
-            $stm = $_db->prepare("INSERT INTO user_addresses (user_id, address_name, full_address) VALUES (?, ?, ?)");
-            
-            if ($stm->execute([$user->id, $address_name, $full_address])) {
-                temp('info', '✅ Address saved successfully!');
-                redirect('/edit_profile.php');
-            } else {
-                $errorInfo = $stm->errorInfo();
-                error_log("Address insert failed: " . print_r($errorInfo, true));
-                temp('error', 'Failed to save address. Error: ' . $errorInfo[2]);
-                redirect('/edit_profile.php');
-            }
-            
-        } catch (PDOException $e) {
-            error_log("PDO Error: " . $e->getMessage());
-            
-            // Fallback: Use manual ID if auto_increment still not working
-            if ($e->getCode() == 23000) {
-                try {
-                    // Get max ID and add 1
-                    $maxIdStmt = $_db->query("SELECT COALESCE(MAX(id), 0) as max_id FROM user_addresses");
-                    $maxId = $maxIdStmt->fetch()->max_id;
-                    $nextId = $maxId + 1;
-                    
-                    $stm = $_db->prepare("INSERT INTO user_addresses (id, user_id, address_name, full_address) VALUES (?, ?, ?, ?)");
-                    $stm->execute([$nextId, $user->id, $address_name, $full_address]);
-                    
-                    temp('info', '✅ Address saved! (Fallback method)');
-                    redirect('/edit_profile.php');
-                    
-                } catch (Exception $ex) {
-                    temp('error', 'Error: ' . $ex->getMessage());
-                    redirect('/edit_profile.php');
-                }
-            } else {
-                temp('error', 'Database error: ' . $e->getMessage());
-                redirect('/edit_profile.php');
-            }
+    }
+    
+    // Validate phone format
+    if (!preg_match('/^[0-9+\-\s()]{10,20}$/', $recipient_phone)) {
+        temp('error', 'Please enter a valid phone number ♡');
+        redirect('/edit_profile.php');
+    }
+    
+    try {
+        $stm = $_db->prepare("INSERT INTO user_addresses (user_id, address_name, recipient_name, recipient_phone, full_address) VALUES (?, ?, ?, ?, ?)");
+        
+        if ($stm->execute([$user->id, $address_name, $recipient_name, $recipient_phone, $full_address])) {
+            temp('info', '✅ Address saved successfully!');
+            redirect('/edit_profile.php');
         }
+    } catch (PDOException $e) {
+        error_log("PDO Error: " . $e->getMessage());
+        temp('error', 'Failed to save address. Please try again~');
+        redirect('/edit_profile.php');
     }
 }
 
@@ -291,19 +281,29 @@ include '_head.php';
         </div>
         <!-- ========== END PROFILE PICTURE ========== -->
 
-        <!-- ========== SIMPLE ADDRESS BOX ========== -->
+       <!-- ========== SIMPLE ADDRESS BOX ========== -->
         <div class="simple-address-box">
             <h3>🏠 Add Address</h3>
             
             <form method="post">
                 <div class="input-group">
-                    <input type="text" name="address_name" placeholder="Name (Optional): Home, Work, etc." 
-                           style="width: 100%; padding: 10px; margin-bottom: 10px;">
+                    <input type="text" name="address_name" placeholder="Address Name (Optional): Home, Work, etc." 
+                        style="width: 100%; padding: 10px; margin-bottom: 10px;">
                 </div>
                 
                 <div class="input-group">
-                    <textarea name="full_address" rows="3" placeholder="Type your address here..." 
-                              style="width: 100%; padding: 10px;" required></textarea>
+                    <input type="text" name="recipient_name" placeholder="Recipient Name *" required
+                        style="width: 100%; padding: 10px; margin-bottom: 10px;">
+                </div>
+                
+                <div class="input-group">
+                    <input type="tel" name="recipient_phone" placeholder="Recipient Phone *" required
+                        style="width: 100%; padding: 10px; margin-bottom: 10px;">
+                </div>
+                
+                <div class="input-group">
+                    <textarea name="full_address" rows="3" placeholder="Full Address: Street, City, State, ZIP Code" 
+                            style="width: 100%; padding: 10px;" required></textarea>
                 </div>
                 
                 <button type="submit" name="add_address" class="btn btn-primary" style="width: 100%;">
@@ -321,7 +321,10 @@ include '_head.php';
                         <?php if (!empty($addr->address_name)): ?>
                             <strong><?= encode($addr->address_name) ?>:</strong> 
                         <?php endif; ?>
-                        <?= encode($addr->full_address) ?>
+                        <?php if (!empty($addr->recipient_name)): ?>
+                            <br>To: <?= encode($addr->recipient_name) ?> | ☎ <?= encode($addr->recipient_phone) ?>
+                        <?php endif; ?>
+                        <br><?= nl2br(encode($addr->full_address)) ?>
                     </span>
                     <form method="post" style="display: inline;">
                         <input type="hidden" name="address_id" value="<?= $addr->id ?>">
