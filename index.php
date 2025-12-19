@@ -10,32 +10,59 @@ include '_head.php';
         <p class="hero-subtitle">Your one-stop shop for the cutest & premium pet supplies ♡</p>
         <div class="hero-buttons">
             <a href="/member/products.php" class="btn btn-primary">Shop Now ♡</a>
-            <a href="/member/products.php#categories" class="btn btn-secondary">Browse Categories</a>
         </div>
     </div>
     <div class="hero-paw">🐾</div>
 </div>
 
-<section class="features">
-    <div class="container">
-        <div class="feature-card">
-            <div class="icon">🧸</div>
-            <h3>Fun Toys</h3>
-            <p>Interactive, squeaky, and plush toys to keep your fur baby entertained all day!</p>
-        </div>
-        <div class="feature-card">
-            <div class="icon">🍖</div>
-            <h3>Premium Food & Treats</h3>
-            <p>Healthy, nutritious food and yummy treats for happy and energetic pets~</p>
-        </div>
-        <div class="feature-card">
-            <div class="icon">🛏️</div>
-            <h3>Cozy Beds & Accessories</h3>
-            <p>Super soft beds, stylish collars, leashes, grooming tools, and more!</p>
-        </div>
-    </div>
-</section>
 
+<?php
+// Fetch Top 5 Selling Products (same query as admin report)
+$stmt_top_home = $_db->query("
+    SELECT p.product_id, p.product_name, p.price, p.photo_name, 
+           SUM(oi.quantity * oi.unit_price) AS revenue
+    FROM order_items oi
+    JOIN product p ON oi.product_id = p.product_id
+    JOIN orders o ON oi.order_id = o.order_id
+    WHERE o.order_status = 'Completed' AND p.is_active = 1
+    GROUP BY p.product_id
+    ORDER BY revenue DESC
+    LIMIT 3
+");
+$top_selling_products = $stmt_top_home->fetchAll(PDO::FETCH_ASSOC);
+
+if (empty($top_selling_products)): ?>
+    <section class="top-products">
+        <div class="container">
+            <h2 class="section-title">🔥 Top Selling Products ♡</h2>
+            <p style="text-align:center; color:#ff69b4;">No sales data yet ~ Check back soon!</p>
+        </div>
+    </section>
+<?php else: ?>
+    <section class="top-products">
+        <div class="container">
+            <h2 class="section-title">🔥 Top Selling Products ♡</h2>
+            <div class="products-grid">
+                <?php foreach ($top_selling_products as $index => $product): 
+                    $photo_path = !empty($product['photo_name']) 
+                        ? '/admin/uploads/products/' . $product['photo_name'] 
+                        : '/images/default-product.png';  // fallback image if none
+                ?>
+                    <div class="product-card">
+                        <div class="product-rank">#<?= $index + 1 ?></div>
+                        <img src="<?= $photo_path ?>" alt="<?= encode($product['product_name']) ?>">
+                        <h4><?= encode($product['product_name']) ?></h4>
+                        <p class="price">RM <?= number_format($product['price'], 2) ?></p>
+                        <a href="/member/product_detail.php?id=<?= $product['product_id'] ?>" class="btn btn-primary">View Product ♡</a>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <div style="text-align:center; margin-top:30px;">
+                <a href="/member/products.php" class="btn btn-secondary">See All Products →</a>
+            </div>
+        </div>
+    </section>
+<?php endif; ?>
 <section id="products" class="about">
     <div class="container">
         <h2 class="section-title">Why Choose Moe Moe Pet Mart? ♡</h2>
