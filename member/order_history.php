@@ -100,15 +100,8 @@ $orders = $stm->fetchAll();
                     </details>
                     
                     <div class="order-actions">
-                        <?php if ($order->order_status === 'Pending Payment'): ?>
-                            <a href="payment.php?id=<?= $order->order_id ?>" class="btn btn-pay">Pay Now ♡</a>
-                            <a href="invoice.php?id=<?= $order->order_id ?>" class="btn btn-invoice">View Invoice ♡</a>
-                        <?php endif; ?>
                         <?php if ($order->order_status === 'Shipped'): ?>
                             <a href="confirm_receive.php?id=<?= $order->order_id ?>" class="btn btn-receive">Confirm Received ♡</a>
-                        <?php endif; ?>
-                        <?php if ($order->order_status !== 'Pending Payment'): ?>
-                            <a href="receipt.php?id=<?= $order->order_id ?>" class="btn btn-receipt">View Receipt ♡</a>
                         <?php endif; ?>
                     </div>
                 </div>

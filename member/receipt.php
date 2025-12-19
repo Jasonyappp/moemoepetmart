@@ -45,18 +45,18 @@ include '../_head.php';
         </p>
     </div>
 
-    <!-- Shipping Details Box - Cute & Improved -->
+    <!-- Shipping Details Box -->
     <div style="background:#fff; padding:25px; border-radius:20px; margin:30px 0; border:2px solid #ffeef8; box-shadow:0 10px 30px rgba(255,105,180,0.15);">
         <h3 style="color:#ff1493; text-align:center; margin-bottom:20px; font-family:'Kalam', cursive;">Shipping Details ♡</h3>
         <div style="text-align:center; font-size:1.2rem; line-height:1.8;">
             <p style="margin:10px 0;">
-                <strong>📦 Recipient:</strong> <?= encode($o->recipient_name) ?>
+                <strong>Recipient:</strong> <?= encode($o->recipient_name) ?>
             </p>
             <p style="margin:10px 0;">
-                <strong>📞 Phone:</strong> <?= encode($o->recipient_phone) ?>
+                <strong>Phone:</strong> <?= encode($o->recipient_phone) ?>
             </p>
             <p style="margin:15px 0; padding:15px; background:#fff5f9; border-radius:12px; border-left:4px solid #ff69b4;">
-                <strong>🏠 Address:</strong><br>
+                <strong>Address:</strong><br>
                 <?= nl2br(encode($o->shipping_address)) ?>
             </p>
         </div>
@@ -79,16 +79,43 @@ include '../_head.php';
         ');
         $stm_items->execute([$id]);
         $items = $stm_items->fetchAll();
+
+        $calculated_subtotal = 0;  // We calculate it here to match cart/checkout exactly
         foreach ($items as $i): 
-            $subtotal = $i->unit_price * $i->quantity;
+            $item_subtotal = $i->unit_price * $i->quantity;
+            $calculated_subtotal += $item_subtotal;
         ?>
             <tr style="border-bottom:1px dashed #ffb6c1;">
                 <td style="padding:15px; text-align:left;"><?= encode($i->product_name) ?></td>
                 <td style="padding:15px; text-align:center;">RM <?= number_format($i->unit_price, 2) ?></td>
                 <td style="padding:15px; text-align:center;"><?= $i->quantity ?></td>
-                <td style="padding:15px; text-align:center;">RM <?= number_format($subtotal, 2) ?></td>
+                <td style="padding:15px; text-align:center;">RM <?= number_format($item_subtotal, 2) ?></td>
             </tr>
         <?php endforeach; ?>
+        
+        <!-- Subtotal (calculated from items - matches cart/checkout) -->
+        <tr style="background:#fff0f5;">
+            <td colspan="3" style="padding:20px; text-align:right;"><strong>Subtotal</strong></td>
+            <td style="padding:20px; text-align:center;"><strong>RM <?= number_format($calculated_subtotal, 2) ?></strong></td>
+        </tr>
+        
+        <!-- Discount -->
+        <?php if ($o->discount_amount > 0): ?>
+        <tr style="background:#fff0f5;">
+            <td colspan="3" style="padding:20px; text-align:right;"><strong>Discount (<?= encode($o->voucher_code ?? 'None') ?>)</strong></td>
+            <td style="padding:20px; text-align:center; color:#f44336;"><strong>- RM <?= number_format($o->discount_amount, 2) ?></strong></td>
+        </tr>
+        <?php endif; ?>
+        
+        <!-- Shipping Fee -->
+        <tr style="background:#fff0f5;">
+            <td colspan="3" style="padding:20px; text-align:right;"><strong>Shipping Fee</strong></td>
+            <td style="padding:20px; text-align:center;">
+                <?= $o->shipping_fee == 0 ? 'FREE ♡' : 'RM ' . number_format($o->shipping_fee, 2) ?>
+            </td>
+        </tr>
+        
+        <!-- Grand Total -->
         <tr style="background:#fff0f5; font-size:1.4rem;">
             <td colspan="3" style="padding:20px; text-align:right;"><strong>Total Paid</strong></td>
             <td style="padding:20px; text-align:center; color:#ff1493;"><strong>RM <?= number_format($o->total_amount, 2) ?></strong></td>

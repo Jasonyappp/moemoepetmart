@@ -52,7 +52,22 @@ include '../_head.php';
             </p>
         <?php endif; ?>
 
-        <h3 style="margin:30px 0 15px; color:#ff69b4;">Items Purchased</h3>
+        <div style="background:#fff; padding:25px; border-radius:20px; margin:30px 0; border:2px solid #ffeef8; box-shadow:0 10px 30px rgba(255,105,180,0.15);">
+        <h3 style="color:#ff1493; text-align:center; margin-bottom:20px; font-family:'Kalam', cursive;">Delivery Details ♡</h3>
+        <div style="text-align:center; font-size:1.2rem; line-height:1.8;">
+            <p style="margin:10px 0;">
+                <strong>📦 Recipient:</strong> <?= encode($o->recipient_name) ?>
+            </p>
+            <p style="margin:10px 0;">
+                <strong>📞 Phone:</strong> <?= encode($o->recipient_phone) ?>
+            </p>
+            <p style="margin:15px 0; padding:15px; background:#fff5f9; border-radius:12px; border-left:4px solid #ff69b4;">
+                <strong>🏠 Shipping Address:</strong><br>
+                <?= nl2br(encode($o->shipping_address)) ?>
+            </p>
+        </div>
+        <br>
+        <h3 style="margin:30px 0 15px; color:#ff69b4; font-size:30px;">Items Purchased</h3>
         <!-- Perfectly Centered Table -->
         <table style="width:100%; border-collapse:collapse;">
             <tr style="background:#fff0f5;">
@@ -73,28 +88,25 @@ include '../_head.php';
                     <td style="padding:15px; text-align:center;">RM <?= number_format($subtotal, 2) ?></td>
                 </tr>
             <?php endforeach; ?>
+            
+            <?php if ($o->discount_amount > 0): ?>
+                    <tr>
+                        <td colspan="4" style="padding:20px; text-align:right;"><strong>Discount (<?= encode($o->voucher_code ?? 'None') ?>)</strong></td>
+                        <td style="padding:20px; text-align:center;">- RM <?= number_format($o->discount_amount, 2) ?></td>
+                    </tr>
+                    <?php endif; ?>
+                    <tr>
+                        <td colspan="4" style="padding:20px; text-align:right;"><strong>Shipping Fee</strong></td>
+                        <td style="padding:20px; text-align:center;">
+                            <?= $o->shipping_fee == 0 ? 'FREE ♡' : 'RM ' . number_format($o->shipping_fee, 2) ?>
+                        </td>
+                    </tr>
             <tr style="background:#fff0f5; font-size:1.4rem;">
                 <td colspan="4" style="padding:20px; text-align:right;"><strong>Total</strong></td>
                 <td style="padding:20px; text-align:center;"><strong>RM <?= number_format($o->total_amount, 2) ?></strong></td>
             </tr>
         </table>
-
-        <div style="background:#fff; padding:25px; border-radius:20px; margin:30px 0; border:2px solid #ffeef8; box-shadow:0 10px 30px rgba(255,105,180,0.15);">
-        <h3 style="color:#ff1493; text-align:center; margin-bottom:20px; font-family:'Kalam', cursive;">Delivery Details ♡</h3>
-        <div style="text-align:center; font-size:1.2rem; line-height:1.8;">
-            <p style="margin:10px 0;">
-                <strong>📦 Recipient:</strong> <?= encode($o->recipient_name) ?>
-            </p>
-            <p style="margin:10px 0;">
-                <strong>📞 Phone:</strong> <?= encode($o->recipient_phone) ?>
-            </p>
-            <p style="margin:15px 0; padding:15px; background:#fff5f9; border-radius:12px; border-left:4px solid #ff69b4;">
-                <strong>🏠 Shipping Address:</strong><br>
-                <?= nl2br(encode($o->shipping_address)) ?>
-            </p>
-        </div>
    
-
         <div style="text-align:center; margin-top:40px;">
             <a href="/member/my_purchase.php" style="padding:15px 40px; background:#ff69b4; color:white; text-decoration:none; border-radius:15px;">
                 ← Back to My Purchases
