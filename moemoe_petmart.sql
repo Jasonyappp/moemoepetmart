@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 20, 2025 at 06:56 AM
+-- Generation Time: Dec 20, 2025 at 02:25 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `moemoe_petmart`
 --
+CREATE DATABASE IF NOT EXISTS `moemoe_petmart` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `moemoe_petmart`;
 
 -- --------------------------------------------------------
 
@@ -421,7 +423,17 @@ INSERT INTO `product` (`product_id`, `product_code`, `product_name`, `descriptio
 (93, 'CAG0003', 'Transparent Carries', 'Benefits:\r\n- Easily see your cutest pets', 55.90, 17, 2, 1, '2025-12-15 03:15:09', '2025-12-19 17:37:48', '693f0cbd71b9b.jpg'),
 (94, 'ACC0001', 'Pet Automatic Retractable Leash', '• Length Options: 3m / 5m\r\n• Material: Polyester + PP', 10.90, 25, 5, 1, '2025-12-15 03:24:38', '2025-12-19 16:31:18', 'prod_693f106d7be39.jpg'),
 (95, 'CLR0001', 'Pet Hair Remover Comb', '✔️Simply push the button, wipe, making it super simple to remove all the hair from the brush, so it\'s ready for the next time use.\r\n✔️Suit for dog, cat, rabbits and other pets, making them neat and clean.', 15.60, 28, 4, 1, '2025-12-15 03:38:35', '2025-12-19 17:43:45', '693f123b2857e.jpg'),
-(96, 'TOY0001', 'Cat Teaser Stick Toys with Bell', '🐾 Give your pets endless fun with this Cat Teaser Stick Toy with Bell. Interactive design, featuring a dangling bell and feather that will keep your cat entertained and engaged for hours!', 4.99, 11, 1, 1, '2025-12-15 03:43:09', '2025-12-19 12:12:21', '693f134dee5c4.jpg');
+(96, 'TOY0001', 'Cat Teaser Stick Toys with Bell', '🐾 Give your pets endless fun with this Cat Teaser Stick Toy with Bell. Interactive design, featuring a dangling bell and feather that will keep your cat entertained and engaged for hours!', 4.99, 11, 1, 1, '2025-12-15 03:43:09', '2025-12-19 12:12:21', '693f134dee5c4.jpg'),
+(97, 'CLR0002', 'Pet Grooming Set', '~ Pet gloves grooming\r\n~ Pet grooming comb * 2', 35.80, 120, 4, 1, '2025-12-20 20:03:45', '2025-12-20 20:03:45', '694690a1c1dfa.jpg'),
+(98, 'ACC0002', 'Automatic Water Food Dispenser 2 IN 1 Pet Feeder', '🐾 Enjoy peace of mind with our Automatic Pet Feeder and Water Dispenser, designed for cats, dogs, and rabbits. \r\n🐾 Large capacity, ensuring your pets stay fed and hydrated for days without frequent refills!', 29.90, 55, 5, 1, '2025-12-20 20:12:34', '2025-12-20 20:12:34', '694692b29c172.jpg'),
+(99, 'ACC0003', 'Washable Dog Bed Cat Bed Oval Sleeping Mat', '👉👉Specifications:\r\n\r\nFeatures for bed\r\n\r\n~Soft and Comfortable, Extra Large Space, Cervical Spine Care, Removable and Washable\r\n~Anti-Skid Epoxy: Moisture-Proof and Moisture-Proof, Effective Anti-Skid without Shifting.\r\n~One-Piece Nest, Sleeping around the Pillow Is Very Comfortable, Running around Deep Sleep.\r\n~Pillow Has High Rebound, No Collapse, Soft and Elastic, and It Is Very Comfortable to Sleep on It.\r\n~Full Filling, Long Sleep without Collapse, 360 ° Circular Package.', 14.88, 75, 5, 1, '2025-12-20 20:23:07', '2025-12-20 20:23:07', '6946952b30c91.jpg'),
+(100, 'ACC0004', 'L-Shaped Corner Wall Scratcher for Cats', '【Materials】: Cat Scratching Board is crafted from corrugated paper, density board. This cat scratching board is designed to withstand vigorous scratching, ensuring long term use\r\n\r\n【Stylish Design】: Featuring a minimalist design, this cat scratcher seamlessly blends into any home decor, making it a functional yet stylish addition to your living space\r\n\r\n【Furniture Protection】: By attracting your cat attention for play and claw sharpening, this pet cat scratch board protects your sofa and bed', 59.70, 36, 5, 1, '2025-12-20 20:28:43', '2025-12-20 20:28:43', '6946967b4025c.jpg'),
+(101, 'ACC0005', 'Large Dog Leash Vest Style Dog Chest Strap', '🔦 *** High Visibility Safety Reflective **:\r\n\r\n - Reflective Strips At Night Cover The Harness And Leash, Visible Within 200 Meters, Walking The Dog In Rainy/Night Is More Secure.\r\n\r\n 🐕 *** Comfortable Fit **:\r\n\r\n - Breathable Inner Lining, Adjustable Bust/Neck Circumference Is Not Stuffy To Wear For A Long Time.', 25.25, 20, 5, 1, '2025-12-20 20:37:37', '2025-12-20 20:37:37', '69469891853be.jpg'),
+(102, 'TOY0002', 'Pet Squeaky Duck Chew Toy Cat Dog', '[Product Features]\r\n\r\n~Realistic squeaking sound attracts pet attention interactive play\r\n~Soft plush material safe chewing teething relief puppies kittens\r\n~Durable reinforced stitching withstand biting multiple size options\r\n~Self amusement function reduces boredom home alone time\r\n~Bright yellow color cute duck design orange beak feet', 4.93, 60, 1, 1, '2025-12-20 20:46:11', '2025-12-20 20:46:11', '69469a93cb353.jpg'),
+(103, 'FOD0002', 'Pet Sausage Healthy Pet Hotdog Food Snack For Cats And Dogs', '🐾  High Protein & Low Fat Goodness: - Our 15g Pet Sausage Snack is the ultimate treat for your beloved cats and dogs! \r\n\r\n🐾  Packed with high protein and low fat, it\'s a nutritious reward that your pets will love.', 1.00, 100, 3, 1, '2025-12-20 20:49:43', '2025-12-20 20:49:43', '69469b6789665.jpg'),
+(104, 'FOD0003', 'Dry Kibble Dog Food for Puppy/Young Dog', '- Chicken/Egg/Milk (1.5KG)', 25.59, 46, 3, 1, '2025-12-20 21:00:22', '2025-12-20 21:00:22', '69469de6dcc39.jpg'),
+(105, 'FOD0004', 'Freeze Dried Chicken Pet Food', '😻High-protein nutrition promotes muscle development\r\n\r\nRich in high-quality protein, supports pet muscle growth and energy supplementation, and avoids obesity problems\r\n\r\n\r\n\r\n😻Low fat and easy to digest, healthy and worry-free\r\n\r\nLow fat content, easy for pets to digest and absorb, reducing gastrointestinal burden, suitable for sensitive pets\r\n\r\n\r\n\r\n😻Natural ingredients, no additives\r\n\r\nMade from 100% pure chicken breast, no preservatives, pigments or artificial additives, ensuring safety and naturalness\r\n\r\n\r\n\r\n😻Freeze-drying process retains nutrition and flavor\r\n\r\nUsing freeze-drying technology to lock in the original nutrition and delicious taste of chicken, with less nutrient loss', 19.90, 45, 3, 1, '2025-12-20 21:13:02', '2025-12-20 21:13:02', '6946a0de3d2e0.jpg'),
+(106, 'TOY0003', 'Pet Toy Dog UFO Ball | Portable UFO Dog Toy', 'Environmentally Friendly Materials: The Dog Dish Ball Is Made Of High-Quality PE Plastic Material, Which Is Tough, Durable, Safe And Non-Toxic.It Will Not Cause Any Harm To Teeth, But Please Do Not Let Your Dog Chew Too Much.', 13.90, 23, 1, 1, '2025-12-20 21:23:05', '2025-12-20 21:23:05', '6946a3399c923.jpg');
 
 -- --------------------------------------------------------
 
@@ -669,7 +681,7 @@ ALTER TABLE `order_items`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
 
 --
 -- AUTO_INCREMENT for table `product_image`
