@@ -9,7 +9,7 @@ if ($id !== '' && isset($_SESSION['cart'][$id])) {
     if (empty($_SESSION['cart'])) {
         unset($_SESSION['cart']);
     }
-    temp('info', 'Item removed ♡');
+    temp('info', "Removed $item_name from cart! ♡");
 }
 
 save_cart_to_db();  // NEW: Sync to DB

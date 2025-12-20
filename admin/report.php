@@ -52,15 +52,15 @@ foreach ($monthly_data as $row) {
     $monthly_sales[(int)$row['month']] = (float)$row['total'];
 }
 
-// Top Selling Products
+// Top Selling Products (synchronized with products page)
 $stmt_top = $_db->query("
-    SELECT p.product_name, SUM(oi.quantity * oi.unit_price) AS revenue
+    SELECT p.product_name, SUM(oi.quantity) AS total_sales
     FROM order_items oi
     JOIN product p ON oi.product_id = p.product_id
     JOIN orders o ON oi.order_id = o.order_id
     WHERE o.order_status = 'Completed'
-    GROUP BY p.product_id
-    ORDER BY revenue DESC
+    GROUP BY p.product_id, p.product_name
+    ORDER BY total_sales DESC
     LIMIT 5
 ");
 $top_products = $stmt_top->fetchAll(PDO::FETCH_ASSOC);
@@ -205,6 +205,7 @@ if ($view === 'sales' || $view === 'daily') {
             <li><a href="/admin/product_list.php"><i class="fas fa-box"></i> Products</a></li>
             <li><a href="/admin/member_list.php"><i class="fas fa-users"></i> Members</a></li>
             <li><a href="/admin/order_list.php"><i class="fas fa-shopping-cart"></i> Orders</a></li>
+            <li><a href="/admin/review_list.php"><i class="fas fa-star"></i> Reviews</a></li>
             <li><a href="/admin/report.php" class="active"><i class="fas fa-chart-bar"></i> Reports</a></li>
             <li><a href="/admin/profile.php"><i class="fas fa-user-cog"></i> My Profile ♛</a></li>
             <li><a href="/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
@@ -342,8 +343,28 @@ new Chart(document.getElementById('monthlyChart'), {
 <?php if ($view === 'sales' || $view === 'top_products'): ?>
 new Chart(document.getElementById('topProductsChart'), {
     type: 'doughnut',
-    data: { labels: topProducts.map(p => p.product_name), datasets: [{ data: topProducts.map(p => p.revenue), backgroundColor: ['#ff69b4', '#ff1493', '#ff8fab', '#ffb6c1', '#ffc0cb'], borderWidth: 3, borderColor: '#fff' }] },
-    options: { ...responsiveOptions, plugins: { legend: { position: 'right' } } }
+    data: { 
+        labels: topProducts.map(p => p.product_name), 
+        datasets: [{ 
+            data: topProducts.map(p => p.total_sales), 
+            backgroundColor: ['#ff69b4', '#ff1493', '#ff8fab', '#ffb6c1', '#ffc0cb'], 
+            borderWidth: 3, 
+            borderColor: '#fff' 
+        }] 
+    },
+    options: { 
+        ...responsiveOptions, 
+        plugins: { 
+            legend: { position: 'right' },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        return context.label + ': ' + context.parsed + ' units sold';
+                    }
+                }
+            }
+        } 
+    }
 });
 <?php endif; ?>
 

@@ -85,8 +85,8 @@ $orders = $stm->fetchAll();
     </div>
 
     <?php if (empty($orders)): ?>
-        <div class="empty-purchases">
-            <img src="/images/empty-cart.png" alt="No purchases" style="width: 200px; opacity: 0.8;">
+        <div class="empty-purchases">       
+            <div style="font-size: 5rem; margin-bottom: 20px;">🛒</div>
             <p>No purchases in this category yet~ ♡</p>
             <a href="products.php" class="btn btn-primary">Shop Now ♡</a>
         </div>
@@ -116,9 +116,49 @@ $orders = $stm->fetchAll();
                         <?php elseif ($order->order_status === 'Shipped'): ?>
                             <a href="confirm_receive.php?id=<?= $order->order_id ?>" class="btn btn-receive">Confirm Received ♡</a>
                         <?php elseif ($order->order_status === 'Completed'): ?>
-                            <a href="request_return.php?id=<?= $order->order_id ?>" class="btn btn-return">Request Return/Refund ♡</a>
+                            <!-- Show products in this order with review buttons -->
+                            <?php
+                            $stmt_items = $_db->prepare("
+                                SELECT oi.product_id, p.product_name, 
+                                       CASE WHEN pr.review_id IS NOT NULL THEN 1 ELSE 0 END AS has_review
+                                FROM order_items oi
+                                JOIN product p ON oi.product_id = p.product_id
+                                LEFT JOIN product_reviews pr ON pr.product_id = oi.product_id 
+                                    AND pr.user_id = ? 
+                                    AND pr.order_id = ?
+                                WHERE oi.order_id = ?
+                            ");
+                            $stmt_items->execute([$user->id, $order->order_id, $order->order_id]);
+                            $order_items = $stmt_items->fetchAll();
+                            ?>
+        
+                            <?php if (!empty($order_items)): ?>
+                                <div class="review-section">
+                                    <div class="review-section-title">Rate your purchase</div>
+                                    <?php foreach ($order_items as $item): ?>
+                                        <div class="review-item">
+                                            <span class="review-product-name"><?= encode($item->product_name) ?></span>
+                                            <?php if ($item->has_review): ?>
+                                                <span class="review-status-reviewed">Reviewed</span>
+                                            <?php else: ?>
+                                                <a href="write_review.php?order_id=<?= $order->order_id ?>&product_id=<?= $item->product_id ?>" 
+                                                   class="btn-write-review">
+                                                    Write Review ♡
+                                                </a>
+                                            <?php endif; ?>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endif; ?>
+        
+                            <!-- Request Return and View Details on same line -->
+                            <div class="action-buttons-row">
+                                <a href="request_return.php?id=<?= $order->order_id ?>" class="btn btn-return">Request Return/Refund ♡</a>
+                                <a href="order_detail.php?id=<?= $order->order_id ?>" class="btn btn-detail">View Details</a>
+                            </div>
+                        <?php else: ?>
+                            <a href="order_detail.php?id=<?= $order->order_id ?>" class="btn btn-detail">View Details</a>
                         <?php endif; ?>
-                        <a href="order_detail.php?id=<?= $order->order_id ?>" class="btn btn-detail">View Details</a>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -214,6 +254,7 @@ $orders = $stm->fetchAll();
     display: flex;
     gap: 1rem;
     justify-content: flex-end;
+    flex-wrap: wrap;
 }
 
 .btn-pay {
@@ -240,6 +281,111 @@ $orders = $stm->fetchAll();
 .empty-purchases p {
     font-size: 1.2rem;
     margin: 1rem 0;
+}
+
+.review-section {
+    background: #fff0f5;
+    border: 2px solid #ff69b4;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 15px 0;
+}
+
+.review-section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #ff1493;
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+.review-section-title::before {
+    content: '📝';
+    font-size: 1.3rem;
+}
+
+.review-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(255, 105, 180, 0.1);
+    gap: 20px; /* Added gap between elements */
+}
+
+.review-item:last-child {
+    margin-bottom: 0;
+}
+
+.review-product-name {
+    flex: 1;
+    font-size: 1rem;
+    color: #333;
+    padding-right: 15px; /* Added padding to create space */
+    min-width: 0; /* Allow text to wrap if needed */
+}
+
+.review-status-reviewed {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    white-space: nowrap; /* Prevent wrapping */
+    flex-shrink: 0; /* Don't shrink */
+}
+
+.review-status-reviewed::before {
+    content: '✓';
+    font-weight: bold;
+}
+
+.btn-write-review {
+    background: linear-gradient(135deg, #ff69b4, #ff1493);
+    color: white;
+    padding: 10px 24px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: bold;
+    transition: all 0.3s;
+    white-space: nowrap; /* Prevent text wrapping */
+    flex-shrink: 0; /* Don't shrink the button */
+    box-shadow: 0 4px 12px rgba(255, 20, 147, 0.3);
+}
+
+.btn-write-review:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 20, 147, 0.4);
+}
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+    .review-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .review-product-name {
+        padding-right: 0;
+        width: 100%;
+    }
+    
+    .btn-write-review,
+    .review-status-reviewed {
+        align-self: flex-end;
+    }
 }
 </style>
 

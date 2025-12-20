@@ -46,6 +46,21 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 // ===================== END FLASH =====================
 
+// Helper function to show flash messages (for JavaScript/AJAX)
+function showFlashMessage(message) {
+    const flash = document.getElementById('moe-flash');
+    flash.innerHTML = `
+        ${message}
+        <span class="close-btn" onclick="this.parentElement.classList.remove('show')">&times;</span>
+    `;
+    flash.classList.add('show');
+
+    // Auto hide after 4 seconds
+    setTimeout(() => {
+        flash.classList.remove('show');
+        setTimeout(() => flash.innerHTML = '', 700);
+    }, 4000);
+}
 
 // 让 Apply 按钮真的能提交筛选
 function applyFilters() {
@@ -60,7 +75,7 @@ function applyFilters() {
     location = url;
 }
 
-// ADD TO CART — WORKS EVEN IF FILES ARE IN member/ FOLDER
+// ADD TO CART – WORKS EVEN IF FILES ARE IN member/ FOLDER
 $(document).ready(function () {
     $('.add-to-cart').on('click', function () {
         const btn   = $(this);
@@ -69,31 +84,30 @@ $(document).ready(function () {
         const price = btn.data('price');
 
         if (!id || !name || !price) {
-            alert('Product info missing! ♡');
+            showFlashMessage('Product info missing! ♡');
             return;
         }
 
         btn.prop('disabled', true).html('Adding... ♡');
 
-        // THIS LINE IS THE FIX!!!
-        $.post('add_to_cart.php', {  // No leading slash → works from any folder
+        $.post('add_to_cart.php', {
             product_id: id,
             product_name: name,
             price: price,
-            qty: 1  // Always add 1 from listing
+            qty: 1
         }, function (res) {
             if (res.success) {
                 $('.cart-count, .cart-badge').text(res.total_items);
                 if (res.total_items > 0) {
                     $('.cart-count, .cart-badge').fadeIn(300);
                 }
-                alert('Added to cart! ♡');
+                showFlashMessage('Added to cart! ♡');
             } else {
-                alert(res.message || 'Cannot add to cart~');
+                showFlashMessage(res.message || 'Cannot add to cart~');
             }
         }, 'json')
         .fail(function() {
-            alert('Error!!!😖 Please login your account & try again ♡');
+            showFlashMessage('Error!!!😖 Please login your account & try again ♡');
         })
         .always(function () {
             btn.prop('disabled', false).html('Add to Cart ♡');
@@ -120,7 +134,7 @@ $(document).ready(function () {
 
     // Allow typing quantity + auto-correct
     $('.qty-input').on('input', function () {
-        let val = parseInt(this.value) ;
+        let val = parseInt(this.value);
         const max = parseInt($(this).attr('max'));
         val = Math.max(0, Math.min(val, max));
         this.value = val;
@@ -135,7 +149,7 @@ $(document).ready(function () {
         const qty = parseInt(btn.closest('.product-info').find('.qty-input').val());
 
         if (!id || !name || !price || qty < 1) {
-            alert('Invalid product or quantity! ♡');
+            showFlashMessage('Invalid quantity! ♡');
             return;
         }
 
@@ -152,16 +166,16 @@ $(document).ready(function () {
                 if (res.total_items > 0) {
                     $('.cart-count, .cart-badge').fadeIn(300);
                 }
-                alert(`Added ${qty} × ${name} to cart! ♡`);
+                showFlashMessage(`Added ${qty} × ${name} to cart! ♡`);
             } else {
-                alert(res.message || 'Cannot add to cart~');
+                showFlashMessage(res.message || 'Cannot add to cart~');
             }
         }, 'json')
         .fail(function() {
-            alert('Error!!!😖 Please login your account & try again ♡');
+            showFlashMessage('Error!!!😖 Please login your account & try again ♡');
         })
         .always(function () {
-            btn.prop('disabled', false).html('🛍️ Add to Cart ♡');
+            btn.prop('disabled', false).html('🛒 Add to Cart ♡');
         });
     });
 });

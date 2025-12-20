@@ -6115,6 +6115,166 @@ footer {
     font-weight: bold;
 }
 
+/* ========== REVIEW SECTION IN MY PURCHASES ========== */
+.review-section {
+    margin: 20px 0;
+    padding: 20px;
+    background: linear-gradient(135deg, #fff8fb 0%, #ffeef8 100%);
+    border-radius: 20px;
+    border: 3px solid #ff69b4;
+    box-shadow: 0 8px 25px rgba(255, 105, 180, 0.15);
+}
+
+.review-section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    color: #ff1493;
+    margin-bottom: 18px;
+    font-size: 1.15rem;
+    font-family: 'Kalam', cursive;
+}
+
+.review-section-title::before {
+    content: '📝';
+    font-size: 1.5rem;
+}
+
+.review-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    background: white;
+    border-radius: 15px;
+    border: 2px solid #ffd4e4;
+    transition: all 0.3s;
+}
+
+.review-item:hover {
+    border-color: #ff69b4;
+    transform: translateX(5px);
+    box-shadow: 0 4px 15px rgba(255, 105, 180, 0.2);
+}
+
+.review-item:last-child {
+    margin-bottom: 0;
+}
+
+.review-product-name {
+    color: #555;
+    font-size: 1.05rem;
+    font-weight: 500;
+    flex: 1;
+}
+
+.review-product-name::before {
+    content: '• ';
+    color: #ff69b4;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.review-status-reviewed {
+    color: #4caf50;
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.review-status-reviewed::before {
+    content: '✓';
+    background: #4caf50;
+    color: white;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+.btn-write-review {
+    background: linear-gradient(135deg, #ff69b4, #ff1493);
+    color: white;
+    padding: 10px 24px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+    white-space: nowrap;
+}
+
+.btn-write-review:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(255, 20, 147, 0.4);
+}
+
+/* ========== ENHANCED ORDER ACTIONS LAYOUT ========== */
+.order-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px dashed #ffd4e4;
+}
+
+.order-actions .btn {
+    padding: 12px 28px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.order-actions .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.action-buttons-row {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.action-buttons-row .btn {
+    flex: 0 0 auto;
+}
+
+/* Ensure buttons have consistent styling */
+.btn-return {
+    background: #ff69b4;
+    color: white;
+}
+
+.btn-detail {
+    background: #2196f3;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .action-buttons-row {
+        flex-direction: column;
+    }
+    
+    .action-buttons-row .btn {
+        width: 100%;
+    }
+}
+
 /* cancel button */
 .btn-cancel {
     background: #f44336;
@@ -6124,23 +6284,52 @@ footer {
     text-decoration: none;
     font-weight: bold;
     font-size: 0.95rem;
+    transition: all 0.3s;
+}
+
+.btn-cancel:hover {
+    background: #d32f2f;
+    transform: translateY(-2px);
 }
 
 /* return/refund */
 .btn-return {
-    background: #9c27b0;
+    background: linear-gradient(135deg, #9c27b0, #e91e63);
     color: white;
     padding: 0.7rem 1.3rem;
     border-radius: 25px;
     text-decoration: none;
     font-weight: bold;
     font-size: 0.95rem;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(156, 39, 176, 0.3);
 }
 
-/* confirm reveice */
+.btn-return:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(156, 39, 176, 0.4);
+}
+
+/* confirm receive */
 .btn-receive {
     background: #4caf50;
     color: white;
+    transition: all 0.3s;
+}
+
+.btn-receive:hover {
+    background: #43a047;
+    transform: translateY(-2px);
+}
+
+/* view details */
+.btn-detail {
+    background: #2196f3;
+    color: white;
+}
+
+.btn-detail:hover {
+    background: #1976d2;
 }
 
 /* ========== CHECKOUT PAGE STYLES ========== */

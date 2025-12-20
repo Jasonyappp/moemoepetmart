@@ -17,16 +17,16 @@ include '_head.php';
 
 
 <?php
-// Fetch Top 5 Selling Products (same query as admin report)
+// Fetch Top 3 Selling Products (by QUANTITY, not revenue)
 $stmt_top_home = $_db->query("
     SELECT p.product_id, p.product_name, p.price, p.photo_name, 
-           SUM(oi.quantity * oi.unit_price) AS revenue
+           SUM(oi.quantity) AS total_sold
     FROM order_items oi
     JOIN product p ON oi.product_id = p.product_id
     JOIN orders o ON oi.order_id = o.order_id
     WHERE o.order_status = 'Completed' AND p.is_active = 1
     GROUP BY p.product_id
-    ORDER BY revenue DESC
+    ORDER BY total_sold DESC
     LIMIT 3
 ");
 $top_selling_products = $stmt_top_home->fetchAll(PDO::FETCH_ASSOC);

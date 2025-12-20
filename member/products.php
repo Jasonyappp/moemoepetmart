@@ -170,7 +170,7 @@ include '../_head.php';
 
         <!-- Main Content -->
         <div class="products-main">
-            <h2>Our Adorable Pet Supplies ♡</h2>
+            <h2>Our Adorable Pet Supplies </h2>
 
             <form method="get" class="search-form">
                 <!-- Preserve filters in search -->
