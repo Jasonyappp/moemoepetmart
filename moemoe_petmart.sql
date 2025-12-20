@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 20, 2025 at 02:25 PM
+-- Generation Time: Dec 20, 2025 at 10:12 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -205,7 +205,9 @@ INSERT INTO `orders` (`order_id`, `user_id`, `shipping_address`, `recipient_name
 (7015, 5, NULL, '', '', 294.90, 0.00, NULL, NULL, NULL, NULL, NULL, '2025-10-24 18:30:00', 'Completed', 'Pending Payment', NULL, NULL, 0.00),
 (7016, 7, NULL, '', '', 292.85, 0.00, NULL, NULL, NULL, NULL, NULL, '2025-11-06 15:45:00', 'Completed', 'Pending Payment', NULL, NULL, 0.00),
 (7017, 6, NULL, '', '', 129.50, 0.00, NULL, NULL, NULL, NULL, NULL, '2025-11-21 10:15:00', 'Completed', 'Pending Payment', NULL, NULL, 0.00),
-(7018, 6, '2 Jalan Ss 2/78\r\nSs 2\r\n47300 Petaling Jaya\r\nMYS\r\nAddre', 'Jason', '011-11107767', 382.40, 0.00, 'west', 'Cash on Delivery', NULL, NULL, NULL, '2025-12-19 20:22:17', 'Cancelled', 'Pending Payment', NULL, 'MOE20PCT', 95.60);
+(7018, 6, '2 Jalan Ss 2/78\r\nSs 2\r\n47300 Petaling Jaya\r\nMYS\r\nAddre', 'Jason', '011-11107767', 382.40, 0.00, 'west', 'Cash on Delivery', NULL, NULL, NULL, '2025-12-19 20:22:17', 'Cancelled', 'Pending Payment', NULL, 'MOE20PCT', 95.60),
+(7019, 6, '2 Jalan Ss 2/78\r\nSs 2\r\n47300 Petaling Jaya\r\nMYS\r\nAddre', 'seah', '012-2222222', 8.00, 5.00, 'west', 'Credit/Debit Card', '7777', NULL, NULL, '2025-12-20 22:53:25', 'To Ship', 'Pending Payment', NULL, NULL, 0.00),
+(7020, 6, '2 Jalan Ss 2/78\r\nSs 2\r\n47300 Petaling Jaya\r\nMYS\r\nAddre', 'seah', '012-2222222', 19.88, 5.00, 'west', 'Credit/Debit Card', '1237', NULL, NULL, '2025-12-21 02:01:12', 'Completed', 'Pending Payment', NULL, NULL, 0.00);
 
 -- --------------------------------------------------------
 
@@ -388,7 +390,9 @@ INSERT INTO `order_items` (`item_id`, `order_id`, `product_id`, `quantity`, `uni
 (328, 7016, 96, 15, 4.99),
 (329, 7017, 91, 3, 35.90),
 (330, 7017, 94, 2, 10.90),
-(331, 7018, 92, 2, 239.00);
+(331, 7018, 92, 2, 239.00),
+(332, 7019, 103, 3, 1.00),
+(333, 7020, 99, 1, 14.88);
 
 -- --------------------------------------------------------
 
@@ -407,33 +411,35 @@ CREATE TABLE `product` (
   `is_active` tinyint(1) DEFAULT 1,
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `photo_name` varchar(255) NOT NULL
+  `photo_name` varchar(255) NOT NULL,
+  `average_rating` decimal(3,2) DEFAULT 0.00,
+  `review_count` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`product_id`, `product_code`, `product_name`, `description`, `price`, `stock_quantity`, `category_id`, `is_active`, `created_at`, `updated_at`, `photo_name`) VALUES
-(2, 'CAG0001', 'Luxury Cat Villa Carrier', '3-level cage with wheel', 43.90, 7, 2, 1, '2025-11-23 23:22:24', '2025-12-19 15:42:48', 'prod_693f05ea19699.jpg'),
-(3, 'FOD0001', 'Royal Canin Puppy 10kg', '~ Each pack is designed for adult dogs and available in different sizes to meet your feeding needs.', 109.00, 78, 3, 1, '2025-11-23 23:22:24', '2025-12-19 18:53:02', 'prod_693f165ba2028.jpg'),
-(89, 'CAG0002', 'Big Home Shape Cage', 'Available for cat & dog', 139.90, 3, 2, 1, '2025-12-15 03:00:35', '2025-12-19 12:11:13', '693f095361e88.jpg'),
-(91, 'CAG0004', 'Standard Pet Cage', 'Normal cage for our cute pets', 35.90, 39, 2, 1, '2025-12-15 03:04:33', '2025-12-19 16:38:17', 'prod_693f0bd3c4960.jpg'),
-(92, 'CAG0005', 'Luxury Hamster Villa Cage', 'Benefit:\r\n-Can put many hamsters', 239.00, 13, 2, 1, '2025-12-15 03:06:43', '2025-12-19 20:22:17', '693f0ac353967.jpg'),
-(93, 'CAG0003', 'Transparent Carries', 'Benefits:\r\n- Easily see your cutest pets', 55.90, 17, 2, 1, '2025-12-15 03:15:09', '2025-12-19 17:37:48', '693f0cbd71b9b.jpg'),
-(94, 'ACC0001', 'Pet Automatic Retractable Leash', '• Length Options: 3m / 5m\r\n• Material: Polyester + PP', 10.90, 25, 5, 1, '2025-12-15 03:24:38', '2025-12-19 16:31:18', 'prod_693f106d7be39.jpg'),
-(95, 'CLR0001', 'Pet Hair Remover Comb', '✔️Simply push the button, wipe, making it super simple to remove all the hair from the brush, so it\'s ready for the next time use.\r\n✔️Suit for dog, cat, rabbits and other pets, making them neat and clean.', 15.60, 28, 4, 1, '2025-12-15 03:38:35', '2025-12-19 17:43:45', '693f123b2857e.jpg'),
-(96, 'TOY0001', 'Cat Teaser Stick Toys with Bell', '🐾 Give your pets endless fun with this Cat Teaser Stick Toy with Bell. Interactive design, featuring a dangling bell and feather that will keep your cat entertained and engaged for hours!', 4.99, 11, 1, 1, '2025-12-15 03:43:09', '2025-12-19 12:12:21', '693f134dee5c4.jpg'),
-(97, 'CLR0002', 'Pet Grooming Set', '~ Pet gloves grooming\r\n~ Pet grooming comb * 2', 35.80, 120, 4, 1, '2025-12-20 20:03:45', '2025-12-20 20:03:45', '694690a1c1dfa.jpg'),
-(98, 'ACC0002', 'Automatic Water Food Dispenser 2 IN 1 Pet Feeder', '🐾 Enjoy peace of mind with our Automatic Pet Feeder and Water Dispenser, designed for cats, dogs, and rabbits. \r\n🐾 Large capacity, ensuring your pets stay fed and hydrated for days without frequent refills!', 29.90, 55, 5, 1, '2025-12-20 20:12:34', '2025-12-20 20:12:34', '694692b29c172.jpg'),
-(99, 'ACC0003', 'Washable Dog Bed Cat Bed Oval Sleeping Mat', '👉👉Specifications:\r\n\r\nFeatures for bed\r\n\r\n~Soft and Comfortable, Extra Large Space, Cervical Spine Care, Removable and Washable\r\n~Anti-Skid Epoxy: Moisture-Proof and Moisture-Proof, Effective Anti-Skid without Shifting.\r\n~One-Piece Nest, Sleeping around the Pillow Is Very Comfortable, Running around Deep Sleep.\r\n~Pillow Has High Rebound, No Collapse, Soft and Elastic, and It Is Very Comfortable to Sleep on It.\r\n~Full Filling, Long Sleep without Collapse, 360 ° Circular Package.', 14.88, 75, 5, 1, '2025-12-20 20:23:07', '2025-12-20 20:23:07', '6946952b30c91.jpg'),
-(100, 'ACC0004', 'L-Shaped Corner Wall Scratcher for Cats', '【Materials】: Cat Scratching Board is crafted from corrugated paper, density board. This cat scratching board is designed to withstand vigorous scratching, ensuring long term use\r\n\r\n【Stylish Design】: Featuring a minimalist design, this cat scratcher seamlessly blends into any home decor, making it a functional yet stylish addition to your living space\r\n\r\n【Furniture Protection】: By attracting your cat attention for play and claw sharpening, this pet cat scratch board protects your sofa and bed', 59.70, 36, 5, 1, '2025-12-20 20:28:43', '2025-12-20 20:28:43', '6946967b4025c.jpg'),
-(101, 'ACC0005', 'Large Dog Leash Vest Style Dog Chest Strap', '🔦 *** High Visibility Safety Reflective **:\r\n\r\n - Reflective Strips At Night Cover The Harness And Leash, Visible Within 200 Meters, Walking The Dog In Rainy/Night Is More Secure.\r\n\r\n 🐕 *** Comfortable Fit **:\r\n\r\n - Breathable Inner Lining, Adjustable Bust/Neck Circumference Is Not Stuffy To Wear For A Long Time.', 25.25, 20, 5, 1, '2025-12-20 20:37:37', '2025-12-20 20:37:37', '69469891853be.jpg'),
-(102, 'TOY0002', 'Pet Squeaky Duck Chew Toy Cat Dog', '[Product Features]\r\n\r\n~Realistic squeaking sound attracts pet attention interactive play\r\n~Soft plush material safe chewing teething relief puppies kittens\r\n~Durable reinforced stitching withstand biting multiple size options\r\n~Self amusement function reduces boredom home alone time\r\n~Bright yellow color cute duck design orange beak feet', 4.93, 60, 1, 1, '2025-12-20 20:46:11', '2025-12-20 20:46:11', '69469a93cb353.jpg'),
-(103, 'FOD0002', 'Pet Sausage Healthy Pet Hotdog Food Snack For Cats And Dogs', '🐾  High Protein & Low Fat Goodness: - Our 15g Pet Sausage Snack is the ultimate treat for your beloved cats and dogs! \r\n\r\n🐾  Packed with high protein and low fat, it\'s a nutritious reward that your pets will love.', 1.00, 100, 3, 1, '2025-12-20 20:49:43', '2025-12-20 20:49:43', '69469b6789665.jpg'),
-(104, 'FOD0003', 'Dry Kibble Dog Food for Puppy/Young Dog', '- Chicken/Egg/Milk (1.5KG)', 25.59, 46, 3, 1, '2025-12-20 21:00:22', '2025-12-20 21:00:22', '69469de6dcc39.jpg'),
-(105, 'FOD0004', 'Freeze Dried Chicken Pet Food', '😻High-protein nutrition promotes muscle development\r\n\r\nRich in high-quality protein, supports pet muscle growth and energy supplementation, and avoids obesity problems\r\n\r\n\r\n\r\n😻Low fat and easy to digest, healthy and worry-free\r\n\r\nLow fat content, easy for pets to digest and absorb, reducing gastrointestinal burden, suitable for sensitive pets\r\n\r\n\r\n\r\n😻Natural ingredients, no additives\r\n\r\nMade from 100% pure chicken breast, no preservatives, pigments or artificial additives, ensuring safety and naturalness\r\n\r\n\r\n\r\n😻Freeze-drying process retains nutrition and flavor\r\n\r\nUsing freeze-drying technology to lock in the original nutrition and delicious taste of chicken, with less nutrient loss', 19.90, 45, 3, 1, '2025-12-20 21:13:02', '2025-12-20 21:13:02', '6946a0de3d2e0.jpg'),
-(106, 'TOY0003', 'Pet Toy Dog UFO Ball | Portable UFO Dog Toy', 'Environmentally Friendly Materials: The Dog Dish Ball Is Made Of High-Quality PE Plastic Material, Which Is Tough, Durable, Safe And Non-Toxic.It Will Not Cause Any Harm To Teeth, But Please Do Not Let Your Dog Chew Too Much.', 13.90, 23, 1, 1, '2025-12-20 21:23:05', '2025-12-20 21:23:05', '6946a3399c923.jpg');
+INSERT INTO `product` (`product_id`, `product_code`, `product_name`, `description`, `price`, `stock_quantity`, `category_id`, `is_active`, `created_at`, `updated_at`, `photo_name`, `average_rating`, `review_count`) VALUES
+(2, 'CAG0001', 'Luxury Cat Villa Carrier', '3-level cage with wheel', 43.90, 7, 2, 1, '2025-11-23 23:22:24', '2025-12-19 15:42:48', 'prod_693f05ea19699.jpg', 0.00, 0),
+(3, 'FOD0001', 'Royal Canin Puppy 10kg', '~ Each pack is designed for adult dogs and available in different sizes to meet your feeding needs.', 109.00, 78, 3, 1, '2025-11-23 23:22:24', '2025-12-19 18:53:02', 'prod_693f165ba2028.jpg', 0.00, 0),
+(89, 'CAG0002', 'Big Home Shape Cage', 'Available for cat & dog', 139.90, 3, 2, 1, '2025-12-15 03:00:35', '2025-12-19 12:11:13', '693f095361e88.jpg', 0.00, 0),
+(91, 'CAG0004', 'Standard Pet Cage', 'Normal cage for our cute pets', 35.90, 39, 2, 1, '2025-12-15 03:04:33', '2025-12-20 23:14:10', 'prod_693f0bd3c4960.jpg', 5.00, 1),
+(92, 'CAG0005', 'Luxury Hamster Villa Cage', 'Benefit:\r\n-Can put many hamsters', 239.00, 13, 2, 1, '2025-12-15 03:06:43', '2025-12-19 20:22:17', '693f0ac353967.jpg', 0.00, 0),
+(93, 'CAG0003', 'Transparent Carries', 'Benefits:\r\n- Easily see your cutest pets', 55.90, 17, 2, 1, '2025-12-15 03:15:09', '2025-12-19 17:37:48', '693f0cbd71b9b.jpg', 0.00, 0),
+(94, 'ACC0001', 'Pet Automatic Retractable Leash', '• Length Options: 3m / 5m\r\n• Material: Polyester + PP', 10.90, 25, 5, 1, '2025-12-15 03:24:38', '2025-12-19 16:31:18', 'prod_693f106d7be39.jpg', 0.00, 0),
+(95, 'CLR0001', 'Pet Hair Remover Comb', '✔️Simply push the button, wipe, making it super simple to remove all the hair from the brush, so it\'s ready for the next time use.\r\n✔️Suit for dog, cat, rabbits and other pets, making them neat and clean.', 15.60, 28, 4, 1, '2025-12-15 03:38:35', '2025-12-19 17:43:45', '693f123b2857e.jpg', 0.00, 0),
+(96, 'TOY0001', 'Cat Teaser Stick Toys with Bell', '🐾 Give your pets endless fun with this Cat Teaser Stick Toy with Bell. Interactive design, featuring a dangling bell and feather that will keep your cat entertained and engaged for hours!', 4.99, 11, 1, 1, '2025-12-15 03:43:09', '2025-12-19 12:12:21', '693f134dee5c4.jpg', 0.00, 0),
+(97, 'CLR0002', 'Pet Grooming Set', '~ Pet gloves grooming\r\n~ Pet grooming comb * 2', 35.80, 120, 4, 1, '2025-12-20 20:03:45', '2025-12-20 20:03:45', '694690a1c1dfa.jpg', 0.00, 0),
+(98, 'ACC0002', 'Automatic Water Food Dispenser 2 IN 1 Pet Feeder', '🐾 Enjoy peace of mind with our Automatic Pet Feeder and Water Dispenser, designed for cats, dogs, and rabbits. \r\n🐾 Large capacity, ensuring your pets stay fed and hydrated for days without frequent refills!', 29.90, 55, 5, 1, '2025-12-20 20:12:34', '2025-12-20 20:12:34', '694692b29c172.jpg', 0.00, 0),
+(99, 'ACC0003', 'Washable Dog Bed Cat Bed Oval Sleeping Mat', '👉👉Specifications:\r\n\r\nFeatures for bed\r\n\r\n~Soft and Comfortable, Extra Large Space, Cervical Spine Care, Removable and Washable\r\n~Anti-Skid Epoxy: Moisture-Proof and Moisture-Proof, Effective Anti-Skid without Shifting.\r\n~One-Piece Nest, Sleeping around the Pillow Is Very Comfortable, Running around Deep Sleep.\r\n~Pillow Has High Rebound, No Collapse, Soft and Elastic, and It Is Very Comfortable to Sleep on It.\r\n~Full Filling, Long Sleep without Collapse, 360 ° Circular Package.', 14.88, 74, 5, 1, '2025-12-20 20:23:07', '2025-12-21 02:51:42', '6946952b30c91.jpg', 0.00, 0),
+(100, 'ACC0004', 'L-Shaped Corner Wall Scratcher for Cats', '【Materials】: Cat Scratching Board is crafted from corrugated paper, density board. This cat scratching board is designed to withstand vigorous scratching, ensuring long term use\r\n\r\n【Stylish Design】: Featuring a minimalist design, this cat scratcher seamlessly blends into any home decor, making it a functional yet stylish addition to your living space\r\n\r\n【Furniture Protection】: By attracting your cat attention for play and claw sharpening, this pet cat scratch board protects your sofa and bed', 59.70, 36, 5, 1, '2025-12-20 20:28:43', '2025-12-20 20:28:43', '6946967b4025c.jpg', 0.00, 0),
+(101, 'ACC0005', 'Large Dog Leash Vest Style Dog Chest Strap', '🔦 *** High Visibility Safety Reflective **:\r\n\r\n - Reflective Strips At Night Cover The Harness And Leash, Visible Within 200 Meters, Walking The Dog In Rainy/Night Is More Secure.\r\n\r\n 🐕 *** Comfortable Fit **:\r\n\r\n - Breathable Inner Lining, Adjustable Bust/Neck Circumference Is Not Stuffy To Wear For A Long Time.', 25.25, 20, 5, 1, '2025-12-20 20:37:37', '2025-12-20 20:37:37', '69469891853be.jpg', 0.00, 0),
+(102, 'TOY0002', 'Pet Squeaky Duck Chew Toy Cat Dog', '[Product Features]\r\n\r\n~Realistic squeaking sound attracts pet attention interactive play\r\n~Soft plush material safe chewing teething relief puppies kittens\r\n~Durable reinforced stitching withstand biting multiple size options\r\n~Self amusement function reduces boredom home alone time\r\n~Bright yellow color cute duck design orange beak feet', 4.93, 60, 1, 1, '2025-12-20 20:46:11', '2025-12-20 20:46:11', '69469a93cb353.jpg', 0.00, 0),
+(103, 'FOD0002', 'Pet Sausage Healthy Pet Hotdog Food Snack For Cats And Dogs', '🐾  High Protein & Low Fat Goodness: - Our 15g Pet Sausage Snack is the ultimate treat for your beloved cats and dogs! \r\n\r\n🐾  Packed with high protein and low fat, it\'s a nutritious reward that your pets will love.', 1.00, 97, 3, 1, '2025-12-20 20:49:43', '2025-12-20 22:53:25', '69469b6789665.jpg', 0.00, 0),
+(104, 'FOD0003', 'Dry Kibble Dog Food for Puppy/Young Dog', '- Chicken/Egg/Milk (1.5KG)', 25.59, 46, 3, 1, '2025-12-20 21:00:22', '2025-12-20 21:00:22', '69469de6dcc39.jpg', 0.00, 0),
+(105, 'FOD0004', 'Freeze Dried Chicken Pet Food', '😻High-protein nutrition promotes muscle development\r\n\r\nRich in high-quality protein, supports pet muscle growth and energy supplementation, and avoids obesity problems\r\n\r\n\r\n\r\n😻Low fat and easy to digest, healthy and worry-free\r\n\r\nLow fat content, easy for pets to digest and absorb, reducing gastrointestinal burden, suitable for sensitive pets\r\n\r\n\r\n\r\n😻Natural ingredients, no additives\r\n\r\nMade from 100% pure chicken breast, no preservatives, pigments or artificial additives, ensuring safety and naturalness\r\n\r\n\r\n\r\n😻Freeze-drying process retains nutrition and flavor\r\n\r\nUsing freeze-drying technology to lock in the original nutrition and delicious taste of chicken, with less nutrient loss', 19.90, 45, 3, 1, '2025-12-20 21:13:02', '2025-12-20 21:13:02', '6946a0de3d2e0.jpg', 0.00, 0),
+(106, 'TOY0003', 'Pet Toy Dog UFO Ball | Portable UFO Dog Toy', 'Environmentally Friendly Materials: The Dog Dish Ball Is Made Of High-Quality PE Plastic Material, Which Is Tough, Durable, Safe And Non-Toxic.It Will Not Cause Any Harm To Teeth, But Please Do Not Let Your Dog Chew Too Much.', 13.90, 23, 1, 1, '2025-12-20 21:23:05', '2025-12-20 21:23:05', '6946a3399c923.jpg', 0.00, 0);
 
 -- --------------------------------------------------------
 
@@ -465,6 +471,33 @@ CREATE TABLE `product_image` (
   `sort_order` int(11) DEFAULT 0,
   `uploaded_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_reviews`
+--
+
+CREATE TABLE `product_reviews` (
+  `review_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `rating` tinyint(1) NOT NULL CHECK (`rating` >= 1 and `rating` <= 5),
+  `review_text` text DEFAULT NULL,
+  `review_date` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp(),
+  `is_verified_purchase` tinyint(1) DEFAULT 1,
+  `admin_reply` text DEFAULT NULL,
+  `admin_reply_date` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product_reviews`
+--
+
+INSERT INTO `product_reviews` (`review_id`, `product_id`, `user_id`, `order_id`, `rating`, `review_text`, `review_date`, `updated_at`, `is_verified_purchase`, `admin_reply`, `admin_reply_date`) VALUES
+(2, 91, 6, 7017, 5, 'good', '2025-12-20 23:14:10', '2025-12-21 03:04:01', 1, 'tqvm~ and hv a nice day, pls give 5 stars', '2025-12-21 03:04:01');
 
 -- --------------------------------------------------------
 
@@ -622,6 +655,17 @@ ALTER TABLE `product_image`
   ADD KEY `product_id` (`product_id`);
 
 --
+-- Indexes for table `product_reviews`
+--
+ALTER TABLE `product_reviews`
+  ADD PRIMARY KEY (`review_id`),
+  ADD UNIQUE KEY `unique_user_product_order` (`user_id`,`product_id`,`order_id`),
+  ADD KEY `product_id` (`product_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `order_id` (`order_id`),
+  ADD KEY `rating` (`rating`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -651,7 +695,7 @@ ALTER TABLE `vouchers`
 -- AUTO_INCREMENT for table `cart_item`
 --
 ALTER TABLE `cart_item`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=254;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=288;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -669,13 +713,13 @@ ALTER TABLE `favorites`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7019;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7021;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=332;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=334;
 
 --
 -- AUTO_INCREMENT for table `product`
@@ -688,6 +732,12 @@ ALTER TABLE `product`
 --
 ALTER TABLE `product_image`
   MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `product_reviews`
+--
+ALTER TABLE `product_reviews`
+  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -749,6 +799,14 @@ ALTER TABLE `product`
 --
 ALTER TABLE `product_image`
   ADD CONSTRAINT `product_image_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `product_reviews`
+--
+ALTER TABLE `product_reviews`
+  ADD CONSTRAINT `product_reviews_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `product_reviews_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `product_reviews_ibfk_3` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `user_addresses`
