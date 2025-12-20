@@ -81,6 +81,20 @@ foreach ($cart as $item) {
 $shipping_fee = ($subtotal >= 150) ? 0 : ($region === 'east' ? 10.00 : 5.00);
 $grand_total = $subtotal + $shipping_fee - $discount;
 
+// Auto-remove voucher if subtotal no longer meets min spend
+if ($applied_voucher) {
+    $code = $applied_voucher['code'];
+    $stm = $_db->prepare("SELECT min_spend FROM vouchers WHERE code = ?");
+    $stm->execute([$code]);
+    $v = $stm->fetch();
+    if ($v && $subtotal < $v->min_spend) {
+        unset($_SESSION['applied_voucher']);
+        temp('info', 'Voucher removed as min spend condition no longer met ♡');
+        $discount = 0;
+        $grand_total = $subtotal + $shipping_fee;  // Update grand total without discount
+    }
+}
+
 $_title = 'Your Cart ♡ Moe Moe Pet Mart';
 include '../_head.php';
 ?>

@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- 主机： 127.0.0.1
--- 生成日期： 2025-12-19 14:44:56
--- 服务器版本： 10.4.32-MariaDB
--- PHP 版本： 8.2.12
+-- Host: 127.0.0.1
+-- Generation Time: Dec 20, 2025 at 06:56 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- 数据库： `moemoe_petmart`
+-- Database: `moemoe_petmart`
 --
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `cart_item`
+-- Table structure for table `cart_item`
 --
 
 CREATE TABLE `cart_item` (
@@ -35,7 +35,7 @@ CREATE TABLE `cart_item` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- 转存表中的数据 `cart_item`
+-- Dumping data for table `cart_item`
 --
 
 INSERT INTO `cart_item` (`cart_id`, `user_id`, `product_id`, `quantity`) VALUES
@@ -45,7 +45,7 @@ INSERT INTO `cart_item` (`cart_id`, `user_id`, `product_id`, `quantity`) VALUES
 -- --------------------------------------------------------
 
 --
--- 表的结构 `category`
+-- Table structure for table `category`
 --
 
 CREATE TABLE `category` (
@@ -57,7 +57,7 @@ CREATE TABLE `category` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- 转存表中的数据 `category`
+-- Dumping data for table `category`
 --
 
 INSERT INTO `category` (`category_id`, `category_code`, `category_name`, `description`, `created_at`) VALUES
@@ -70,7 +70,7 @@ INSERT INTO `category` (`category_id`, `category_code`, `category_name`, `descri
 -- --------------------------------------------------------
 
 --
--- 表的结构 `favorites`
+-- Table structure for table `favorites`
 --
 
 CREATE TABLE `favorites` (
@@ -81,7 +81,7 @@ CREATE TABLE `favorites` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- 转存表中的数据 `favorites`
+-- Dumping data for table `favorites`
 --
 
 INSERT INTO `favorites` (`favorite_id`, `user_id`, `product_id`, `added_at`) VALUES
@@ -90,7 +90,7 @@ INSERT INTO `favorites` (`favorite_id`, `user_id`, `product_id`, `added_at`) VAL
 -- --------------------------------------------------------
 
 --
--- 表的结构 `orders`
+-- Table structure for table `orders`
 --
 
 CREATE TABLE `orders` (
@@ -115,7 +115,7 @@ CREATE TABLE `orders` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- 转存表中的数据 `orders`
+-- Dumping data for table `orders`
 --
 
 INSERT INTO `orders` (`order_id`, `user_id`, `shipping_address`, `recipient_name`, `recipient_phone`, `total_amount`, `shipping_fee`, `shipping_region`, `payment_method`, `card_last4`, `qr_code`, `qr_generated_at`, `order_date`, `order_status`, `status`, `return_reason`, `voucher_code`, `discount_amount`) VALUES
@@ -141,7 +141,6 @@ INSERT INTO `orders` (`order_id`, `user_id`, `shipping_address`, `recipient_name
 (174, 7, '789, Hello, KL', 'Kelly', '012-3456789', 114.00, 5.00, 'west', 'Touch \'n Go', NULL, NULL, NULL, '2025-12-19 18:53:02', 'Completed', 'Pending Payment', NULL, NULL, 0.00),
 (2001, 5, NULL, '', '', 95.06, 0.00, NULL, NULL, NULL, NULL, NULL, '2023-01-12 15:30:00', 'Completed', 'Pending Payment', NULL, NULL, 0.00),
 (2002, 6, NULL, '', '', 228.90, 0.00, NULL, NULL, NULL, NULL, NULL, '2023-02-18 10:45:00', 'Completed', 'Pending Payment', NULL, NULL, 0.00),
-(2003, 7, NULL, '', '', 378.90, 0.00, NULL, NULL, NULL, NULL, NULL, '2023-03-05 19:20:00', 'Completed', 'Pending Payment', NULL, NULL, 0.00),
 (2004, 5, NULL, '', '', 163.60, 0.00, NULL, NULL, NULL, NULL, NULL, '2023-04-22 13:10:00', 'Completed', 'Pending Payment', NULL, NULL, 0.00),
 (2005, 6, NULL, '', '', 177.85, 0.00, NULL, NULL, NULL, NULL, NULL, '2023-05-08 11:55:00', 'Completed', 'Pending Payment', NULL, NULL, 0.00),
 (2006, 7, NULL, '', '', 285.80, 0.00, NULL, NULL, NULL, NULL, NULL, '2023-06-14 16:40:00', 'Completed', 'Pending Payment', NULL, NULL, 0.00),
@@ -209,7 +208,7 @@ INSERT INTO `orders` (`order_id`, `user_id`, `shipping_address`, `recipient_name
 -- --------------------------------------------------------
 
 --
--- 表的结构 `order_items`
+-- Table structure for table `order_items`
 --
 
 CREATE TABLE `order_items` (
@@ -221,7 +220,7 @@ CREATE TABLE `order_items` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- 转存表中的数据 `order_items`
+-- Dumping data for table `order_items`
 --
 
 INSERT INTO `order_items` (`item_id`, `order_id`, `product_id`, `quantity`, `unit_price`) VALUES
@@ -253,8 +252,6 @@ INSERT INTO `order_items` (`item_id`, `order_id`, `product_id`, `quantity`, `uni
 (192, 2001, 95, 2, 15.60),
 (193, 2002, 3, 2, 109.00),
 (194, 2002, 94, 1, 10.90),
-(195, 2003, 92, 1, 239.00),
-(196, 2003, 89, 1, 139.90),
 (197, 2004, 91, 3, 35.90),
 (198, 2004, 93, 1, 55.90),
 (199, 2005, 3, 1, 109.00),
@@ -394,7 +391,7 @@ INSERT INTO `order_items` (`item_id`, `order_id`, `product_id`, `quantity`, `uni
 -- --------------------------------------------------------
 
 --
--- 表的结构 `product`
+-- Table structure for table `product`
 --
 
 CREATE TABLE `product` (
@@ -412,7 +409,7 @@ CREATE TABLE `product` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- 转存表中的数据 `product`
+-- Dumping data for table `product`
 --
 
 INSERT INTO `product` (`product_id`, `product_code`, `product_name`, `description`, `price`, `stock_quantity`, `category_id`, `is_active`, `created_at`, `updated_at`, `photo_name`) VALUES
@@ -429,7 +426,7 @@ INSERT INTO `product` (`product_id`, `product_code`, `product_name`, `descriptio
 -- --------------------------------------------------------
 
 --
--- 表的结构 `products`
+-- Table structure for table `products`
 --
 
 CREATE TABLE `products` (
@@ -445,7 +442,7 @@ CREATE TABLE `products` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `product_image`
+-- Table structure for table `product_image`
 --
 
 CREATE TABLE `product_image` (
@@ -460,7 +457,7 @@ CREATE TABLE `product_image` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -481,7 +478,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- 转存表中的数据 `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `phone`, `home_address`, `password`, `reset_token`, `reset_token_expiry`, `role`, `created_at`, `profile_pic`, `locked`, `lock_reason`, `locked_at`) VALUES
@@ -494,7 +491,7 @@ INSERT INTO `users` (`id`, `username`, `email`, `phone`, `home_address`, `passwo
 -- --------------------------------------------------------
 
 --
--- 表的结构 `user_addresses`
+-- Table structure for table `user_addresses`
 --
 
 CREATE TABLE `user_addresses` (
@@ -508,7 +505,7 @@ CREATE TABLE `user_addresses` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- 转存表中的数据 `user_addresses`
+-- Dumping data for table `user_addresses`
 --
 
 INSERT INTO `user_addresses` (`id`, `user_id`, `address_name`, `recipient_name`, `recipient_phone`, `full_address`, `created_at`) VALUES
@@ -523,7 +520,7 @@ INSERT INTO `user_addresses` (`id`, `user_id`, `address_name`, `recipient_name`,
 -- --------------------------------------------------------
 
 --
--- 表的结构 `vouchers`
+-- Table structure for table `vouchers`
 --
 
 CREATE TABLE `vouchers` (
@@ -539,7 +536,7 @@ CREATE TABLE `vouchers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- 转存表中的数据 `vouchers`
+-- Dumping data for table `vouchers`
 --
 
 INSERT INTO `vouchers` (`id`, `code`, `type`, `value`, `min_spend`, `expiry_date`, `usage_limit`, `used_count`, `created_at`) VALUES
@@ -548,11 +545,11 @@ INSERT INTO `vouchers` (`id`, `code`, `type`, `value`, `min_spend`, `expiry_date
 (3, 'MOEFREE5', 'fixed', 5.00, 20.00, '2026-08-31', NULL, 6, '2025-12-19 06:26:15');
 
 --
--- 转储表的索引
+-- Indexes for dumped tables
 --
 
 --
--- 表的索引 `cart_item`
+-- Indexes for table `cart_item`
 --
 ALTER TABLE `cart_item`
   ADD PRIMARY KEY (`cart_id`),
@@ -560,7 +557,7 @@ ALTER TABLE `cart_item`
   ADD KEY `product_id` (`product_id`);
 
 --
--- 表的索引 `category`
+-- Indexes for table `category`
 --
 ALTER TABLE `category`
   ADD PRIMARY KEY (`category_id`),
@@ -568,7 +565,7 @@ ALTER TABLE `category`
   ADD KEY `idx_code` (`category_code`);
 
 --
--- 表的索引 `favorites`
+-- Indexes for table `favorites`
 --
 ALTER TABLE `favorites`
   ADD PRIMARY KEY (`favorite_id`),
@@ -576,14 +573,14 @@ ALTER TABLE `favorites`
   ADD KEY `fk_favorites_product` (`product_id`);
 
 --
--- 表的索引 `orders`
+-- Indexes for table `orders`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`order_id`),
   ADD KEY `user_id` (`user_id`);
 
 --
--- 表的索引 `order_items`
+-- Indexes for table `order_items`
 --
 ALTER TABLE `order_items`
   ADD PRIMARY KEY (`item_id`),
@@ -591,7 +588,7 @@ ALTER TABLE `order_items`
   ADD KEY `product_id` (`product_id`);
 
 --
--- 表的索引 `product`
+-- Indexes for table `product`
 --
 ALTER TABLE `product`
   ADD PRIMARY KEY (`product_id`),
@@ -600,20 +597,20 @@ ALTER TABLE `product`
   ADD KEY `idx_code` (`product_code`);
 
 --
--- 表的索引 `products`
+-- Indexes for table `products`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
 
 --
--- 表的索引 `product_image`
+-- Indexes for table `product_image`
 --
 ALTER TABLE `product_image`
   ADD PRIMARY KEY (`image_id`),
   ADD KEY `product_id` (`product_id`);
 
 --
--- 表的索引 `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
@@ -621,128 +618,128 @@ ALTER TABLE `users`
   ADD KEY `idx_username` (`username`);
 
 --
--- 表的索引 `user_addresses`
+-- Indexes for table `user_addresses`
 --
 ALTER TABLE `user_addresses`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`);
 
 --
--- 表的索引 `vouchers`
+-- Indexes for table `vouchers`
 --
 ALTER TABLE `vouchers`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `code` (`code`);
 
 --
--- 在导出的表使用AUTO_INCREMENT
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- 使用表AUTO_INCREMENT `cart_item`
+-- AUTO_INCREMENT for table `cart_item`
 --
 ALTER TABLE `cart_item`
   MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=254;
 
 --
--- 使用表AUTO_INCREMENT `category`
+-- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
   MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- 使用表AUTO_INCREMENT `favorites`
+-- AUTO_INCREMENT for table `favorites`
 --
 ALTER TABLE `favorites`
   MODIFY `favorite_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- 使用表AUTO_INCREMENT `orders`
+-- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
   MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7019;
 
 --
--- 使用表AUTO_INCREMENT `order_items`
+-- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
   MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=332;
 
 --
--- 使用表AUTO_INCREMENT `product`
+-- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
   MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 
 --
--- 使用表AUTO_INCREMENT `product_image`
+-- AUTO_INCREMENT for table `product_image`
 --
 ALTER TABLE `product_image`
   MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- 使用表AUTO_INCREMENT `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- 使用表AUTO_INCREMENT `user_addresses`
+-- AUTO_INCREMENT for table `user_addresses`
 --
 ALTER TABLE `user_addresses`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
--- 使用表AUTO_INCREMENT `vouchers`
+-- AUTO_INCREMENT for table `vouchers`
 --
 ALTER TABLE `vouchers`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- 限制导出的表
+-- Constraints for dumped tables
 --
 
 --
--- 限制表 `cart_item`
+-- Constraints for table `cart_item`
 --
 ALTER TABLE `cart_item`
   ADD CONSTRAINT `cart_item_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `cart_item_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE;
 
 --
--- 限制表 `favorites`
+-- Constraints for table `favorites`
 --
 ALTER TABLE `favorites`
   ADD CONSTRAINT `fk_favorites_product` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_favorites_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
--- 限制表 `orders`
+-- Constraints for table `orders`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
--- 限制表 `order_items`
+-- Constraints for table `order_items`
 --
 ALTER TABLE `order_items`
   ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE;
 
 --
--- 限制表 `product`
+-- Constraints for table `product`
 --
 ALTER TABLE `product`
   ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`);
 
 --
--- 限制表 `product_image`
+-- Constraints for table `product_image`
 --
 ALTER TABLE `product_image`
   ADD CONSTRAINT `product_image_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE;
 
 --
--- 限制表 `user_addresses`
+-- Constraints for table `user_addresses`
 --
 ALTER TABLE `user_addresses`
   ADD CONSTRAINT `user_addresses_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
