@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 20, 2025 at 10:12 PM
+-- Generation Time: Dec 20, 2025 at 10:28 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -529,7 +529,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `username`, `email`, `phone`, `home_address`, `password`, `reset_token`, `reset_token_expiry`, `role`, `created_at`, `profile_pic`, `locked`, `lock_reason`, `locked_at`) VALUES
 (1, 'Seahnijun', '', '', '0', '$2y$10$jSANxKW6shQ/CsKMsKzSXeqiOue5QFD2DnhPO/SwQJDAwdgtR1lRO', NULL, NULL, 'admin', '2025-11-22 17:27:12', 'uploads/profile_pics/1_1765859839_admin.jpg', 0, NULL, NULL),
 (5, 'abc', 'abc123@yahoo.com', '012-3456789', '0', '$2y$10$EKljSiD3aP0XAT.wLJdBKe7puFh/gvRdAGlaGoHU7aJ3tHfWqdqGi', NULL, NULL, 'member', '2025-11-22 22:32:05', 'uploads/profile_pics/5_1765885108_otter.jpg', 0, NULL, NULL),
-(6, 'haha', 'haha@gmail.com', '012-2222222', '0', '$2y$10$VybeVzjUtq7U2kpxMCJuV.zUuOi1vHO9l.u/./ThjRVMB8WuekqJS', NULL, NULL, 'member', '2025-12-06 23:12:07', 'uploads/profile_pics/6_1765302986_iu-3.jpg', 0, 'Suspicious activity', NULL),
+(6, 'haha', 'rokuya124@gmail.com', '012-2222222', '0', '$2y$10$Fv.4ZLPVE/p1gpn7IQeKKuqqUpRMvY0YMJfWv6teJnMiHs4b06/J2', NULL, NULL, 'member', '2025-12-06 23:12:07', 'uploads/profile_pics/6_1765302986_iu-3.jpg', 0, 'Suspicious activity', NULL),
 (7, 'aaa', 'tanyijia-wp23@student.tarc.edu.my', '0123456789', '0', '$2y$10$k5r/g6EeYTTKXn1w06SEUutPnBB9ASLIHWZbut1A5pbh/8Z0bigS.', NULL, NULL, 'member', '2025-12-13 16:42:33', 'uploads/profile_pics/7_1766119675_images.jpg', 0, 'Suspicious activity', NULL),
 (8, 'Jasonyap_1022', 'jasonyap102204@gmail.com', '01111111111', '', '$2y$10$0o9jO9W3DCblF67T.rlwKuoVaM1wNIscdOk4w0AAJubulef885uA.', NULL, NULL, 'member', '2025-12-19 21:33:00', 'uploads/profile_pics/8_1766151590_Hu.Tao.full.3511224.jpg', 0, 'Payment issues', NULL);
 
