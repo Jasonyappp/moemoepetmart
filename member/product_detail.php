@@ -93,7 +93,7 @@ include '../_head.php';
             data-name="<?= encode($product->product_name) ?>"
             data-price="<?= $product->price ?>"
             data-max="<?= $product->stock_quantity ?>">
-        🛍️ Add to Cart ♡
+        🛒 | Add to Cart ♡
     </button>
 <?php else: ?>
     <div class="out-of-stock-premium">Out of Stock 😿</div>
@@ -280,8 +280,7 @@ include '../_head.php';
     transform: scale(1.15);
 }
 
-.btn-favorite-small.favorited {
-}
+
 
 .btn-favorite-small svg {
     transition: all 0.3s ease;
