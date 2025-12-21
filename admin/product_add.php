@@ -5,16 +5,16 @@ require_admin();
 
 $_title = 'Add New Product - Admin';
 
-// ============================ 提交处理 ============================
+
 if (is_post()) {
     $action = post('action');
 
-    // 只是选分类 → 刷新生成编号
+   
     if ($action === '') {
-        // do nothing
+      
     }
 
-    // 真正添加
+
     elseif ($action === 'add') {
         $category_id     = req('category_id');
         $product_code    = trim(req('product_code'));
@@ -23,7 +23,7 @@ if (is_post()) {
         $stock_quantity  = (int)post('stock_quantity', 0);
         $description     = post('description', '');
 
-        // 基础验证
+     
         if (!$category_id || !$product_code || !$product_name || $price <= 0) {
             temp('error', 'Please fill in all required fields!');
         }
@@ -32,7 +32,7 @@ if (is_post()) {
         }
         else {
             try {
-                // 1. 先插入产品（photo_name 留空）
+               
                 $stm = $_db->prepare("INSERT INTO product 
                     (product_code, product_name, category_id, price, stock_quantity, description, created_at, updated_at)
                     VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())");
@@ -40,9 +40,9 @@ if (is_post()) {
                 $stm->execute([$product_code, $product_name, $category_id, $price, $stock_quantity, $description]);
                 $product_id = $_db->lastInsertId();
 
-                // 2. 处理图片上传（存到 ../admin/uploads/products）
-                $uploadDir = '../admin/uploads/products';           // 真实路径
-                $webDir    = 'admin/uploads/products';              // 给数据库和前端用的路径
+               
+                $uploadDir = '../admin/uploads/products';           
+                $webDir    = 'admin/uploads/products';              
 
                 if (!is_dir($uploadDir)) {
                     mkdir($uploadDir, 0755, true);
@@ -50,7 +50,7 @@ if (is_post()) {
 
                 $file = $_FILES['productImage'];
 
-                // 简单安全检查
+      
                 if ($file['error'] !== UPLOAD_ERR_OK) {
                     throw new Exception('Upload failed, error code:' . $file['error']);
                 }
@@ -67,18 +67,18 @@ if (is_post()) {
                     throw new Exception('Only images are allowed.');
                 }
 
-                // 生成安全文件名，强制 .jpg
+              
 
                 $newName = uniqid() . '.jpg';
                 $targetFile = $uploadDir . '/' . $newName;
                 move_uploaded_file($file['tmp_name'], $targetFile);
 
-                // 3. 更新数据库 photo_name
+              
                 $_db->prepare("UPDATE product SET photo_name = ? WHERE product_id = ?")
                     ->execute([$newName, $product_id]);
 
                 temp('success', "product「{$product_name}」Added successfully！");
-                redirect('product_list.php'); // 跳转到列表页立刻看到
+                redirect('product_list.php'); 
 
             } catch (Exception $e) {
                 temp('error', 'Addition failed:' . $e->getMessage());
@@ -87,7 +87,7 @@ if (is_post()) {
     }
 }
 
-// ============================ 自动生成编号 ============================
+
 $category_id = post('category_id') ?: get('category_id');
 $next_code = '';
 if ($category_id) {

@@ -30,9 +30,9 @@ try {
             $image_id = get('image_id');
             $product_id = get('product_id');
 
-            // 先取消所有主图
+       
             $_db->prepare("UPDATE product_image SET is_main = 0 WHERE product_id = ?")->execute([$product_id]);
-            // 再设置当前为主图
+         
             $_db->prepare("UPDATE product_image SET is_main = 1 WHERE image_id = ?")->execute([$image_id]);
 
             temp('info', 'Main image updated');
@@ -54,8 +54,7 @@ try {
             break;
 
         case 'upload_temp':
-            // 临时上传图片逻辑（你原来 add 页面用的）
-            // ... 保持不变
+        
             break;
 
         default:

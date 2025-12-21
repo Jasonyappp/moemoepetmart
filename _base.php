@@ -244,7 +244,7 @@ function save_photo($f, $folder, $width = 800, $height = 800) {
         ->bestFit($width, $height)
         ->toFile("$folder/$photo", 'image/jpeg', 85);
 
-    return $photo;  // 返回如：img_6759a1b2c3d4e.jpg
+    return $photo;  
 }
 
 
@@ -281,11 +281,10 @@ function html_file($key, $accept = '', $attr = '') {
         return preg_match('/^\-?\d+(\.\d{1,2})?$/', $value);
     }
 
-// ====================== 永久删除旧产品主图（安全、可重复调用）======================
 /**
- * 删除产品旧主图（物理文件）
- * @param int $product_id 产品ID
- * @return bool 是否成功（即使没有旧图也返回 true）
+ *
+ * @param int $product_id 
+ * @return bool 
  */
 function delete_old_product_photo($product_id) {
     global $_db;
@@ -295,15 +294,13 @@ function delete_old_product_photo($product_id) {
         $stmt->execute([$product_id]);
         $old_photo_name = $stmt->fetchColumn();
 
-        // 没有旧图 → 直接返回成功
         if (!$old_photo_name) {
             return true;
         }
 
-        // 构建真实路径（和你 add/edit 完全一致！）
+      
         $full_path = '../admin/uploads/products/' . $old_photo_name;
 
-        // 删除文件（如果存在）
         if (is_file($full_path)) {
             if (unlink($full_path)) {
                 error_log("成功删除旧产品主图: $full_path");
@@ -314,7 +311,7 @@ function delete_old_product_photo($product_id) {
             }
         }
 
-        return true; // 文件本就不存在，也算成功
+        return true; 
     } catch (Exception $e) {
         error_log("delete_old_product_photo 错误: " . $e->getMessage());
         return false;

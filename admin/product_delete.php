@@ -1,14 +1,14 @@
 <?php
 /**
  * product_delete.php
- * 安全删除产品 + 自动删除硬盘上的主图文件（使用统一函数）
+ 
  */
 
 require '../_base.php';
 require_login();
 require_admin();
 
-// 必须是 POST 提交（防止直接在浏览器地址栏访问就删掉东西）
+
 if (!is_post()) {
     temp('error', 'Invalid request method');
     redirect('product_list.php');
@@ -33,10 +33,10 @@ try {
         throw new Exception('The product does not exist or has been removed.');
     }
 
-    // 2. 【重点】使用我们统一写的函数删除旧主图（自动处理路径、日志、安全）
+    
     delete_old_product_photo($product_id);
 
-    // 3. 删除数据库记录
+  
     $_db->prepare("DELETE FROM product WHERE product_id = ?")
          ->execute([$product_id]);
 

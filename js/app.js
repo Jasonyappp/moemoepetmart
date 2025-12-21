@@ -62,7 +62,7 @@ function showFlashMessage(message) {
     }, 4000);
 }
 
-// 让 Apply 按钮真的能提交筛选
+
 function applyFilters() {
     const search = document.querySelector('input[name="search"]').value;
     const category = document.querySelector('select[name="category"]').value;

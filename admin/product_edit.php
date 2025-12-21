@@ -6,7 +6,7 @@ require_admin();
 $id = get('id');
 if (!$id || !is_numeric($id)) redirect('product_list.php');
 
-// ====================== 删除主图 ======================
+
 if (get('delete_photo') === '1') {
     $stmt = $_db->prepare("SELECT photo_name FROM product WHERE product_id = ?");
     $stmt->execute([$id]);
@@ -20,7 +20,7 @@ if (get('delete_photo') === '1') {
     redirect("product_edit.php?id=$id");
 }
 
-// ====================== 表单提交 ======================
+
 if (is_post()) {
     $name = trim(req('product_name'));
     $price = (float)req('price');
@@ -34,7 +34,7 @@ if (is_post()) {
             $_db->prepare("UPDATE product SET product_name=?, price=?, stock_quantity=?, description=?, updated_at=NOW() WHERE product_id=?")
                 ->execute([$name, $price, $stock, $desc, $id]);
 
-            // 处理新上传的主图
+           
             if (!empty($_FILES['productImage']['name']) && $_FILES['productImage']['error'] === UPLOAD_ERR_OK) {
                 $file = $_FILES['productImage'];
                 if ($file['size'] > 10*1024*1024) throw new Exception('Images cannot exceed 10MB.');
@@ -44,10 +44,10 @@ if (is_post()) {
                 finfo_close($finfo);
                 if (!in_array($mime, $allowed)) throw new Exception('Only images are allowed.');
 
-                // 删除旧图
+             
                 $stmt = $_db->prepare("SELECT photo_name FROM product WHERE product_id = ?");
                 $stmt->execute([$id]);
-                $old = $stmt->fetchColumn();   // fetchColumn() 直接返回第一列的值（或 false）
+                $old = $stmt->fetchColumn();   
                 if ($old) @unlink("../admin/uploads/products/$old");
 
                 $newName = uniqid('prod_').'.jpg';
@@ -67,7 +67,7 @@ if (is_post()) {
     }
 }
 
-// ====================== 加载数据 ======================
+
 $stmt = $_db->prepare("SELECT p.*, c.category_name, c.category_code 
                        FROM product p 
                        LEFT JOIN category c ON p.category_id = c.category_id 
@@ -77,12 +77,12 @@ $product = $stmt->fetch(PDO::FETCH_OBJ);
 if (!$product) { temp('error', 'Product does not exist.'); redirect('product_list.php'); }
 
 $_title = 'Edit • ' . ($product->product_name);
-include '../_head.php'; // 你的粉色后台头部
+include '../_head.php'; 
 ?>
 
 <div class="product-edit-container">
 
-    <!-- 替换你原来的 <div class="product-edit-container"> 开始到结束 -->
+    
 <div class="container">
     <h2>Edit Product ♡</h2>
 

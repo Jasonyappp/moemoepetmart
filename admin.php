@@ -28,7 +28,7 @@ if (isset($_SESSION['show_welcome']) && $_SESSION['show_welcome'] === true) {
 </div>
 
 <script>
-// 2秒后自动消失 + 淡出动画
+
 setTimeout(() => {
     const toast = document.getElementById('welcomeToast');
     toast.classList.remove('show');
@@ -39,7 +39,7 @@ setTimeout(() => {
 
 <div class="admin-layout">
 
-    <!-- 左侧侧边栏 -->
+   
     <aside class="admin-sidebar">
         <div class="logo">
             <h2>MoeMoePet</h2>
@@ -58,7 +58,7 @@ setTimeout(() => {
         </ul>
     </aside>
 
-    <!-- 主内容区 -->
+ 
     <main class="admin-main">
         <div class="admin-welcome-header">
             <h1>Admin Dashboard • Moe Moe Pet Mart</h1>

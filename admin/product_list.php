@@ -5,14 +5,14 @@ require_admin();
 
 $_title = 'Product Management - Admin';
 
-// === 参数处理（你原来的全部保留）===
+
 $page = max(1, (int)($_GET['page'] ?? 1));
 $limit = (int)($_GET['limit'] ?? 5);
 $offset = ($page - 1) * $limit;
 
 $search = trim($_GET['search'] ?? '');
 $category = $_GET['category'] ?? '';
-$stock_status = $_GET['stock_status'] ?? 'all'; // all, low, out
+$stock_status = $_GET['stock_status'] ?? 'all'; 
 
 $where = "WHERE p.is_active = 1";
 $params = [];
@@ -65,7 +65,7 @@ $cats = $_db->query("SELECT * FROM category ORDER BY category_name")->fetchAll()
 
 <div class="admin-layout">
 
-    <!-- 左侧侧边栏 -->
+  
     <aside class="admin-sidebar">
         <div class="logo">
             <h2>MoeMoePet</h2>
@@ -194,7 +194,7 @@ $cats = $_db->query("SELECT * FROM category ORDER BY category_name")->fetchAll()
 </div>
 
 <script>
-// 让 Apply 按钮真的能提交筛选
+
 function applyFilters() {
     const search = document.querySelector('input[name="search"]').value;
     const category = document.querySelector('select[name="category"]').value;

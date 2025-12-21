@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 21, 2025 at 10:46 AM
+-- Generation Time: Dec 21, 2025 at 05:26 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -534,12 +534,43 @@ INSERT INTO `product` (`product_id`, `product_code`, `product_name`, `descriptio
 (98, 'ACC0002', 'Automatic Water Food Dispenser 2 IN 1 Pet Feeder', '🐾 Enjoy peace of mind with our Automatic Pet Feeder and Water Dispenser, designed for cats, dogs, and rabbits. \r\n🐾 Large capacity, ensuring your pets stay fed and hydrated for days without frequent refills!', 29.90, 53, 5, 1, '2025-12-20 20:12:34', '2025-12-21 17:21:32', '694692b29c172.jpg', 0.00, 0),
 (99, 'ACC0003', 'Washable Dog Bed Cat Bed Oval Sleeping Mat', '👉👉Specifications:\r\n\r\nFeatures for bed\r\n\r\n~Soft and Comfortable, Extra Large Space, Cervical Spine Care, Removable and Washable\r\n~Anti-Skid Epoxy: Moisture-Proof and Moisture-Proof, Effective Anti-Skid without Shifting.\r\n~One-Piece Nest, Sleeping around the Pillow Is Very Comfortable, Running around Deep Sleep.\r\n~Pillow Has High Rebound, No Collapse, Soft and Elastic, and It Is Very Comfortable to Sleep on It.\r\n~Full Filling, Long Sleep without Collapse, 360 ° Circular Package.', 14.88, 74, 5, 1, '2025-12-20 20:23:07', '2025-12-21 02:51:42', '6946952b30c91.jpg', 0.00, 0),
 (100, 'ACC0004', 'L-Shaped Corner Wall Scratcher for Cats', '【Materials】: Cat Scratching Board is crafted from corrugated paper, density board. This cat scratching board is designed to withstand vigorous scratching, ensuring long term use\r\n\r\n【Stylish Design】: Featuring a minimalist design, this cat scratcher seamlessly blends into any home decor, making it a functional yet stylish addition to your living space\r\n\r\n【Furniture Protection】: By attracting your cat attention for play and claw sharpening, this pet cat scratch board protects your sofa and bed', 59.70, 36, 5, 1, '2025-12-20 20:28:43', '2025-12-20 20:28:43', '6946967b4025c.jpg', 0.00, 0),
-(101, 'ACC0005', 'Large Dog Leash Vest Style Dog Chest Strap', '🔦 *** High Visibility Safety Reflective **:\r\n\r\n - Reflective Strips At Night Cover The Harness And Leash, Visible Within 200 Meters, Walking The Dog In Rainy/Night Is More Secure.\r\n\r\n 🐕 *** Comfortable Fit **:\r\n\r\n - Breathable Inner Lining, Adjustable Bust/Neck Circumference Is Not Stuffy To Wear For A Long Time.', 25.25, 20, 5, 1, '2025-12-20 20:37:37', '2025-12-20 20:37:37', '69469891853be.jpg', 0.00, 0),
+(101, 'ACC0005', 'Large Dog Leash Vest Style Dog Chest Strap', '🔦 *** High Visibility Safety Reflective **:\r\n\r\n - Reflective Strips At Night Cover The Harness And Leash, Visible Within 200 Meters, Walking The Dog In Rainy/Night Is More Secure.\r\n\r\n 🐕 *** Comfortable Fit **:\r\n\r\n - Breathable Inner Lining, Adjustable Bust/Neck Circumference Is Not Stuffy To Wear For A Long Time.', 25.25, 40, 5, 1, '2025-12-20 20:37:37', '2025-12-22 00:22:18', '69469891853be.jpg', 0.00, 0),
 (102, 'TOY0002', 'Pet Squeaky Duck Chew Toy Cat Dog', '[Product Features]\r\n\r\n~Realistic squeaking sound attracts pet attention interactive play\r\n~Soft plush material safe chewing teething relief puppies kittens\r\n~Durable reinforced stitching withstand biting multiple size options\r\n~Self amusement function reduces boredom home alone time\r\n~Bright yellow color cute duck design orange beak feet', 4.93, 60, 1, 1, '2025-12-20 20:46:11', '2025-12-20 20:46:11', '69469a93cb353.jpg', 0.00, 0),
 (103, 'FOD0002', 'Pet Sausage Healthy Pet Hotdog Food Snack For Cats And Dogs', '🐾  High Protein & Low Fat Goodness: - Our 15g Pet Sausage Snack is the ultimate treat for your beloved cats and dogs! \r\n\r\n🐾  Packed with high protein and low fat, it\'s a nutritious reward that your pets will love.', 1.00, 97, 3, 1, '2025-12-20 20:49:43', '2025-12-20 22:53:25', '69469b6789665.jpg', 0.00, 0),
 (104, 'FOD0003', 'Dry Kibble Dog Food for Puppy/Young Dog', '- Chicken/Egg/Milk (1.5KG)', 25.59, 45, 3, 1, '2025-12-20 21:00:22', '2025-12-21 08:49:16', '69469de6dcc39.jpg', 5.00, 1),
 (105, 'FOD0004', 'Freeze Dried Chicken Pet Food', '😻High-protein nutrition promotes muscle development\r\n\r\nRich in high-quality protein, supports pet muscle growth and energy supplementation, and avoids obesity problems\r\n\r\n\r\n\r\n😻Low fat and easy to digest, healthy and worry-free\r\n\r\nLow fat content, easy for pets to digest and absorb, reducing gastrointestinal burden, suitable for sensitive pets\r\n\r\n\r\n\r\n😻Natural ingredients, no additives\r\n\r\nMade from 100% pure chicken breast, no preservatives, pigments or artificial additives, ensuring safety and naturalness\r\n\r\n\r\n\r\n😻Freeze-drying process retains nutrition and flavor\r\n\r\nUsing freeze-drying technology to lock in the original nutrition and delicious taste of chicken, with less nutrient loss', 19.90, 45, 3, 1, '2025-12-20 21:13:02', '2025-12-20 21:13:02', '6946a0de3d2e0.jpg', 0.00, 0),
 (106, 'TOY0003', 'Pet Toy Dog UFO Ball | Portable UFO Dog Toy', 'Environmentally Friendly Materials: The Dog Dish Ball Is Made Of High-Quality PE Plastic Material, Which Is Tough, Durable, Safe And Non-Toxic.It Will Not Cause Any Harm To Teeth, But Please Do Not Let Your Dog Chew Too Much.', 13.90, 23, 1, 1, '2025-12-20 21:23:05', '2025-12-20 21:23:05', '6946a3399c923.jpg', 0.00, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products`
+--
+
+CREATE TABLE `products` (
+  `id` varchar(255) NOT NULL,
+  `type` enum('pet','supply') NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `stock` int(11) NOT NULL,
+  `photo` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_image`
+--
+
+CREATE TABLE `product_image` (
+  `image_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `image_path` varchar(255) NOT NULL,
+  `is_main` tinyint(1) DEFAULT 0,
+  `sort_order` int(11) DEFAULT 0,
+  `uploaded_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 

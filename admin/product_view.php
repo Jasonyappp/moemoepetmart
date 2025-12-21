@@ -40,12 +40,12 @@ include '../_head.php';
 
         <div class="product-gallery">
     <?php if ($product->photo_name): ?>
-        <!-- 大图 -->
+   >
         <img src="../admin/uploads/products/<?=  encode($product->photo_name) ?>"
              alt="<?=  encode($product->photo_name) ?>"
              class="main-image" 
              style="width:100%; max-width:500px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-        <!-- 缩略图（超过1张才显示） -->
+       
         <?php if (count($images) > 1): ?>
         <div class="thumbnail-list">
             <?php foreach ($images as $img): ?>
@@ -68,7 +68,7 @@ include '../_head.php';
     <?php endif; ?>
 </div>
 
-        <!-- 右侧信息 -->
+       
         <div class="product-info">
             <div class="price-box">
                 RM <?= number_format($product->price, 2) ?>

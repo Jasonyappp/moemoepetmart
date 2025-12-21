@@ -1302,7 +1302,7 @@ textarea[name="full_address"]:focus {
     font-size: 1.2rem;
 }
 
-/* 左侧侧边栏 - 深粉渐变 */
+
 .admin-sidebar {
     width: 280px;
     background: linear-gradient(180deg, #ff69b4 0%, #ff1493 100%);
@@ -1358,7 +1358,7 @@ textarea[name="full_address"]:focus {
     width: 24px;
 }
 
-/* 顶部栏 */
+
 .admin-header {
     height: 70px;
     background: white;
@@ -1392,7 +1392,7 @@ textarea[name="full_address"]:focus {
     font-size: 1.4rem;
 }
 
-/* 主内容区 */
+
 .admin-main {
     margin-left: 260px;
     margin-top: 70px;
@@ -1407,7 +1407,7 @@ textarea[name="full_address"]:focus {
     font-weight: 600;
 }
 
-/* 工具栏 */
+
 .toolbar {
     background: white;
     padding: 1.5rem;
@@ -1447,7 +1447,6 @@ textarea[name="full_address"]:focus {
     box-shadow: 0 12px 30px rgba(255,105,180,0.5);
 }
 
-/* 表格卡片 */
 .table-card {
     background: white;
     border-radius: 16px;
@@ -1509,7 +1508,7 @@ textarea[name="full_address"]:focus {
     font-weight: bold;
 }
 
-/* 分页 */
+
 .pagination {
     display: flex;
     justify-content: center;
@@ -1533,7 +1532,7 @@ textarea[name="full_address"]:focus {
     color: white;
 }
 
-/* 响应式 */
+
 @media (max-width: 992px) {
     .admin-sidebar {
         width: 80px;
@@ -1552,7 +1551,7 @@ textarea[name="full_address"]:focus {
 }
 
 
-/* 顶部欢迎条 */
+
 .admin-welcome-header {
     background: white;
     padding: 1.5rem 2rem;
@@ -1568,7 +1567,7 @@ textarea[name="full_address"]:focus {
     margin: 0;
     font-family: 'Kalam', cursive;
 }
-/* 卡片网格 */
+
 .dashboard-cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -1649,7 +1648,7 @@ textarea[name="full_address"]:focus {
     box-shadow: none;
 }
 
-/* ==================== 超可爱 Product View 页面专属样式 ==================== */
+
 .product-view-container {
     max-width: 1100px;
     margin: 40px auto;
@@ -1778,7 +1777,7 @@ textarea[name="full_address"]:focus {
 }
 .no-image span { font-size: 6rem; margin-bottom: 20px; }
 
-/* ==================== 超可爱统一按钮 ==================== */
+
 .moe-btn {
     display: inline-block;
     padding: 16px 40px;
@@ -1818,7 +1817,6 @@ textarea[name="full_address"]:focus {
     transform: translateY(-5px);
 }
 
-/* ==================== Moe Moe Edit Product – 完美适配你的现有代码 ==================== */
 
 .container {
     max-width: 1080px !important;
@@ -1850,7 +1848,7 @@ textarea[name="full_address"]:focus {
     opacity: 0.1;
 }
 
-/* 标题 */
+
 .container h2 {
     font-family: 'Kalam', cursive !important;
     text-align: center;
@@ -1860,7 +1858,6 @@ textarea[name="full_address"]:focus {
     text-shadow: 4px 4px 0px #ffb6c1;
 }
 
-/* 表单网格 */
 .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1868,7 +1865,6 @@ textarea[name="full_address"]:focus {
     margin-bottom: 35px;
 }
 
-/* 所有 label */
 .container label {
     display: block;
     font-weight: 700 !important;
@@ -1878,7 +1874,7 @@ textarea[name="full_address"]:focus {
 }
 .container .req { color: #ff1493; }
 
-/* 所有输入框、下拉、文本域 */
+
 .container input[type="text"],
 .container input[type="number"],
 .container select,
@@ -1901,7 +1897,7 @@ textarea[name="full_address"]:focus {
     transform: translateY(-3px);
 }
 
-/* 只读的产品代码 */
+
 .container input[readonly] {
     background: #fff0f5 !important;
     color: #ff69b4;
@@ -1914,7 +1910,7 @@ textarea[name="full_address"]:focus {
     margin-left: 8px;
 }
 
-/* Dropzone 超可爱版 */
+
 #dropzone-upload {
     background: linear-gradient(135deg, #fff8fb, #ffeef8) !important;
     border: 6px dashed #ff69b4 !important;
@@ -1933,7 +1929,7 @@ textarea[name="full_address"]:focus {
     color: #ff69b4 !important;
 }
 
-/* 现有图片 */
+
 .existing-images {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -1962,7 +1958,7 @@ textarea[name="full_address"]:focus {
 }
 .image-item:hover div { opacity: 1; }
 
-/* 按钮区 */
+
 .form-actions {
     text-align: center;
     margin-top: 50px;
@@ -1970,7 +1966,7 @@ textarea[name="full_address"]:focus {
     border-top: 5px dashed #ffccdd;
 }
 
-/* 终极 Moe Moe 按钮 */
+
 .btn-primary, .btn-secondary {
     display: inline-block;
     padding: 20px 60px !important;
@@ -2004,13 +2000,13 @@ textarea[name="full_address"]:focus {
     transform: translateY(-10px);
 }
 
-/* Update 按钮跳动 */
+
 .btn-primary { animation: heartbeat 2.2s infinite ease-in-out; }
 @keyframes heartbeat {
     0%, 100% { transform: translateY(0) scale(1); }
     50% { transform: translateY(-10px) scale(1.06); }
 }
-/* ==================== 管理后台 - 纯文字操作链接完美风格 ==================== */
+
 .action-links a,
 .action-links button.delete-link {
     color: #ff69b4 !important;
@@ -2033,7 +2029,7 @@ textarea[name="full_address"]:focus {
 }
 
 .action-links button.delete-link {
-    color: #ff69b4 !important;        /* Delete 比 View/Edit 更红一点，提醒危险 */
+    color: #ff69b4 !important;        
 }
 
 .action-links button.delete-link:hover {
@@ -2041,17 +2037,17 @@ textarea[name="full_address"]:focus {
     text-decoration: underline;
 }
 
-/* 彻底干掉所有浏览器默认的按钮焦点框 */
+
 .action-links button:focus {
     outline: none !important;
     box-shadow: none !important;
 }
 
-        /* 只放这次新增/覆盖的样式（其余都在 app.css） */
+       
 .out-stock { color: #ff4757 !important; font-weight: bold; }
 .low-stock { color: #ffa502 !important; font-weight: bold; }
 
-/* ==================== 超可爱文件上传框（和你的全站风格完美统一）=================== */
+
 .upload {
     position: relative;
     display: inline-block;
@@ -2090,7 +2086,7 @@ textarea[name="full_address"]:focus {
     transition: all 0.3s;
 }
 
-/* 美美的背景框 */
+
 .upload::before {
     content: '';
     position: absolute;
@@ -2103,7 +2099,7 @@ textarea[name="full_address"]:focus {
     pointer-events: none;
 }
 
-/* 悬停效果：变深粉 + 上浮 + 大阴影 */
+
 .upload:hover::before {
     border-color: #ff69b4;
     background: linear-gradient(135deg, #fff5f9, #ffeef8);
@@ -2141,7 +2137,7 @@ textarea[name="full_address"]:focus {
 }
 
 .upload-prompt {
-    pointer-events: none; /* 让文字不挡住点击事件 */
+    pointer-events: none;
 }
 
 .hidden {
