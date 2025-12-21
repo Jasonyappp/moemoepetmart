@@ -123,45 +123,50 @@ if (is_post() && isset($_FILES['profile_pic']) && !empty($_FILES['profile_pic'][
     }
 }
 
-// ========== HANDLE ADDING NEW ADDRESS ==========
+// ========== HANDLE ADDING NEW ADDRESS WITH VALIDATION & ERROR DISPLAY ==========
+$address_errors = []; // To store errors for display
+
 if (is_post() && isset($_POST['add_address'])) {
     $address_name = trim(post('address_name')) ?: 'Home';
     $recipient_name = trim(post('recipient_name'));
     $recipient_phone = trim(post('recipient_phone'));
     $full_address = trim(post('full_address'));
     
+    // Validation
     if (empty($recipient_name)) {
-        temp('error', 'Recipient name is required~');
-        redirect('/edit_profile.php');
+        $address_errors[] = 'Recipient name is required ♡';
     }
     
     if (empty($recipient_phone)) {
-        temp('error', 'Recipient phone is required~');
-        redirect('/edit_profile.php');
+        $address_errors[] = 'Recipient phone is required ♡';
     }
     
     if (empty($full_address)) {
-        temp('error', 'Address cannot be empty~');
-        redirect('/edit_profile.php');
+        $address_errors[] = 'Full address is required ♡';
+    } elseif (strlen($full_address) < 20) {
+        $address_errors[] = 'Address seems too short — please include street, city, postcode ♡';
+    } elseif (!preg_match('/\d+/', $full_address)) {
+        $address_errors[] = 'Please include your house/building number ♡';
     }
     
-    // Validate phone format
     if (!preg_match('/^[0-9+\-\s()]{10,20}$/', $recipient_phone)) {
-        temp('error', 'Please enter a valid phone number ♡');
-        redirect('/edit_profile.php');
+        $address_errors[] = 'Please enter a valid phone number ♡';
     }
     
-    try {
-        $stm = $_db->prepare("INSERT INTO user_addresses (user_id, address_name, recipient_name, recipient_phone, full_address) VALUES (?, ?, ?, ?, ?)");
-        
-        if ($stm->execute([$user->id, $address_name, $recipient_name, $recipient_phone, $full_address])) {
-            temp('info', '✅ Address saved successfully!');
-            redirect('/edit_profile.php');
+    if (empty($address_errors)) {
+        try {
+            $stm = $_db->prepare("INSERT INTO user_addresses 
+                (user_id, address_name, recipient_name, recipient_phone, full_address) 
+                VALUES (?, ?, ?, ?, ?)");
+            
+            if ($stm->execute([$user->id, $address_name, $recipient_name, $recipient_phone, $full_address])) {
+                temp('info', 'Address saved successfully! ♡');
+                redirect('/edit_profile.php');
+            }
+        } catch (PDOException $e) {
+            error_log("PDO Error: " . $e->getMessage());
+            $address_errors[] = 'Failed to save address. Please try again~';
         }
-    } catch (PDOException $e) {
-        error_log("PDO Error: " . $e->getMessage());
-        temp('error', 'Failed to save address. Please try again~');
-        redirect('/edit_profile.php');
     }
 }
 
@@ -284,7 +289,15 @@ include '_head.php';
        <!-- ========== SIMPLE ADDRESS BOX ========== -->
         <div class="simple-address-box">
             <h3>🏠 Add Address</h3>
-            
+            <!-- Error reminders -->
+            <?php if (!empty($address_errors)): ?>
+            <div style="background:#ffebee; color:#ff4757; padding:12px; border-radius:8px; margin-bottom:15px; border-left:4px solid #ff4757;">
+                <?php foreach ($address_errors as $error): ?>
+                    <p style="margin:5px 0;">• <?= $error ?></p>
+                <?php endforeach; ?>
+            </div>
+            <?php endif; ?>
+
             <form method="post">
                 <div class="input-group">
                     <input type="text" name="address_name" placeholder="Address Name (Optional): Home, Work, etc." 

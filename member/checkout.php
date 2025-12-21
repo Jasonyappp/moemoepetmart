@@ -60,12 +60,6 @@ if (is_post()) {
     $new_address = trim(post('new_full_address'));
     if (!empty($new_address)) {
         $shipping_address = $new_address;
-        
-        if (isset($_POST['save_new_address'])) {
-            $address_name = trim(post('new_address_name')) ?: 'Home';
-            $stm = $_db->prepare("INSERT INTO user_addresses (user_id, address_name, full_address, recipient_name, recipient_phone) VALUES (?, ?, ?, ?, ?)");
-            $stm->execute([$user->id, $address_name, $new_address, $recipient_name, $recipient_phone]);
-        }
     } else {
         $selected_id = post('selected_address_id');
         if ($selected_id && $selected_id !== 'new') {
@@ -84,8 +78,13 @@ if (is_post()) {
         }
     }
     
+    // ========== ADDRESS VALIDATION ==========
     if (empty($shipping_address)) {
-        $_err['address'] = 'Please provide a shipping address';
+        $_err['address'] = 'Please select or enter a shipping address ♡';
+    } elseif (strlen(trim($shipping_address)) < 20) {
+        $_err['address'] = 'Address seems too short — please include street, city, postcode ♡';
+    } elseif (!preg_match('/\d+/', $shipping_address)) {
+        $_err['address'] = 'Please include your house/building number ♡';
     }
 
     $payment_method = post('payment_method', 'cod');
@@ -167,6 +166,13 @@ if (is_post()) {
                     throw new Exception('Stock insufficient for ' . encode($item['name']));
                 }
                 $stm_item->execute([$order_id, $item['product_id'], $item['qty'], $item['price']]);
+            }
+
+            // ========== SAVE ADDRESS ONLY AFTER SUCCESS ==========
+            if (!empty($new_address) && isset($_POST['save_new_address'])) {
+                $address_name = trim(post('new_address_name')) ?: 'Home';
+                $stm = $_db->prepare("INSERT INTO user_addresses (user_id, address_name, full_address, recipient_name, recipient_phone) VALUES (?, ?, ?, ?, ?)");
+                $stm->execute([$user->id, $address_name, $new_address, $recipient_name, $recipient_phone]);
             }
 
             // Update voucher usage and clear session

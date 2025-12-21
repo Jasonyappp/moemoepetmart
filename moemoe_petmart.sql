@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 21, 2025 at 01:56 AM
+-- Generation Time: Dec 21, 2025 at 03:10 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `moemoe_petmart`
 --
-CREATE DATABASE IF NOT EXISTS `moemoe_petmart` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `moemoe_petmart`;
 
 -- --------------------------------------------------------
 
@@ -299,7 +297,9 @@ INSERT INTO `orders` (`order_id`, `user_id`, `shipping_address`, `recipient_name
 (7019, 6, '2 Jalan Ss 2/78\r\nSs 2\r\n47300 Petaling Jaya\r\nMYS\r\nAddre', 'seah', '012-2222222', 8.00, 5.00, 'west', 'Credit/Debit Card', '7777', NULL, NULL, '2025-12-20 22:53:25', 'To Ship', 'Pending Payment', NULL, NULL, 0.00),
 (7020, 6, '2 Jalan Ss 2/78\r\nSs 2\r\n47300 Petaling Jaya\r\nMYS\r\nAddre', 'seah', '012-2222222', 19.88, 5.00, 'west', 'Credit/Debit Card', '1237', NULL, NULL, '2025-12-21 02:01:12', 'Completed', 'Pending Payment', NULL, NULL, 0.00),
 (7021, 9, '555', 'seah', '012-2222222', 223.84, 0.00, 'west', 'Cash on Delivery', NULL, NULL, NULL, '2025-12-21 08:41:37', 'Shipped', 'Pending Payment', NULL, 'MOE20PCT', 55.96),
-(7022, 9, '555', 'seah', '012-2222222', 25.59, 5.00, 'west', 'Credit/Debit Card', '3333', NULL, NULL, '2025-12-21 08:44:42', 'Completed', 'Pending Payment', NULL, 'MOEFREE5', 5.00);
+(7022, 9, '555', 'seah', '012-2222222', 25.59, 5.00, 'west', 'Credit/Debit Card', '3333', NULL, NULL, '2025-12-21 08:44:42', 'Completed', 'Pending Payment', NULL, 'MOEFREE5', 5.00),
+(7023, 5, '33, Jalan Sri Peatling 1', 'Kent', '011-11111111', 64.70, 5.00, 'west', 'Cash on Delivery', NULL, NULL, NULL, '2025-12-21 09:40:24', 'Pending Payment', 'Pending Payment', NULL, NULL, 0.00),
+(7024, 5, '1, Jalan Samurai 3, 87000 Kuala Lumpur', 'Kent', '011-11111111', 34.90, 5.00, 'west', 'Cash on Delivery', NULL, NULL, NULL, '2025-12-21 09:50:10', 'Pending Payment', 'Pending Payment', NULL, NULL, 0.00);
 
 -- --------------------------------------------------------
 
@@ -486,7 +486,9 @@ INSERT INTO `order_items` (`item_id`, `order_id`, `product_id`, `quantity`, `uni
 (332, 7019, 103, 3, 1.00),
 (333, 7020, 99, 1, 14.88),
 (334, 7021, 89, 2, 139.90),
-(335, 7022, 104, 1, 25.59);
+(335, 7022, 104, 1, 25.59),
+(336, 7023, 100, 1, 59.70),
+(337, 7024, 98, 1, 29.90);
 
 -- --------------------------------------------------------
 
@@ -525,9 +527,9 @@ INSERT INTO `product` (`product_id`, `product_code`, `product_name`, `descriptio
 (95, 'CLR0001', 'Pet Hair Remover Comb', '✔️Simply push the button, wipe, making it super simple to remove all the hair from the brush, so it\'s ready for the next time use.\r\n✔️Suit for dog, cat, rabbits and other pets, making them neat and clean.', 15.60, 28, 4, 1, '2025-12-15 03:38:35', '2025-12-19 17:43:45', '693f123b2857e.jpg', 0.00, 0),
 (96, 'TOY0001', 'Cat Teaser Stick Toys with Bell', '🐾 Give your pets endless fun with this Cat Teaser Stick Toy with Bell. Interactive design, featuring a dangling bell and feather that will keep your cat entertained and engaged for hours!', 4.99, 11, 1, 1, '2025-12-15 03:43:09', '2025-12-19 12:12:21', '693f134dee5c4.jpg', 0.00, 0),
 (97, 'CLR0002', 'Pet Grooming Set', '~ Pet gloves grooming\r\n~ Pet grooming comb * 2', 35.80, 120, 4, 1, '2025-12-20 20:03:45', '2025-12-20 20:03:45', '694690a1c1dfa.jpg', 0.00, 0),
-(98, 'ACC0002', 'Automatic Water Food Dispenser 2 IN 1 Pet Feeder', '🐾 Enjoy peace of mind with our Automatic Pet Feeder and Water Dispenser, designed for cats, dogs, and rabbits. \r\n🐾 Large capacity, ensuring your pets stay fed and hydrated for days without frequent refills!', 29.90, 55, 5, 1, '2025-12-20 20:12:34', '2025-12-20 20:12:34', '694692b29c172.jpg', 0.00, 0),
+(98, 'ACC0002', 'Automatic Water Food Dispenser 2 IN 1 Pet Feeder', '🐾 Enjoy peace of mind with our Automatic Pet Feeder and Water Dispenser, designed for cats, dogs, and rabbits. \r\n🐾 Large capacity, ensuring your pets stay fed and hydrated for days without frequent refills!', 29.90, 54, 5, 1, '2025-12-20 20:12:34', '2025-12-21 09:50:10', '694692b29c172.jpg', 0.00, 0),
 (99, 'ACC0003', 'Washable Dog Bed Cat Bed Oval Sleeping Mat', '👉👉Specifications:\r\n\r\nFeatures for bed\r\n\r\n~Soft and Comfortable, Extra Large Space, Cervical Spine Care, Removable and Washable\r\n~Anti-Skid Epoxy: Moisture-Proof and Moisture-Proof, Effective Anti-Skid without Shifting.\r\n~One-Piece Nest, Sleeping around the Pillow Is Very Comfortable, Running around Deep Sleep.\r\n~Pillow Has High Rebound, No Collapse, Soft and Elastic, and It Is Very Comfortable to Sleep on It.\r\n~Full Filling, Long Sleep without Collapse, 360 ° Circular Package.', 14.88, 74, 5, 1, '2025-12-20 20:23:07', '2025-12-21 02:51:42', '6946952b30c91.jpg', 0.00, 0),
-(100, 'ACC0004', 'L-Shaped Corner Wall Scratcher for Cats', '【Materials】: Cat Scratching Board is crafted from corrugated paper, density board. This cat scratching board is designed to withstand vigorous scratching, ensuring long term use\r\n\r\n【Stylish Design】: Featuring a minimalist design, this cat scratcher seamlessly blends into any home decor, making it a functional yet stylish addition to your living space\r\n\r\n【Furniture Protection】: By attracting your cat attention for play and claw sharpening, this pet cat scratch board protects your sofa and bed', 59.70, 36, 5, 1, '2025-12-20 20:28:43', '2025-12-20 20:28:43', '6946967b4025c.jpg', 0.00, 0),
+(100, 'ACC0004', 'L-Shaped Corner Wall Scratcher for Cats', '【Materials】: Cat Scratching Board is crafted from corrugated paper, density board. This cat scratching board is designed to withstand vigorous scratching, ensuring long term use\r\n\r\n【Stylish Design】: Featuring a minimalist design, this cat scratcher seamlessly blends into any home decor, making it a functional yet stylish addition to your living space\r\n\r\n【Furniture Protection】: By attracting your cat attention for play and claw sharpening, this pet cat scratch board protects your sofa and bed', 59.70, 35, 5, 1, '2025-12-20 20:28:43', '2025-12-21 09:40:24', '6946967b4025c.jpg', 0.00, 0),
 (101, 'ACC0005', 'Large Dog Leash Vest Style Dog Chest Strap', '🔦 *** High Visibility Safety Reflective **:\r\n\r\n - Reflective Strips At Night Cover The Harness And Leash, Visible Within 200 Meters, Walking The Dog In Rainy/Night Is More Secure.\r\n\r\n 🐕 *** Comfortable Fit **:\r\n\r\n - Breathable Inner Lining, Adjustable Bust/Neck Circumference Is Not Stuffy To Wear For A Long Time.', 25.25, 20, 5, 1, '2025-12-20 20:37:37', '2025-12-20 20:37:37', '69469891853be.jpg', 0.00, 0),
 (102, 'TOY0002', 'Pet Squeaky Duck Chew Toy Cat Dog', '[Product Features]\r\n\r\n~Realistic squeaking sound attracts pet attention interactive play\r\n~Soft plush material safe chewing teething relief puppies kittens\r\n~Durable reinforced stitching withstand biting multiple size options\r\n~Self amusement function reduces boredom home alone time\r\n~Bright yellow color cute duck design orange beak feet', 4.93, 60, 1, 1, '2025-12-20 20:46:11', '2025-12-20 20:46:11', '69469a93cb353.jpg', 0.00, 0),
 (103, 'FOD0002', 'Pet Sausage Healthy Pet Hotdog Food Snack For Cats And Dogs', '🐾  High Protein & Low Fat Goodness: - Our 15g Pet Sausage Snack is the ultimate treat for your beloved cats and dogs! \r\n\r\n🐾  Packed with high protein and low fat, it\'s a nutritious reward that your pets will love.', 1.00, 97, 3, 1, '2025-12-20 20:49:43', '2025-12-20 22:53:25', '69469b6789665.jpg', 0.00, 0),
@@ -809,7 +811,7 @@ ALTER TABLE `vouchers`
 -- AUTO_INCREMENT for table `cart_item`
 --
 ALTER TABLE `cart_item`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=291;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=293;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -839,13 +841,13 @@ ALTER TABLE `favorites`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7023;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7025;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=336;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=338;
 
 --
 -- AUTO_INCREMENT for table `product`
@@ -875,7 +877,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_addresses`
 --
 ALTER TABLE `user_addresses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT for table `vouchers`
