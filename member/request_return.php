@@ -20,8 +20,8 @@ if (is_post()) {
     }
 
     if (empty($_err)) {
-        $_db->prepare("UPDATE orders SET order_status = 'Return/Refund', return_reason = ? WHERE order_id = ?")
-            ->execute([$reason, $id]);
+     $_db->prepare("UPDATE orders SET order_status = 'Return Requested', return_reason = ? WHERE order_id = ?")
+    ->execute([$reason, $id]);
 
         temp('info', 'Return/Refund request submitted successfully ♡');
         redirect('my_purchase.php');

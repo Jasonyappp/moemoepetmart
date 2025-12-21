@@ -29,11 +29,41 @@ if (!$order) {
 // Handle status update
 if (is_post()) {
     $new_status = post('order_status');
-    $allowed = ['Pending Payment', 'To Ship', 'Shipped', 'Completed', 'Cancelled', 'Return/Refund'];
-    if (in_array($new_status, $allowed)) {
+    $allowed = ['Pending Payment', 'To Ship', 'Shipped', 'Completed', 'Cancelled', 'Return Requested'];
+
+    if (!in_array($new_status, $allowed)) {
+        temp('error', 'Invalid status selected.');
+        redirect("order_view.php?id=$order_id");
+    }
+
+    // Get current status
+    $current_status = $order->order_status;
+
+    if ($current_status !== $new_status) {
+        // If changing TO Cancelled → restore stock
+        if ($new_status === 'Cancelled') {
+            $items_stmt = $_db->prepare("SELECT product_id, quantity FROM order_items WHERE order_id = ?");
+            $items_stmt->execute([$order_id]);
+            $items = $items_stmt->fetchAll();
+
+            foreach ($items as $item) {
+                $_db->prepare("UPDATE product SET stock_quantity = stock_quantity + ? WHERE product_id = ?")
+                    ->execute([$item->quantity, $item->product_id]);
+            }
+
+            temp('info', "Order #$order_id cancelled → stock restored automatically ♡");
+        } else {
+            temp('info', "Order #$order_id status updated to: $new_status ♡");
+        }
+
+        // Update status
         $_db->prepare("UPDATE orders SET order_status = ? WHERE order_id = ?")
             ->execute([$new_status, $order_id]);
-        temp('info', "Order #$order_id status updated to: $new_status ♡");
+
+        // Refresh order data
+        redirect("order_view.php?id=$order_id");
+    } else {
+        temp('info', 'No change in status.');
         redirect("order_view.php?id=$order_id");
     }
 }

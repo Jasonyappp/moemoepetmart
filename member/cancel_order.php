@@ -13,9 +13,21 @@ if (!$o) {
     redirect('my_purchase.php');
 }
 
-// Direct cancel on GET or POST
-$_db->prepare("UPDATE orders SET order_status = 'Cancelled' WHERE order_id = ?")->execute([$id]);
+// === RESTORE STOCK AUTOMATICALLY ===
+$items_stmt = $_db->prepare("SELECT product_id, quantity FROM order_items WHERE order_id = ?");
+$items_stmt->execute([$id]);
+$items = $items_stmt->fetchAll();
 
-temp('info', 'Order cancelled successfully ♡');
+foreach ($items as $item) {
+    $_db->prepare("UPDATE product SET stock_quantity = stock_quantity + ? WHERE product_id = ?")
+        ->execute([$item->quantity, $item->product_id]);
+}
+// === END RESTORE ===
+
+// Update status to Cancelled
+$_db->prepare("UPDATE orders SET order_status = 'Cancelled' WHERE order_id = ?")
+    ->execute([$id]);
+
+temp('info', 'Order cancelled successfully and items returned to stock ♡');
 redirect('my_purchase.php');
 ?>

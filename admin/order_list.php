@@ -39,18 +39,46 @@
     }
 
     // Handle status update from dropdown
-    if (is_post()) {
-        $order_id = post('order_id');
-        $new_status = post('order_status');
+   if (is_post()) {
+    $order_id = post('order_id');
+    $new_status = post('order_status');
 
-        $allowed = ['Pending Payment', 'To Ship', 'Shipped', 'Completed', 'Cancelled', 'Return/Refund'];
-        if (in_array($new_status, $allowed)) {
-            $_db->prepare("UPDATE orders SET order_status = ? WHERE order_id = ?")
-                ->execute([$new_status, $order_id]);
-            temp('info', "Order #$order_id status updated to: $new_status ♡");
-            redirect('order_list.php?' . http_build_query($_GET));
-        }
+    $allowed = ['Pending Payment', 'To Ship', 'Shipped', 'Completed', 'Cancelled', 'Return Requested']; // updated name
+    if (!in_array($new_status, $allowed)) {
+        temp('error', 'Invalid status.');
+        redirect('order_list.php');
     }
+
+    // Fetch current status first
+    $current_stmt = $_db->prepare("SELECT order_status FROM orders WHERE order_id = ?");
+    $current_stmt->execute([$order_id]);
+    $current_status = $current_stmt->fetchColumn();
+
+    // Only proceed if status actually changes
+    if ($current_status !== $new_status) {
+        // If new status is Cancelled → restore stock
+        if ($new_status === 'Cancelled') {
+            $items_stmt = $_db->prepare("SELECT product_id, quantity FROM order_items WHERE order_id = ?");
+            $items_stmt->execute([$order_id]);
+            $items = $items_stmt->fetchAll();
+
+            foreach ($items as $item) {
+                $_db->prepare("UPDATE product SET stock_quantity = stock_quantity + ? WHERE product_id = ?")
+                    ->execute([$item->quantity, $item->product_id]);
+            }
+        }
+
+        // Update the status
+        $_db->prepare("UPDATE orders SET order_status = ? WHERE order_id = ?")
+            ->execute([$new_status, $order_id]);
+
+        temp('info', "Order #$order_id cancelled and stock restored ♡");
+    } else {
+        temp('info', "Status unchanged.");
+    }
+
+    redirect('order_list.php?' . http_build_query($_GET));
+}
 
     // Count total orders
     $count_stmt = $_db->prepare("SELECT COUNT(*) FROM orders o WHERE 1 $where");
@@ -270,9 +298,27 @@ $orders = $stmt->fetchAll();
         <!-- Only View Details button remains -->
         <div style="text-align:right; margin-top:20px;">
             <a href="order_view.php?id=<?= $o->order_id ?>" 
-               style="display:inline-block;background:#ff69b4;color:white;padding:12px 28px;border-radius:25px;text-decoration:none;font-weight:bold;">
+               style="display:inline-block;background:#ff69b4;color:white;padding:12px 28px;border-radius:25px;text-decoration:none;font-weight:bold;margin-left:8px;">
                 View Details ♡
             </a>
+
+            <?php if ($o->order_status === 'Return Requested'): ?>
+                <!-- Restock + Complete Return -->
+                <a href="process_return.php?id=<?= $o->order_id ?>&action=restock"
+                   style="display:inline-block;background:#4caf50;color:white;padding:12px 24px;border-radius:25px;text-decoration:none;font-weight:bold;margin-left:8px;"
+                   onclick="return confirm('✅ Restock all items and complete the return?')">
+                    Restock & Complete ♡
+                </a>
+
+                <!-- Refund without restocking -->
+                <a href="process_return.php?id=<?= $o->order_id ?>&action=no_restock"
+                   style="display:inline-block;background:#ff9800;color:white;padding:12px 24px;border-radius:25px;text-decoration:none;font-weight:bold;margin-left:8px;"
+                   onclick="return confirm('❌ Process refund WITHOUT restocking items? (e.g. damaged)')">
+                    Refund Only
+                </a>
+            <?php elseif (in_array($o->order_status, ['Returned & Restocked', 'Refunded (No Restock)'])): ?>
+                <span style="color:#4caf50;font-weight:bold;">✓ Return Processed</span>
+            <?php endif; ?>
         </div>
     </div>
 <?php endforeach; ?>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 21, 2025 at 05:26 PM
+-- Generation Time: Dec 21, 2025 at 09:16 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `moemoe_petmart`
 --
-CREATE DATABASE IF NOT EXISTS `moemoe_petmart` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `moemoe_petmart`;
 
 -- --------------------------------------------------------
 
@@ -41,8 +39,7 @@ CREATE TABLE `cart_item` (
 --
 
 INSERT INTO `cart_item` (`cart_id`, `user_id`, `product_id`, `quantity`) VALUES
-(249, 7, 96, 1),
-(253, 8, 89, 3);
+(249, 7, 96, 1);
 
 -- --------------------------------------------------------
 
@@ -93,7 +90,8 @@ INSERT INTO `chat_conversations` (`conversation_id`, `user_id`, `admin_id`, `sta
 (2, 6, 1, 'closed', '2025-12-21 07:14:53', '2025-12-21 07:45:49'),
 (3, 6, 1, 'closed', '2025-12-21 07:46:37', '2025-12-21 08:26:55'),
 (4, 6, 1, 'open', '2025-12-21 08:31:13', '2025-12-21 08:32:25'),
-(5, 9, 1, 'open', '2025-12-21 08:38:57', '2025-12-21 17:22:43');
+(5, 9, 1, 'open', '2025-12-21 08:38:57', '2025-12-21 17:22:43'),
+(6, 10, 1, 'open', '2025-12-21 21:14:05', '2025-12-21 21:16:46');
 
 -- --------------------------------------------------------
 
@@ -161,7 +159,9 @@ INSERT INTO `chat_messages` (`message_id`, `conversation_id`, `sender_id`, `send
 (43, 5, 9, 'member', 'what is ur top sales ?', 1, '2025-12-21 15:37:52'),
 (44, 5, 9, 'member', 'and what is the most expensive product?', 1, '2025-12-21 15:39:22'),
 (45, 5, 1, 'admin', 'maybe is the hamster villa cage', 1, '2025-12-21 16:47:54'),
-(46, 5, 9, 'member', 'ok', 0, '2025-12-21 17:22:43');
+(46, 5, 9, 'member', 'ok', 1, '2025-12-21 17:22:43'),
+(47, 6, 10, 'member', 'nihao', 1, '2025-12-21 21:14:11'),
+(48, 6, 1, 'admin', 'wo buhao', 1, '2025-12-21 21:16:46');
 
 -- --------------------------------------------------------
 
@@ -175,13 +175,6 @@ CREATE TABLE `favorites` (
   `product_id` int(11) NOT NULL,
   `added_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `favorites`
---
-
-INSERT INTO `favorites` (`favorite_id`, `user_id`, `product_id`, `added_at`) VALUES
-(14, 8, 89, '2025-12-19 21:40:19');
 
 -- --------------------------------------------------------
 
@@ -304,7 +297,17 @@ INSERT INTO `orders` (`order_id`, `user_id`, `shipping_address`, `recipient_name
 (7020, 6, '2 Jalan Ss 2/78\r\nSs 2\r\n47300 Petaling Jaya\r\nMYS\r\nAddre', 'seah', '012-2222222', 19.88, 5.00, 'west', 'Credit/Debit Card', '1237', NULL, NULL, '2025-12-21 02:01:12', 'Completed', 'Pending Payment', NULL, NULL, 0.00),
 (7021, 9, '555', 'seah', '012-2222222', 223.84, 0.00, 'west', 'Cash on Delivery', NULL, NULL, NULL, '2025-12-21 08:41:37', 'Completed', 'Pending Payment', NULL, 'MOE20PCT', 55.96),
 (7022, 9, '555', 'seah', '012-2222222', 25.59, 5.00, 'west', 'Credit/Debit Card', '3333', NULL, NULL, '2025-12-21 08:44:42', 'Completed', 'Pending Payment', NULL, 'MOEFREE5', 5.00),
-(7023, 9, '555, jln tarumt, blk k, 47000, kuala lumpur, malaysia', 'seah', '012-2222222', 54.80, 5.00, 'west', 'Touch \'n Go', NULL, NULL, NULL, '2025-12-21 17:21:32', 'Shipped', 'Pending Payment', NULL, 'MOE10OFF', 10.00);
+(7023, 9, '555, jln tarumt, blk k, 47000, kuala lumpur, malaysia', 'seah', '012-2222222', 54.80, 5.00, 'west', 'Touch \'n Go', NULL, NULL, NULL, '2025-12-21 17:21:32', 'Shipped', 'Pending Payment', NULL, 'MOE10OFF', 10.00),
+(7024, 10, 'Luis Escala\r\nPiedras 623\r\nPiso 2, depto 4\r\nC1070AAM, Capital Federal', 'Jason', '011-11111111', 29.90, 5.00, 'west', 'Cash on Delivery', NULL, NULL, NULL, '2025-12-21 21:11:26', 'Returned & Restocked', 'Pending Payment', 'Wrong item received', 'MOEFREE5', 5.00),
+(7025, 10, 'Ms H Williams\r\nFinance and Accounting\r\nAustralia Post\r\n219–241 Cleveland St\r\nSTRAWBERRY HILLS  NSW  142', 'Jason', '011-11111111', 99.70, 10.00, 'east', 'Cash on Delivery', NULL, NULL, NULL, '2025-12-22 02:43:59', 'Return/Refund', 'Pending Payment', 'Wrong item received', NULL, 0.00),
+(7026, 10, 'Luis Escala\r\nPiedras 623\r\nPiso 2, depto 4\r\nC1070AAM, Capital Federal', 'Jason', '011-11111111', 100.68, 5.00, 'west', 'Credit/Debit Card', '1232', NULL, NULL, '2025-12-22 02:50:00', 'To Ship', 'Pending Payment', NULL, 'MOE20PCT', 23.92),
+(7027, 10, 'Ms H Williams\r\nFinance and Accounting\r\nAustralia Post\r\n219–241 Cleveland St\r\nSTRAWBERRY HILLS  NSW  142', 'Jason', '011-11111111', 116.92, 5.00, 'west', 'Credit/Debit Card', '2132', NULL, NULL, '2025-12-22 02:52:55', 'To Ship', 'Pending Payment', NULL, 'MOE20PCT', 27.98),
+(7028, 10, 'Luis Escala\r\nPiedras 623\r\nPiso 2, depto 4\r\nC1070AAM, Capital Federal', 'Jason', '011-11111111', 39.92, 5.00, 'west', 'Touch \'n Go', NULL, NULL, NULL, '2025-12-22 02:53:32', 'To Ship', 'Pending Payment', NULL, 'MOEFREE5', 5.00),
+(7029, 10, 'Luis Escala\r\nPiedras 623\r\nPiso 2, depto 4\r\nC1070AAM, Capital Federal', 'Jason', '011-11111111', 34.90, 5.00, 'west', 'Touch \'n Go', NULL, NULL, NULL, '2025-12-22 03:12:42', 'To Ship', 'Pending Payment', NULL, NULL, 0.00),
+(7030, 10, 'Ms H Williams\r\nFinance and Accounting\r\nAustralia Post\r\n219–241 Cleveland St\r\nSTRAWBERRY HILLS  NSW  142', 'Jason', '011-11111111', 94.70, 5.00, 'west', 'Touch \'n Go', NULL, NULL, NULL, '2025-12-22 03:26:49', 'Returned & Restocked', 'Pending Payment', 'Wrong item received', NULL, 0.00),
+(7031, 10, 'Luis Escala\r\nPiedras 623\r\nPiso 2, depto 4\r\nC1070AAM, Capital Federal', 'Jason', '011-11111111', 64.80, 5.00, 'west', 'Cash on Delivery', NULL, NULL, NULL, '2025-12-22 03:33:23', 'Cancelled', 'Pending Payment', NULL, NULL, 0.00),
+(7032, 10, 'Ms H Williams\r\nFinance and Accounting\r\nAustralia Post\r\n219–241 Cleveland St\r\nSTRAWBERRY HILLS  NSW  142', 'Jason', '011-11111111', 64.80, 5.00, 'west', 'Cash on Delivery', NULL, NULL, NULL, '2025-12-22 03:37:25', 'Cancelled', 'Pending Payment', NULL, NULL, 0.00),
+(7033, 10, 'Ms H Williams\r\nFinance and Accounting\r\nAustralia Post\r\n219–241 Cleveland St\r\nSTRAWBERRY HILLS  NSW  142', 'Jason', '011-11111111', 64.80, 5.00, 'west', 'Cash on Delivery', NULL, NULL, NULL, '2025-12-22 03:40:31', 'Cancelled', 'Pending Payment', NULL, NULL, 0.00);
 
 -- --------------------------------------------------------
 
@@ -492,7 +495,17 @@ INSERT INTO `order_items` (`item_id`, `order_id`, `product_id`, `quantity`, `uni
 (333, 7020, 99, 1, 14.88),
 (334, 7021, 89, 2, 139.90),
 (335, 7022, 104, 1, 25.59),
-(336, 7023, 98, 2, 29.90);
+(336, 7023, 98, 2, 29.90),
+(337, 7024, 98, 1, 29.90),
+(338, 7025, 98, 3, 29.90),
+(339, 7026, 98, 4, 29.90),
+(340, 7027, 89, 1, 139.90),
+(341, 7028, 96, 8, 4.99),
+(342, 7029, 98, 1, 29.90),
+(343, 7030, 98, 3, 29.90),
+(344, 7031, 98, 2, 29.90),
+(345, 7032, 98, 2, 29.90),
+(346, 7033, 98, 2, 29.90);
 
 -- --------------------------------------------------------
 
@@ -523,23 +536,25 @@ CREATE TABLE `product` (
 INSERT INTO `product` (`product_id`, `product_code`, `product_name`, `description`, `price`, `stock_quantity`, `category_id`, `is_active`, `created_at`, `updated_at`, `photo_name`, `average_rating`, `review_count`) VALUES
 (2, 'CAG0001', 'Luxury Cat Villa Carrier', '3-level cage with wheel', 43.90, 7, 2, 1, '2025-11-23 23:22:24', '2025-12-19 15:42:48', 'prod_693f05ea19699.jpg', 0.00, 0),
 (3, 'FOD0001', 'Royal Canin Puppy 10kg', '~ Each pack is designed for adult dogs and available in different sizes to meet your feeding needs.', 109.00, 78, 3, 1, '2025-11-23 23:22:24', '2025-12-19 18:53:02', 'prod_693f165ba2028.jpg', 0.00, 0),
-(89, 'CAG0002', 'Big Home Shape Cage', 'Available for cat & dog', 139.90, 1, 2, 1, '2025-12-15 03:00:35', '2025-12-21 16:43:46', '693f095361e88.jpg', 4.00, 1),
+(89, 'CAG0002', 'Big Home Shape Cage', 'Available for cat & dog', 139.90, 0, 2, 1, '2025-12-15 03:00:35', '2025-12-22 02:52:55', '693f095361e88.jpg', 4.00, 1),
 (91, 'CAG0004', 'Standard Pet Cage', 'Normal cage for our cute pets', 35.90, 39, 2, 1, '2025-12-15 03:04:33', '2025-12-20 23:14:10', 'prod_693f0bd3c4960.jpg', 5.00, 1),
 (92, 'CAG0005', 'Luxury Hamster Villa Cage', 'Benefit:\r\n-Can put many hamsters', 239.00, 13, 2, 1, '2025-12-15 03:06:43', '2025-12-19 20:22:17', '693f0ac353967.jpg', 0.00, 0),
 (93, 'CAG0003', 'Transparent Carries', 'Benefits:\r\n- Easily see your cutest pets', 55.90, 17, 2, 1, '2025-12-15 03:15:09', '2025-12-19 17:37:48', '693f0cbd71b9b.jpg', 0.00, 0),
 (94, 'ACC0001', 'Pet Automatic Retractable Leash', '• Length Options: 3m / 5m\r\n• Material: Polyester + PP', 10.90, 25, 5, 1, '2025-12-15 03:24:38', '2025-12-19 16:31:18', 'prod_693f106d7be39.jpg', 0.00, 0),
 (95, 'CLR0001', 'Pet Hair Remover Comb', '✔️Simply push the button, wipe, making it super simple to remove all the hair from the brush, so it\'s ready for the next time use.\r\n✔️Suit for dog, cat, rabbits and other pets, making them neat and clean.', 15.60, 28, 4, 1, '2025-12-15 03:38:35', '2025-12-19 17:43:45', '693f123b2857e.jpg', 0.00, 0),
-(96, 'TOY0001', 'Cat Teaser Stick Toys with Bell', '🐾 Give your pets endless fun with this Cat Teaser Stick Toy with Bell. Interactive design, featuring a dangling bell and feather that will keep your cat entertained and engaged for hours!', 4.99, 11, 1, 1, '2025-12-15 03:43:09', '2025-12-19 12:12:21', '693f134dee5c4.jpg', 0.00, 0),
+(96, 'TOY0001', 'Cat Teaser Stick Toys with Bell', '🐾 Give your pets endless fun with this Cat Teaser Stick Toy with Bell. Interactive design, featuring a dangling bell and feather that will keep your cat entertained and engaged for hours!', 4.99, 3, 1, 1, '2025-12-15 03:43:09', '2025-12-22 02:53:32', '693f134dee5c4.jpg', 0.00, 0),
 (97, 'CLR0002', 'Pet Grooming Set', '~ Pet gloves grooming\r\n~ Pet grooming comb * 2', 35.80, 120, 4, 1, '2025-12-20 20:03:45', '2025-12-20 20:03:45', '694690a1c1dfa.jpg', 0.00, 0),
-(98, 'ACC0002', 'Automatic Water Food Dispenser 2 IN 1 Pet Feeder', '🐾 Enjoy peace of mind with our Automatic Pet Feeder and Water Dispenser, designed for cats, dogs, and rabbits. \r\n🐾 Large capacity, ensuring your pets stay fed and hydrated for days without frequent refills!', 29.90, 53, 5, 1, '2025-12-20 20:12:34', '2025-12-21 17:21:32', '694692b29c172.jpg', 0.00, 0),
+(98, 'ACC0002', 'Automatic Water Food Dispenser 2 IN 1 Pet Feeder', '🐾 Enjoy peace of mind with our Automatic Pet Feeder and Water Dispenser, designed for cats, dogs, and rabbits. \r\n🐾 Large capacity, ensuring your pets stay fed and hydrated for days without frequent refills!', 29.90, 44, 5, 1, '2025-12-20 20:12:34', '2025-12-22 03:40:57', '694692b29c172.jpg', 5.00, 1),
 (99, 'ACC0003', 'Washable Dog Bed Cat Bed Oval Sleeping Mat', '👉👉Specifications:\r\n\r\nFeatures for bed\r\n\r\n~Soft and Comfortable, Extra Large Space, Cervical Spine Care, Removable and Washable\r\n~Anti-Skid Epoxy: Moisture-Proof and Moisture-Proof, Effective Anti-Skid without Shifting.\r\n~One-Piece Nest, Sleeping around the Pillow Is Very Comfortable, Running around Deep Sleep.\r\n~Pillow Has High Rebound, No Collapse, Soft and Elastic, and It Is Very Comfortable to Sleep on It.\r\n~Full Filling, Long Sleep without Collapse, 360 ° Circular Package.', 14.88, 74, 5, 1, '2025-12-20 20:23:07', '2025-12-21 02:51:42', '6946952b30c91.jpg', 0.00, 0),
 (100, 'ACC0004', 'L-Shaped Corner Wall Scratcher for Cats', '【Materials】: Cat Scratching Board is crafted from corrugated paper, density board. This cat scratching board is designed to withstand vigorous scratching, ensuring long term use\r\n\r\n【Stylish Design】: Featuring a minimalist design, this cat scratcher seamlessly blends into any home decor, making it a functional yet stylish addition to your living space\r\n\r\n【Furniture Protection】: By attracting your cat attention for play and claw sharpening, this pet cat scratch board protects your sofa and bed', 59.70, 36, 5, 1, '2025-12-20 20:28:43', '2025-12-20 20:28:43', '6946967b4025c.jpg', 0.00, 0),
-(101, 'ACC0005', 'Large Dog Leash Vest Style Dog Chest Strap', '🔦 *** High Visibility Safety Reflective **:\r\n\r\n - Reflective Strips At Night Cover The Harness And Leash, Visible Within 200 Meters, Walking The Dog In Rainy/Night Is More Secure.\r\n\r\n 🐕 *** Comfortable Fit **:\r\n\r\n - Breathable Inner Lining, Adjustable Bust/Neck Circumference Is Not Stuffy To Wear For A Long Time.', 25.25, 40, 5, 1, '2025-12-20 20:37:37', '2025-12-22 00:22:18', '69469891853be.jpg', 0.00, 0),
+(101, 'ACC0005', 'Large Dog Leash Vest Style Dog Chest Strap', '🔦 *** High Visibility Safety Reflective **:\r\n\r\n - Reflective Strips At Night Cover The Harness And Leash, Visible Within 200 Meters, Walking The Dog In Rainy/Night Is More Secure.\r\n\r\n 🐕 *** Comfortable Fit **:\r\n\r\n - Breathable Inner Lining, Adjustable Bust/Neck Circumference Is Not Stuffy To Wear For A Long Time.', 25.25, 20, 5, 1, '2025-12-20 20:37:37', '2025-12-20 20:37:37', '69469891853be.jpg', 0.00, 0),
 (102, 'TOY0002', 'Pet Squeaky Duck Chew Toy Cat Dog', '[Product Features]\r\n\r\n~Realistic squeaking sound attracts pet attention interactive play\r\n~Soft plush material safe chewing teething relief puppies kittens\r\n~Durable reinforced stitching withstand biting multiple size options\r\n~Self amusement function reduces boredom home alone time\r\n~Bright yellow color cute duck design orange beak feet', 4.93, 60, 1, 1, '2025-12-20 20:46:11', '2025-12-20 20:46:11', '69469a93cb353.jpg', 0.00, 0),
 (103, 'FOD0002', 'Pet Sausage Healthy Pet Hotdog Food Snack For Cats And Dogs', '🐾  High Protein & Low Fat Goodness: - Our 15g Pet Sausage Snack is the ultimate treat for your beloved cats and dogs! \r\n\r\n🐾  Packed with high protein and low fat, it\'s a nutritious reward that your pets will love.', 1.00, 97, 3, 1, '2025-12-20 20:49:43', '2025-12-20 22:53:25', '69469b6789665.jpg', 0.00, 0),
 (104, 'FOD0003', 'Dry Kibble Dog Food for Puppy/Young Dog', '- Chicken/Egg/Milk (1.5KG)', 25.59, 45, 3, 1, '2025-12-20 21:00:22', '2025-12-21 08:49:16', '69469de6dcc39.jpg', 5.00, 1),
 (105, 'FOD0004', 'Freeze Dried Chicken Pet Food', '😻High-protein nutrition promotes muscle development\r\n\r\nRich in high-quality protein, supports pet muscle growth and energy supplementation, and avoids obesity problems\r\n\r\n\r\n\r\n😻Low fat and easy to digest, healthy and worry-free\r\n\r\nLow fat content, easy for pets to digest and absorb, reducing gastrointestinal burden, suitable for sensitive pets\r\n\r\n\r\n\r\n😻Natural ingredients, no additives\r\n\r\nMade from 100% pure chicken breast, no preservatives, pigments or artificial additives, ensuring safety and naturalness\r\n\r\n\r\n\r\n😻Freeze-drying process retains nutrition and flavor\r\n\r\nUsing freeze-drying technology to lock in the original nutrition and delicious taste of chicken, with less nutrient loss', 19.90, 45, 3, 1, '2025-12-20 21:13:02', '2025-12-20 21:13:02', '6946a0de3d2e0.jpg', 0.00, 0),
-(106, 'TOY0003', 'Pet Toy Dog UFO Ball | Portable UFO Dog Toy', 'Environmentally Friendly Materials: The Dog Dish Ball Is Made Of High-Quality PE Plastic Material, Which Is Tough, Durable, Safe And Non-Toxic.It Will Not Cause Any Harm To Teeth, But Please Do Not Let Your Dog Chew Too Much.', 13.90, 23, 1, 1, '2025-12-20 21:23:05', '2025-12-20 21:23:05', '6946a3399c923.jpg', 0.00, 0);
+(106, 'TOY0003', 'Pet Toy Dog UFO Ball | Portable UFO Dog Toy', 'Environmentally Friendly Materials: The Dog Dish Ball Is Made Of High-Quality PE Plastic Material, Which Is Tough, Durable, Safe And Non-Toxic.It Will Not Cause Any Harm To Teeth, But Please Do Not Let Your Dog Chew Too Much.', 13.90, 23, 1, 1, '2025-12-20 21:23:05', '2025-12-20 21:23:05', '6946a3399c923.jpg', 0.00, 0),
+(107, 'ACC0006', 'test', 'testtest', 100000.00, 10, 5, 1, '2025-12-21 21:15:50', '2025-12-21 21:15:50', '6947f3061b334.jpg', 0.00, 0),
+(108, 'ACC0007', 'po', 'asasas', 60.00, 100, 5, 1, '2025-12-22 00:15:44', '2025-12-22 00:16:10', 'prod_69481d4acd057.jpg', 0.00, 0);
 
 -- --------------------------------------------------------
 
@@ -599,7 +614,8 @@ CREATE TABLE `product_reviews` (
 INSERT INTO `product_reviews` (`review_id`, `product_id`, `user_id`, `order_id`, `rating`, `review_text`, `review_date`, `updated_at`, `is_verified_purchase`, `admin_reply`, `admin_reply_date`) VALUES
 (2, 91, 6, 7017, 5, 'good', '2025-12-20 23:14:10', '2025-12-21 03:04:01', 1, 'tqvm~ and hv a nice day, pls give 5 stars', '2025-12-21 03:04:01'),
 (4, 104, 9, 7022, 5, 'my dog very like this dog food, will purchase again, yeye', '2025-12-21 08:49:16', '2025-12-21 17:31:32', 1, 'tq~', '2025-12-21 17:31:32'),
-(5, 89, 9, 7021, 4, 'the quality good condition', '2025-12-21 16:43:46', '2025-12-21 16:47:27', 1, 'have a nice day~ 😘', '2025-12-21 16:47:27');
+(5, 89, 9, 7021, 4, 'the quality good condition', '2025-12-21 16:43:46', '2025-12-21 16:47:27', 1, 'have a nice day~ 😘', '2025-12-21 16:47:27'),
+(6, 98, 10, 7024, 5, 'good', '2025-12-21 21:13:48', '2025-12-21 21:16:34', 1, 'haha thanks', '2025-12-21 21:16:34');
 
 -- --------------------------------------------------------
 
@@ -629,12 +645,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `phone`, `home_address`, `password`, `reset_token`, `reset_token_expiry`, `role`, `created_at`, `profile_pic`, `locked`, `lock_reason`, `locked_at`) VALUES
-(1, 'Seahnijun', '', '', '0', '$2y$10$jSANxKW6shQ/CsKMsKzSXeqiOue5QFD2DnhPO/SwQJDAwdgtR1lRO', NULL, NULL, 'admin', '2025-11-22 17:27:12', 'uploads/profile_pics/1_1765859839_admin.jpg', 0, NULL, NULL),
+(1, 'Seahnijun', '', '', '0', '$2y$10$tv4lo9YatPGUBV1URb6rtevPhPqXD.4CatndeNj96SFXWxNAIO.ru', NULL, NULL, 'admin', '2025-11-22 17:27:12', 'uploads/profile_pics/1_1765859839_admin.jpg', 0, NULL, NULL),
 (5, 'abc', 'abc123@yahoo.com', '012-3456789', '0', '$2y$10$EKljSiD3aP0XAT.wLJdBKe7puFh/gvRdAGlaGoHU7aJ3tHfWqdqGi', NULL, NULL, 'member', '2025-11-22 22:32:05', 'uploads/profile_pics/5_1765885108_otter.jpg', 0, NULL, NULL),
-(6, 'haha', 'rokuya124@gmail.com', '012-2222222', '0', '$2y$10$Fv.4ZLPVE/p1gpn7IQeKKuqqUpRMvY0YMJfWv6teJnMiHs4b06/J2', NULL, NULL, 'member', '2025-12-06 23:12:07', 'uploads/profile_pics/6_1765302986_iu-3.jpg', 0, 'Suspicious activity', NULL),
+(6, 'haha', 'rokuya124@gmail.com', '012-2222222', '0', '$2y$10$.YtRrT7Sq7bEtYUN5o9vXuaj8RGAO4jYGYcAmlovQV/bts5TfIfnS', NULL, NULL, 'member', '2025-12-06 23:12:07', 'uploads/profile_pics/6_1765302986_iu-3.jpg', 0, 'Suspicious activity', NULL),
 (7, 'aaa', 'tanyijia-wp23@student.tarc.edu.my', '0123456789', '0', '$2y$10$k5r/g6EeYTTKXn1w06SEUutPnBB9ASLIHWZbut1A5pbh/8Z0bigS.', NULL, NULL, 'member', '2025-12-13 16:42:33', 'uploads/profile_pics/7_1766119675_images.jpg', 0, 'Suspicious activity', NULL),
-(8, 'Jasonyap_1022', 'jasonyap102204@gmail.com', '01111111111', '', '$2y$10$0o9jO9W3DCblF67T.rlwKuoVaM1wNIscdOk4w0AAJubulef885uA.', NULL, NULL, 'member', '2025-12-19 21:33:00', 'uploads/profile_pics/8_1766151590_Hu.Tao.full.3511224.jpg', 0, 'Payment issues', NULL),
-(9, 'tester', 'haha@gmail.com', '012-2222222', '', '$2y$10$zR5fCraEwopzo7Z.GuSncuvM1ThREopDifEAq48B/GGckqckAkLU.', NULL, NULL, 'member', '2025-12-21 08:38:07', 'uploads/profile_pics/9_1766277586_2.jpg', 0, NULL, NULL);
+(9, 'tester', 'haha@gmail.com', '012-2222222', '', '$2y$10$zR5fCraEwopzo7Z.GuSncuvM1ThREopDifEAq48B/GGckqckAkLU.', NULL, NULL, 'member', '2025-12-21 08:38:07', 'uploads/profile_pics/9_1766277586_2.jpg', 0, NULL, NULL),
+(10, 'Jasonyap_10223', 'jasonyap102204@gmail.com', '01111111111', '', '$2y$10$kq/YNpnhS/PUfVX4eUHBJen/FsEGulycyMkR/IA/tNraYcrie4bUy', NULL, NULL, 'member', '2025-12-21 18:00:45', NULL, 0, 'Suspicious activity', NULL);
 
 -- --------------------------------------------------------
 
@@ -665,7 +681,9 @@ INSERT INTO `user_addresses` (`id`, `user_id`, `address_name`, `recipient_name`,
 (65, 7, 'Home', 'Abby', '015-69874236', '789, Hello, KL', '2025-12-19 08:45:32'),
 (66, 6, 'Home', 'Jason', '011-11107767', '2 Jalan Ss 2/78\r\nSs 2\r\n47300 Petaling Jaya\r\nMYS\r\nAddre', '2025-12-19 12:22:17'),
 (67, 9, 'School', 'seah', '012-2222222', '555', '2025-12-21 00:41:37'),
-(68, 9, 'School', 'seah', '012-2222222', '555, jln tarumt, blk k, 47000, kuala lumpur, malaysia', '2025-12-21 09:21:32');
+(68, 9, 'School', 'seah', '012-2222222', '555, jln tarumt, blk k, 47000, kuala lumpur, malaysia', '2025-12-21 09:21:32'),
+(69, 10, 'Home', 'Jason', '011-11111111', 'Luis Escala\r\nPiedras 623\r\nPiso 2, depto 4\r\nC1070AAM, Capital Federal', '2025-12-21 13:11:26'),
+(70, 10, 'Work', 'Jason', '011-111111111', 'Ms H Williams\r\nFinance and Accounting\r\nAustralia Post\r\n219–241 Cleveland St\r\nSTRAWBERRY HILLS  NSW  142', '2025-12-21 18:07:40');
 
 -- --------------------------------------------------------
 
@@ -691,8 +709,8 @@ CREATE TABLE `vouchers` (
 
 INSERT INTO `vouchers` (`id`, `code`, `type`, `value`, `min_spend`, `expiry_date`, `usage_limit`, `used_count`, `created_at`) VALUES
 (1, 'MOE10OFF', 'fixed', 10.00, 50.00, '2026-04-30', 100, 6, '2025-12-19 05:20:19'),
-(2, 'MOE20PCT', 'percentage', 20.00, 100.00, '2026-12-31', NULL, 5, '2025-12-19 05:20:19'),
-(3, 'MOEFREE5', 'fixed', 5.00, 20.00, '2026-08-31', NULL, 7, '2025-12-19 06:26:15');
+(2, 'MOE20PCT', 'percentage', 20.00, 100.00, '2026-12-31', NULL, 7, '2025-12-19 05:20:19'),
+(3, 'MOEFREE5', 'fixed', 5.00, 20.00, '2026-08-31', NULL, 9, '2025-12-19 06:26:15');
 
 --
 -- Indexes for dumped tables
@@ -804,7 +822,7 @@ ALTER TABLE `vouchers`
 -- AUTO_INCREMENT for table `cart_item`
 --
 ALTER TABLE `cart_item`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=293;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=321;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -816,55 +834,55 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `chat_conversations`
 --
 ALTER TABLE `chat_conversations`
-  MODIFY `conversation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `conversation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `chat_messages`
 --
 ALTER TABLE `chat_messages`
-  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `favorites`
 --
 ALTER TABLE `favorites`
-  MODIFY `favorite_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `favorite_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7024;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7034;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=337;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=347;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
 
 --
 -- AUTO_INCREMENT for table `product_reviews`
 --
 ALTER TABLE `product_reviews`
-  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `user_addresses`
 --
 ALTER TABLE `user_addresses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT for table `vouchers`
