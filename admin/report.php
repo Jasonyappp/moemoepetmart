@@ -206,6 +206,7 @@ if ($view === 'sales' || $view === 'daily') {
             <li><a href="/admin/member_list.php"><i class="fas fa-users"></i> Members</a></li>
             <li><a href="/admin/order_list.php"><i class="fas fa-shopping-cart"></i> Orders</a></li>
             <li><a href="/admin/review_list.php"><i class="fas fa-star"></i> Reviews</a></li>
+            <li><a href="/admin/chat_list.php"><i class="fas fa-comments"></i> Chats</a></li>
             <li><a href="/admin/report.php" class="active"><i class="fas fa-chart-bar"></i> Reports</a></li>
             <li><a href="/admin/profile.php"><i class="fas fa-user-cog"></i> My Profile ♛</a></li>
             <li><a href="/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
