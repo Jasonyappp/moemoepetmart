@@ -553,10 +553,7 @@ INSERT INTO `product` (`product_id`, `product_code`, `product_name`, `descriptio
 (104, 'FOD0003', 'Dry Kibble Dog Food for Puppy/Young Dog', '- Chicken/Egg/Milk (1.5KG)', 25.59, 45, 3, 1, '2025-12-20 21:00:22', '2025-12-21 08:49:16', '69469de6dcc39.jpg', 5.00, 1),
 (105, 'FOD0004', 'Freeze Dried Chicken Pet Food', '😻High-protein nutrition promotes muscle development\r\n\r\nRich in high-quality protein, supports pet muscle growth and energy supplementation, and avoids obesity problems\r\n\r\n\r\n\r\n😻Low fat and easy to digest, healthy and worry-free\r\n\r\nLow fat content, easy for pets to digest and absorb, reducing gastrointestinal burden, suitable for sensitive pets\r\n\r\n\r\n\r\n😻Natural ingredients, no additives\r\n\r\nMade from 100% pure chicken breast, no preservatives, pigments or artificial additives, ensuring safety and naturalness\r\n\r\n\r\n\r\n😻Freeze-drying process retains nutrition and flavor\r\n\r\nUsing freeze-drying technology to lock in the original nutrition and delicious taste of chicken, with less nutrient loss', 19.90, 45, 3, 1, '2025-12-20 21:13:02', '2025-12-20 21:13:02', '6946a0de3d2e0.jpg', 0.00, 0),
 (106, 'TOY0003', 'Pet Toy Dog UFO Ball | Portable UFO Dog Toy', 'Environmentally Friendly Materials: The Dog Dish Ball Is Made Of High-Quality PE Plastic Material, Which Is Tough, Durable, Safe And Non-Toxic.It Will Not Cause Any Harm To Teeth, But Please Do Not Let Your Dog Chew Too Much.', 13.90, 23, 1, 1, '2025-12-20 21:23:05', '2025-12-20 21:23:05', '6946a3399c923.jpg', 0.00, 0),
-(107, 'ACC0006', 'test', 'testtest', 100000.00, 10, 5, 1, '2025-12-21 21:15:50', '2025-12-21 21:15:50', '6947f3061b334.jpg', 0.00, 0),
-(108, 'ACC0007', 'po', 'asasas', 60.00, 100, 5, 1, '2025-12-22 00:15:44', '2025-12-22 00:16:10', 'prod_69481d4acd057.jpg', 0.00, 0);
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `products`
