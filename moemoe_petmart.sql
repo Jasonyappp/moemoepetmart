@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 21, 2025 at 09:16 PM
+-- Generation Time: Dec 21, 2025 at 09:48 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -39,7 +39,8 @@ CREATE TABLE `cart_item` (
 --
 
 INSERT INTO `cart_item` (`cart_id`, `user_id`, `product_id`, `quantity`) VALUES
-(249, 7, 96, 1);
+(249, 7, 96, 1),
+(323, 6, 98, 1);
 
 -- --------------------------------------------------------
 
@@ -307,7 +308,8 @@ INSERT INTO `orders` (`order_id`, `user_id`, `shipping_address`, `recipient_name
 (7030, 10, 'Ms H Williams\r\nFinance and Accounting\r\nAustralia Post\r\n219–241 Cleveland St\r\nSTRAWBERRY HILLS  NSW  142', 'Jason', '011-11111111', 94.70, 5.00, 'west', 'Touch \'n Go', NULL, NULL, NULL, '2025-12-22 03:26:49', 'Returned & Restocked', 'Pending Payment', 'Wrong item received', NULL, 0.00),
 (7031, 10, 'Luis Escala\r\nPiedras 623\r\nPiso 2, depto 4\r\nC1070AAM, Capital Federal', 'Jason', '011-11111111', 64.80, 5.00, 'west', 'Cash on Delivery', NULL, NULL, NULL, '2025-12-22 03:33:23', 'Cancelled', 'Pending Payment', NULL, NULL, 0.00),
 (7032, 10, 'Ms H Williams\r\nFinance and Accounting\r\nAustralia Post\r\n219–241 Cleveland St\r\nSTRAWBERRY HILLS  NSW  142', 'Jason', '011-11111111', 64.80, 5.00, 'west', 'Cash on Delivery', NULL, NULL, NULL, '2025-12-22 03:37:25', 'Cancelled', 'Pending Payment', NULL, NULL, 0.00),
-(7033, 10, 'Ms H Williams\r\nFinance and Accounting\r\nAustralia Post\r\n219–241 Cleveland St\r\nSTRAWBERRY HILLS  NSW  142', 'Jason', '011-11111111', 64.80, 5.00, 'west', 'Cash on Delivery', NULL, NULL, NULL, '2025-12-22 03:40:31', 'Cancelled', 'Pending Payment', NULL, NULL, 0.00);
+(7033, 10, 'Ms H Williams\r\nFinance and Accounting\r\nAustralia Post\r\n219–241 Cleveland St\r\nSTRAWBERRY HILLS  NSW  142', 'Jason', '011-11111111', 64.80, 5.00, 'west', 'Cash on Delivery', NULL, NULL, NULL, '2025-12-22 03:40:31', 'Cancelled', 'Pending Payment', NULL, NULL, 0.00),
+(7034, 6, '2 Jalan Ss 2/78\r\nSs 2\r\n47300 Petaling Jaya\r\nMYS\r\nAddre', 'Jason', '011-11107767', 64.80, 5.00, 'west', 'Cash on Delivery', NULL, NULL, NULL, '2025-12-22 04:22:40', 'Cancelled', 'Pending Payment', NULL, NULL, 0.00);
 
 -- --------------------------------------------------------
 
@@ -505,7 +507,8 @@ INSERT INTO `order_items` (`item_id`, `order_id`, `product_id`, `quantity`, `uni
 (343, 7030, 98, 3, 29.90),
 (344, 7031, 98, 2, 29.90),
 (345, 7032, 98, 2, 29.90),
-(346, 7033, 98, 2, 29.90);
+(346, 7033, 98, 2, 29.90),
+(347, 7034, 98, 2, 29.90);
 
 -- --------------------------------------------------------
 
@@ -544,7 +547,7 @@ INSERT INTO `product` (`product_id`, `product_code`, `product_name`, `descriptio
 (95, 'CLR0001', 'Pet Hair Remover Comb', '✔️Simply push the button, wipe, making it super simple to remove all the hair from the brush, so it\'s ready for the next time use.\r\n✔️Suit for dog, cat, rabbits and other pets, making them neat and clean.', 15.60, 28, 4, 1, '2025-12-15 03:38:35', '2025-12-19 17:43:45', '693f123b2857e.jpg', 0.00, 0),
 (96, 'TOY0001', 'Cat Teaser Stick Toys with Bell', '🐾 Give your pets endless fun with this Cat Teaser Stick Toy with Bell. Interactive design, featuring a dangling bell and feather that will keep your cat entertained and engaged for hours!', 4.99, 3, 1, 1, '2025-12-15 03:43:09', '2025-12-22 02:53:32', '693f134dee5c4.jpg', 0.00, 0),
 (97, 'CLR0002', 'Pet Grooming Set', '~ Pet gloves grooming\r\n~ Pet grooming comb * 2', 35.80, 120, 4, 1, '2025-12-20 20:03:45', '2025-12-20 20:03:45', '694690a1c1dfa.jpg', 0.00, 0),
-(98, 'ACC0002', 'Automatic Water Food Dispenser 2 IN 1 Pet Feeder', '🐾 Enjoy peace of mind with our Automatic Pet Feeder and Water Dispenser, designed for cats, dogs, and rabbits. \r\n🐾 Large capacity, ensuring your pets stay fed and hydrated for days without frequent refills!', 29.90, 44, 5, 1, '2025-12-20 20:12:34', '2025-12-22 03:40:57', '694692b29c172.jpg', 5.00, 1),
+(98, 'ACC0002', 'Automatic Water Food Dispenser 2 IN 1 Pet Feeder', '🐾 Enjoy peace of mind with our Automatic Pet Feeder and Water Dispenser, designed for cats, dogs, and rabbits. \r\n🐾 Large capacity, ensuring your pets stay fed and hydrated for days without frequent refills!', 29.90, 44, 5, 1, '2025-12-20 20:12:34', '2025-12-22 04:22:59', '694692b29c172.jpg', 5.00, 1),
 (99, 'ACC0003', 'Washable Dog Bed Cat Bed Oval Sleeping Mat', '👉👉Specifications:\r\n\r\nFeatures for bed\r\n\r\n~Soft and Comfortable, Extra Large Space, Cervical Spine Care, Removable and Washable\r\n~Anti-Skid Epoxy: Moisture-Proof and Moisture-Proof, Effective Anti-Skid without Shifting.\r\n~One-Piece Nest, Sleeping around the Pillow Is Very Comfortable, Running around Deep Sleep.\r\n~Pillow Has High Rebound, No Collapse, Soft and Elastic, and It Is Very Comfortable to Sleep on It.\r\n~Full Filling, Long Sleep without Collapse, 360 ° Circular Package.', 14.88, 74, 5, 1, '2025-12-20 20:23:07', '2025-12-21 02:51:42', '6946952b30c91.jpg', 0.00, 0),
 (100, 'ACC0004', 'L-Shaped Corner Wall Scratcher for Cats', '【Materials】: Cat Scratching Board is crafted from corrugated paper, density board. This cat scratching board is designed to withstand vigorous scratching, ensuring long term use\r\n\r\n【Stylish Design】: Featuring a minimalist design, this cat scratcher seamlessly blends into any home decor, making it a functional yet stylish addition to your living space\r\n\r\n【Furniture Protection】: By attracting your cat attention for play and claw sharpening, this pet cat scratch board protects your sofa and bed', 59.70, 36, 5, 1, '2025-12-20 20:28:43', '2025-12-20 20:28:43', '6946967b4025c.jpg', 0.00, 0),
 (101, 'ACC0005', 'Large Dog Leash Vest Style Dog Chest Strap', '🔦 *** High Visibility Safety Reflective **:\r\n\r\n - Reflective Strips At Night Cover The Harness And Leash, Visible Within 200 Meters, Walking The Dog In Rainy/Night Is More Secure.\r\n\r\n 🐕 *** Comfortable Fit **:\r\n\r\n - Breathable Inner Lining, Adjustable Bust/Neck Circumference Is Not Stuffy To Wear For A Long Time.', 25.25, 20, 5, 1, '2025-12-20 20:37:37', '2025-12-20 20:37:37', '69469891853be.jpg', 0.00, 0),
@@ -552,8 +555,9 @@ INSERT INTO `product` (`product_id`, `product_code`, `product_name`, `descriptio
 (103, 'FOD0002', 'Pet Sausage Healthy Pet Hotdog Food Snack For Cats And Dogs', '🐾  High Protein & Low Fat Goodness: - Our 15g Pet Sausage Snack is the ultimate treat for your beloved cats and dogs! \r\n\r\n🐾  Packed with high protein and low fat, it\'s a nutritious reward that your pets will love.', 1.00, 97, 3, 1, '2025-12-20 20:49:43', '2025-12-20 22:53:25', '69469b6789665.jpg', 0.00, 0),
 (104, 'FOD0003', 'Dry Kibble Dog Food for Puppy/Young Dog', '- Chicken/Egg/Milk (1.5KG)', 25.59, 45, 3, 1, '2025-12-20 21:00:22', '2025-12-21 08:49:16', '69469de6dcc39.jpg', 5.00, 1),
 (105, 'FOD0004', 'Freeze Dried Chicken Pet Food', '😻High-protein nutrition promotes muscle development\r\n\r\nRich in high-quality protein, supports pet muscle growth and energy supplementation, and avoids obesity problems\r\n\r\n\r\n\r\n😻Low fat and easy to digest, healthy and worry-free\r\n\r\nLow fat content, easy for pets to digest and absorb, reducing gastrointestinal burden, suitable for sensitive pets\r\n\r\n\r\n\r\n😻Natural ingredients, no additives\r\n\r\nMade from 100% pure chicken breast, no preservatives, pigments or artificial additives, ensuring safety and naturalness\r\n\r\n\r\n\r\n😻Freeze-drying process retains nutrition and flavor\r\n\r\nUsing freeze-drying technology to lock in the original nutrition and delicious taste of chicken, with less nutrient loss', 19.90, 45, 3, 1, '2025-12-20 21:13:02', '2025-12-20 21:13:02', '6946a0de3d2e0.jpg', 0.00, 0),
-(106, 'TOY0003', 'Pet Toy Dog UFO Ball | Portable UFO Dog Toy', 'Environmentally Friendly Materials: The Dog Dish Ball Is Made Of High-Quality PE Plastic Material, Which Is Tough, Durable, Safe And Non-Toxic.It Will Not Cause Any Harm To Teeth, But Please Do Not Let Your Dog Chew Too Much.', 13.90, 23, 1, 1, '2025-12-20 21:23:05', '2025-12-20 21:23:05', '6946a3399c923.jpg', 0.00, 0),
+(106, 'TOY0003', 'Pet Toy Dog UFO Ball | Portable UFO Dog Toy', 'Environmentally Friendly Materials: The Dog Dish Ball Is Made Of High-Quality PE Plastic Material, Which Is Tough, Durable, Safe And Non-Toxic.It Will Not Cause Any Harm To Teeth, But Please Do Not Let Your Dog Chew Too Much.', 13.90, 23, 1, 1, '2025-12-20 21:23:05', '2025-12-20 21:23:05', '6946a3399c923.jpg', 0.00, 0);
 
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `products`
@@ -819,7 +823,7 @@ ALTER TABLE `vouchers`
 -- AUTO_INCREMENT for table `cart_item`
 --
 ALTER TABLE `cart_item`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=321;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=324;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -849,13 +853,13 @@ ALTER TABLE `favorites`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7034;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7035;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=347;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=348;
 
 --
 -- AUTO_INCREMENT for table `product`
