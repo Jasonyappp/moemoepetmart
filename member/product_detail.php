@@ -224,7 +224,7 @@ include '../_head.php';
                                     <?php endif; ?>
                                 </div>
                                 <span style="color: #888; font-size: 0.9rem;">
-                                    <?= date('M d, Y', strtotime($review->review_date)) ?>
+                                    <?= date('M d, Y h:i A', strtotime($review->review_date)) ?>
                                 </span>
                             </div>
 
@@ -241,9 +241,9 @@ include '../_head.php';
                                 </p>
                             <?php endif; ?>
 
-                            <?php if ($review->updated_at): ?>
+                            <?php if ($review->updated_at && $review->updated_at != '0000-00-00 00:00:00'): ?>
                                 <p style="color: #888; font-size: 0.85rem; font-style: italic; margin-top: 10px;">
-                                    Edited on <?= date('M d, Y', strtotime($review->updated_at)) ?>
+                                    Edited on <?= date('M d, Y h:i A', strtotime($review->updated_at)) ?>
                                 </p>
                             <?php endif; ?>
 
@@ -255,7 +255,7 @@ include '../_head.php';
                                             👑 Admin Reply
                                         </span>
                                         <span style="color: #888; font-size: 0.85rem;">
-                                            <?= date('M d, Y', strtotime($review->admin_reply_date)) ?>
+                                            <?= date('M d, Y h:i A', strtotime($review->admin_reply_date)) ?>
                                         </span>
                                     </div>
                                     <p style="color: #555; line-height: 1.5;">

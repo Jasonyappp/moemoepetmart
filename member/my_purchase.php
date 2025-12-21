@@ -120,6 +120,7 @@ $orders = $stm->fetchAll();
                             <?php
                             $stmt_items = $_db->prepare("
                                 SELECT oi.product_id, p.product_name, 
+                                       pr.review_id, 
                                        CASE WHEN pr.review_id IS NOT NULL THEN 1 ELSE 0 END AS has_review
                                 FROM order_items oi
                                 JOIN product p ON oi.product_id = p.product_id
@@ -139,7 +140,13 @@ $orders = $stm->fetchAll();
                                         <div class="review-item">
                                             <span class="review-product-name"><?= encode($item->product_name) ?></span>
                                             <?php if ($item->has_review): ?>
-                                                <span class="review-status-reviewed">Reviewed</span>
+                                                <div style="display: flex; gap: 10px; align-items: center;">
+                                                    <span class="review-status-reviewed">Reviewed</span>
+                                                    <a href="edit_review.php?review_id=<?= $item->review_id ?>" 
+                                                       class="btn-edit-review">
+                                                        Edit your review
+                                                    </a>
+                                                </div>
                                             <?php else: ?>
                                                 <a href="write_review.php?order_id=<?= $order->order_id ?>&product_id=<?= $item->product_id ?>" 
                                                    class="btn-write-review">
@@ -367,6 +374,27 @@ $orders = $stm->fetchAll();
 .btn-write-review:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(255, 20, 147, 0.4);
+}
+
+.btn-edit-review {
+    background: white;
+    color: #ff69b4;
+    padding: 8px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border: 2px solid #ff69b4;
+    transition: all 0.3s;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.btn-edit-review:hover {
+    background: #ff69b4;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
 }
 
 /* Responsive design for mobile */

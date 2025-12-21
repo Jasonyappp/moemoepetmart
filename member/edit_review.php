@@ -145,11 +145,14 @@ include '../_head.php';
             <!-- Submit Buttons -->
             <div style="text-align: center; margin-top: 40px;">
                 <button type="submit" 
-                        style="padding: 15px 50px; background: linear-gradient(135deg, #ff69b4, #ff1493); color: white; border: none; border-radius: 50px; font-size: 1.3rem; font-weight: bold; cursor: pointer; box-shadow: 0 8px 20px rgba(255,20,147,0.4); margin: 0 10px;">
-                    Update Review ♡
+                        class="btn-update-review"
+                        style="padding: 15px 50px; background: linear-gradient(135deg, #ff69b4, #ff1493); color: white; border: none; border-radius: 50px; font-size: 1.3rem; font-weight: bold; cursor: pointer; box-shadow: 0 8px 20px rgba(255,20,147,0.4); margin: 0 10px; position: relative; overflow: hidden;">
+                    <span class="btn-text">Update Review ♡</span>
                 </button>
                 <a href="../member/product_detail.php?id=<?= $review->product_id ?>" 
-                   style="display: inline-block; padding: 15px 50px; background: #ccc; color: white; text-decoration: none; border-radius: 50px; font-size: 1.3rem; font-weight: bold; margin: 0 10px;">
+                   style="display: inline-block; padding: 15px 50px; background: white; color: #666; text-decoration: none; border-radius: 50px; font-size: 1.3rem; font-weight: bold; margin: 0 10px; border: 2px solid #ddd; transition: all 0.3s;"
+                   onmouseover="this.style.background='#f5f5f5'; this.style.borderColor='#999';"
+                   onmouseout="this.style.background='white'; this.style.borderColor='#ddd';">
                     Cancel
                 </a>
             </div>
@@ -172,6 +175,96 @@ include '../_head.php';
 .star.selected {
     color: #ffd700;
 }
+
+/* Update Review Button Animation */
+.btn-update-review {
+    transition: all 0.3s ease;
+}
+
+.btn-update-review:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(255,20,147,0.6) !important;
+}
+
+.btn-update-review:active {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(255,20,147,0.4) !important;
+}
+
+/* Ripple effect */
+.btn-update-review::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-update-review:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-text {
+    position: relative;
+    z-index: 1;
+}
+
+/* Shine effect */
+@keyframes shine {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+.btn-update-review::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent
+    );
+    transition: left 0.5s;
+}
+
+.btn-update-review:hover::after {
+    animation: shine 1.5s infinite;
+}
+
+/* Pulse animation on page load */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 8px 20px rgba(255,20,147,0.4);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 12px 30px rgba(255,20,147,0.6);
+    }
+}
+
+.btn-update-review {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.btn-update-review:hover {
+    animation: none;
+}
+
 </style>
 
 <script>
