@@ -25,12 +25,21 @@ if (is_post()) {
         $_err['current'] = 'Current password is incorrect! Please try again ♡';
     }
     
-    if (empty($new_password)) {
+    // Validate new password (match register.php rules)
+    if ($new_password === '') {
         $_err['new'] = 'New password is required~';
-    } elseif (strlen($new_password) < 4) {
-        $_err['new'] = 'New password must be at least 4 characters ♡';
-    } elseif (strlen($new_password) > 50) {
-        $_err['new'] = 'New password is too long! Maximum 50 characters ♡';
+    } elseif (strlen($new_password) < 8) {
+        $_err['new'] = 'Password must be at least 8 characters ♡';
+    } elseif (strlen($new_password) > 128) {
+        $_err['new'] = 'Password is too long! Maximum 128 characters ♡';
+    } elseif (!preg_match('/[A-Z]/', $new_password)) {
+        $_err['new'] = 'Password must include at least one uppercase letter ♡';
+    } elseif (!preg_match('/[a-z]/', $new_password)) {
+        $_err['new'] = 'Password must include at least one lowercase letter ♡';
+    } elseif (!preg_match('/\d/', $new_password)) {
+        $_err['new'] = 'Password must include at least one number ♡';
+    } elseif (!preg_match('/[!@#$%^&*(),.?":{}|<>]/', $new_password)) {
+        $_err['new'] = 'Password must include at least one special character ♡';
     }
     
     if (empty($confirm_password)) {
@@ -85,12 +94,12 @@ include '_head.php';
             <div class="input-group">
                 <label>New Password</label>
                 <input type="password" name="new_password" required 
-                       placeholder="Enter your new password (min. 4 characters)"
+                       placeholder="Enter your new password (min. 8 characters)"
                        class="<?= isset($_err['new']) ? 'error-field' : '' ?>">
                 <?php if (isset($_err['new'])): ?>
                     <div class="field-error"><?= $_err['new'] ?></div>
                 <?php else: ?>
-                    <small>Must be at least 4 characters long</small>
+                    <small>Must be at least 8 characters long</small>
                 <?php endif; ?>
             </div>
            
@@ -113,8 +122,10 @@ include '_head.php';
         <div class="security-tips">
             <h4>Password Tips:</h4>
             <ul>
-                <li>Use at least 4 characters</li>
+                <li>Use at least 8 characters</li>
                 <li>Combine letters and numbers for better security</li>
+                <li>Include uppercase and lowercase letters</li>
+                <li>Include at least one special character (e.g., !@#$%)</li>
                 <li>Avoid using personal information</li>
                 <li>Don't reuse passwords from other sites</li>
             </ul>

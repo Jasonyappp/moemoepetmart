@@ -19,12 +19,12 @@ $user = $stm->fetch();
 // Check if token is valid and not expired
 if (!$user) {
     temp('error', 'Invalid or expired reset link. Please request a new one.');
-    redirect('/forgot_password.php');
+    redirect('/forget_password.php');
 }
 
 if (strtotime($user->reset_token_expiry) < time()) {
     temp('error', 'This reset link has expired. Please request a new one.');
-    redirect('/forgot_password.php');
+    redirect('/forget_password.php');
 }
 
 // ------------------- Process Password Reset -------------------
@@ -34,12 +34,27 @@ if (is_post()) {
 
     $hasError = false;
 
-    // Validate new password
+    // Validate new password (match register.php rules)
     if ($new_password === '') {
         $_err['new_password'] = 'New password is required~';
         $hasError = true;
-    } elseif (strlen($new_password) < 4) {
-        $_err['new_password'] = 'Password must be at least 4 characters ♡';
+    } elseif (strlen($new_password) < 8) {
+        $_err['new_password'] = 'Password must be at least 8 characters ♡';
+        $hasError = true;
+    } elseif (strlen($new_password) > 128) {
+        $_err['new_password'] = 'Password is too long! Maximum 128 characters ♡';
+        $hasError = true;
+    } elseif (!preg_match('/[A-Z]/', $new_password)) {
+        $_err['new_password'] = 'Password must include at least one uppercase letter ♡';
+        $hasError = true;
+    } elseif (!preg_match('/[a-z]/', $new_password)) {
+        $_err['new_password'] = 'Password must include at least one lowercase letter ♡';
+        $hasError = true;
+    } elseif (!preg_match('/\d/', $new_password)) {
+        $_err['new_password'] = 'Password must include at least one number ♡';
+        $hasError = true;
+    } elseif (!preg_match('/[!@#$%^&*(),.?":{}|<>]/', $new_password)) {
+        $_err['new_password'] = 'Password must include at least one special character ♡';
         $hasError = true;
     }
 
@@ -83,7 +98,7 @@ if (is_post()) {
             <div class="input-group">
                 <label>New Password</label>
                 <input type="password" name="new_password" required 
-                       placeholder="Enter your new password">
+                       placeholder="Enter your new password (min. 8 characters)">
                 <?php err('new_password'); ?>
             </div>
 
