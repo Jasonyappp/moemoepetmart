@@ -166,13 +166,13 @@ include '../_head.php';
             </p>
         </div>   
 
-        <!-- 描述（跨列）-->
+        
         <div style="margin-top:35px;">
             <label>Description</label>
             <textarea name="description" rows="7" style="width:100%;padding:18px 22px;border:4px solid #ffeef8;border-radius:20px;background:#fff8fb;font-size:1.1rem;"><?= ($product->description) ?></textarea>
         </div>
 
-        <!-- 按钮区 -->
+       
         <div class="form-actions">
             <button type="submit" class="btn-primary">Save Changes ♡</button>
             <a href="product_list.php" class="btn-secondary">Cancel</a>
