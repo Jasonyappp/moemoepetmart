@@ -523,7 +523,7 @@ include '../_head.php';
 </style>
 
 <script>
-// Full toggle favorite button: add OR remove with the same heart
+// Unified Favorite Toggle – uses showFlashMessage() like Add to Cart ♡
 document.querySelectorAll('.btn-favorite-small').forEach(button => {
     button.addEventListener('click', function(e) {
         e.preventDefault();
@@ -532,14 +532,13 @@ document.querySelectorAll('.btn-favorite-small').forEach(button => {
         const btn = this;
         const svg = btn.querySelector('svg');
         const productId = btn.dataset.id;
-        const isCurrentlyFavorited = btn.classList.contains('favorited');
+        const isFavorited = btn.classList.contains('favorited');
 
-        // Pulse animation
-        btn.style.transform = 'scale(1.2)';
+        // Visual feedback: pulse
+        btn.style.transform = 'scale(1.3)';
         setTimeout(() => btn.style.transform = '', 200);
 
-        // Choose correct endpoint
-        const url = isCurrentlyFavorited ? 'remove_from_favorite.php' : 'add_to_favorite.php';
+        const url = isFavorited ? 'remove_from_favorite.php' : 'add_to_favorite.php';
 
         fetch(url, {
             method: 'POST',
@@ -549,27 +548,28 @@ document.querySelectorAll('.btn-favorite-small').forEach(button => {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                if (isCurrentlyFavorited) {
-                    // Just removed
+                if (isFavorited) {
+                    // Removed
                     btn.classList.remove('favorited');
                     svg.setAttribute('fill', 'none');
                     svg.setAttribute('stroke', '#ff69b4');
                     btn.title = 'Add to Favorites ♡';
-                    alert('Removed from favorites ♡');
+                    showFlashMessage('Removed from favorites~ ♡');
                 } else {
-                    // Just added
+                    // Added
                     btn.classList.add('favorited');
                     svg.setAttribute('fill', '#ff69b4');
                     svg.setAttribute('stroke', '#ff1493');
                     btn.title = 'Remove from Favorites ♡';
-                    alert('Added to favorites! ♡');
+                    showFlashMessage('Added to favorites! ♡');
                 }
             } else {
-                alert(data.message || 'Something went wrong ♡');
+                showFlashMessage(data.message || 'Oops! Something went wrong ♡');
             }
         })
-        .catch(() => {
-            alert('Connection error. Please try again ♡');
+        .catch(err => {
+            console.error(err);
+            showFlashMessage('Connection error~ Please try again ♡');
         });
     });
 });

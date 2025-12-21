@@ -74,11 +74,17 @@ include '../_head.php';
 </style>
 
 <script>
-// Add remove from favorites functionality
+// Direct Remove from Favorites – no confirm dialog, instant cute feedback ♡
 document.querySelectorAll('.remove-favorite').forEach(btn => {
-    btn.addEventListener('click', function() {
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+
         const productId = this.dataset.id;
-        if (!confirm('Remove from favorites? ♡')) return;
+        const card = this.closest('.product-card');
+
+        // Optional: small hover feedback before action
+        this.style.background = '#ff1493';
+        this.textContent = 'Removing... ♡';
 
         fetch('remove_from_favorite.php', {
             method: 'POST',
@@ -88,13 +94,38 @@ document.querySelectorAll('.remove-favorite').forEach(btn => {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                location.reload();  // Refresh to remove the item
+                showFlashMessage('Removed from favorites ♡');
+
+                // Smooth fade-out + slide down animation
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px) scale(0.95)';
+
+                setTimeout(() => {
+                    card.remove();
+
+                    // If no more favorites left, show empty state
+                    if (!document.querySelector('.product-card')) {
+                        document.querySelector('.product-grid').innerHTML = `
+                            <div class="empty-purchases" style="grid-column: 1 / -1; text-align: center; padding: 80px;">
+                                <p style="font-size: 1.4rem; color: #ff69b4;">No favorite products yet~ Start adding some! ♡</p>
+                                <a href="products.php" class="btn btn-primary" style="margin-top: 20px; padding: 14px 30px; font-size: 1.1rem;">Browse Products ♡</a>
+                            </div>
+                        `;
+                    }
+                }, 500);
             } else {
-                alert(data.message || 'Failed to remove ♡');
+                showFlashMessage(data.message || 'Failed to remove~ Try again ♡');
+                this.style.background = '#ff69b4';
+                this.textContent = 'Remove from Favorites ♡';
             }
+        })
+        .catch(() => {
+            showFlashMessage('Connection error~ Please try again ♡');
+            this.style.background = '#ff69b4';
+            this.textContent = 'Remove from Favorites ♡';
         });
     });
 });
 </script>
-
 <?php include '../_foot.php'; ?>
