@@ -230,7 +230,7 @@ $reviews = $stmt->fetchAll();
                             <h3 style="color: #ff1493; margin: 0 0 8px 0;"><?= encode($review->product_name) ?></h3>
                             <p style="margin: 5px 0; color: #666;">
                                 By <strong><?= encode($review->username) ?></strong> • 
-                                <?= date('M d, Y', strtotime($review->review_date)) ?>
+                                <?= date('M d, Y h:i A', strtotime($review->review_date)) ?>
                             </p>
                         </div>
                         <div style="text-align: right;">
@@ -265,7 +265,7 @@ $reviews = $stmt->fetchAll();
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                                 <strong style="color: #2e7d32;">👑 Your Reply:</strong>
                                 <span style="color: #666; font-size: 0.9rem;">
-                                    <?= date('M d, Y', strtotime($review->admin_reply_date)) ?>
+                                    <?= date('M d, Y h:i A', strtotime($review->admin_reply_date)) ?>
                                 </span>
                             </div>
                             <p style="margin: 0; color: #555; line-height: 1.5;">
