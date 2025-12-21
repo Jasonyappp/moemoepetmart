@@ -83,9 +83,9 @@ $cats = $_db->query("SELECT * FROM category ORDER BY category_name")->fetchAll()
         </ul>
     </aside>
 
-    <!-- 主内容区 -->
+   
     <main class="admin-main">
-        <!-- 顶部栏 -->
+      
         <header class="admin-header">
             <h1>Product Management</h1>
             <div class="admin-user">
@@ -94,7 +94,7 @@ $cats = $_db->query("SELECT * FROM category ORDER BY category_name")->fetchAll()
             </div>
         </header>
 
-        <!-- 工具栏 -->
+      
         <div class="toolbar">
             <input type="text" name="search" placeholder="Search products..." value="<?= encode($search) ?>">
 
@@ -119,7 +119,7 @@ $cats = $_db->query("SELECT * FROM category ORDER BY category_name")->fetchAll()
             
         </div>
 
-        <!-- 表格卡片 -->
+     
         <div class="table-card">
             <table>
                 <thead>
@@ -165,7 +165,6 @@ $cats = $_db->query("SELECT * FROM category ORDER BY category_name")->fetchAll()
                         </a>
                         <span class="text-pink-300 mx-3">·</span>
 
-                        <!-- Delete：用 button 但伪装成纯文字，完美融入你的风格 -->
                         <form method="post" action="product_delete.php" style="display:inline;"
                             onsubmit="return confirm('Are you sure you want to delete it completely?「<?= encode($p->product_name) ?>」？\n\nThis operation cannot be undone!');">
                             <input type="hidden" name="product_id" value="<?= $p->product_id ?>">
@@ -180,7 +179,7 @@ $cats = $_db->query("SELECT * FROM category ORDER BY category_name")->fetchAll()
             </table>
         </div>
 
-        <!-- 分页 -->
+        
         <div class="pagination">
             <span>Page <?= $page ?> of <?= $total_pages ?></span>
             <?php if ($page > 1): ?>
